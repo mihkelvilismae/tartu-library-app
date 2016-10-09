@@ -4,6 +4,10 @@
 
 <label for="name">Nimi</label>
 <input type="input" name="name" /><br />
+<label for="phone">Telefon</label>
+<input type="input" name="phone" /><br />
+<label for="email">E-Mail</label>
+<input type="input" name="email" /><br />
 
 <input type="submit" name="submit" value="Lisa kool" />
 

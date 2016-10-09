@@ -34,7 +34,9 @@ class Database_model extends CI_Model {
         $this->load->helper('url');
 
         $data = array(
-            'name' => $this->input->post('name')
+            'name' => $this->input->post('name'),
+            'phone' => $this->input->post('phone'),
+            'email' => $this->input->post('email')
         );
 
         return $this->db->insert('school', $data);

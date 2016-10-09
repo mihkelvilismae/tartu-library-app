@@ -16,6 +16,8 @@ class Add extends CI_Controller {
         $data['title'] = 'Kooli lisamine';
 
         $this->form_validation->set_rules('name', 'Name', 'required');
+        $this->form_validation->set_rules('phone', 'Phone', 'required');
+        $this->form_validation->set_rules('email', 'E-Mail', 'required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);

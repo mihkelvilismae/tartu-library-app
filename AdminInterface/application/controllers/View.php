@@ -23,11 +23,11 @@ class View extends CI_Controller {
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="3"><a href="'.site_url('Lisa/Kool').'">Lisa uus kool</a> </td></tr></table>'
+            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Kool').'">Lisa uus kool</a> </td></tr></table>'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Kooli nimi", "Muuda");
+        $this->table->set_heading("Id", "Kooli nimi", "Telefon", "E-Mail", "Muuda");
 
         $data['table'] = $this->table->generate($data['schools']);
 
