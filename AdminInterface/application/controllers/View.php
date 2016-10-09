@@ -42,6 +42,7 @@ class View extends CI_Controller {
         $data['title'] = 'Klassid';
         $i = 0;
         foreach ($data['classes'] as $class) {
+            $data['classes'][$i]['name'] = '<a href="'.site_url("Nimekiri/".$class['id']).'">'.$class['name'].'</a>';
             $data['classes'][$i]['school_id'] = $this->database_model->get_school_name($class['school_id']);
             $data['classes'][$i]['edit'] = '<a href="'.site_url("Muuda/Klass/".$class['id']).'">Muuda</a>';
             $i++;
@@ -67,8 +68,8 @@ class View extends CI_Controller {
         $data['books'] = $this->database_model->get_books();
         $data['title'] = 'Raamatud';
         $i = 0;
-        foreach ($data['books'] as $class) {
-            $data['books'][$i]['edit'] = '<a href="'.site_url("Muuda/Raamat/".$class['id']).'">Muuda</a>';
+        foreach ($data['books'] as $book) {
+            $data['books'][$i]['edit'] = '<a href="'.site_url("Muuda/Raamat/".$book['id']).'">Muuda</a>';
             $i++;
         }
 
@@ -84,6 +85,33 @@ class View extends CI_Controller {
 
         $this->load->view('templates/header', $data);
         $this->load->view('view/view_books', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function view_reading_list($class_id)
+    {
+        $data['list'] = $this->database_model->get_reading_list($class_id);
+        $data['title'] = 'Lugemis Nimekiri';
+
+        $i = 0;
+        foreach ($data['list'] as $book) {
+            $data['list'][$i]['class_id'] = $this->database_model->get_class_by_id($class_id)['name'];
+            $data['list'][$i]['book_id'] = $this->database_model->get_book_by_id($book['book_id'])['title'];
+            $i++;
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4">',
+            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Nimekiri/'.$class_id).'">Lisa nimekirja raamat</a> </td></tr></table>'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Id", "Klass", "Raamatu Nimi");
+
+        $data['table'] = $this->table->generate($data['list']);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('view/reading_list', $data);
         $this->load->view('templates/footer');
     }
 }

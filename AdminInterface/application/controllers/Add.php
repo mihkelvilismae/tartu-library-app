@@ -92,4 +92,36 @@ class Add extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
+
+    public function add_book_to_list($class_id)
+    {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $data['title'] = 'Raamatu lisamine';
+        $data['books'] = $this->database_model->get_books();
+        $data['id'] = $class_id;
+
+        $books = array();
+        foreach ($data['books'] as $book) {
+            $books[$book['id']] = $book['title'];
+        }
+        $data['books'] = $books;
+
+        $this->form_validation->set_rules('book_id', 'Title', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('add/reading_list', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_book_to_reading_list($class_id);
+
+            $data['message'] = 'Raamatu lisamine nimekirja õnnestus';
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('success', $data);
+            $this->load->view('templates/footer');
+        }
+    }
 }

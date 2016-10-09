@@ -1,4 +1,4 @@
-<h1>Lisa uus Klass</h1>
+<h1>Lisa uus raamat</h1>
 <?php echo validation_errors(); ?>
 <?php echo form_open('Lisa/Raamat'); ?>
 

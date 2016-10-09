@@ -21,6 +21,11 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_reading_list($class_id) {
+        $query = $this->db->get_where('reading_list', array('class_id'=>$class_id));
+        return $query->result_array();
+    }
+
     public function get_schools() {
         $query = $this->db->get('school');
         return $query->result_array();
@@ -73,6 +78,17 @@ class Database_model extends CI_Model {
         );
 
         return $this->db->insert('book', $data);
+    }
+
+    public function add_book_to_reading_list($class_id) {
+        $this->load->helper('url');
+
+        $data = array(
+            'class_id' => $class_id,
+            'book_id' => $this->input->post('book_id')
+        );
+
+        return $this->db->insert('reading_list', $data);
     }
 
     public function edit_school($id) {

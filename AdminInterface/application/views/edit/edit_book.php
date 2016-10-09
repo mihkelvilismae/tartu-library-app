@@ -1,4 +1,4 @@
-<h1>Muuda kooli</h1>
+<h1>Muuda raamatut</h1>
 <?php echo validation_errors(); ?>
 <?php echo form_open('Muuda/Raamat/'.$id); ?>
 
