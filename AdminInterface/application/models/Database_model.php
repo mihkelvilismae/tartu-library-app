@@ -128,4 +128,33 @@ class Database_model extends CI_Model {
 
         return $this->db->update('book');
     }
+
+    public function delete_school($id) {
+        $classes = $this->get_classes($id);
+        foreach ($classes as $class) {
+            $this->delete_class($class['id']);
+        }
+        $this->db->where('id', $id);
+
+        return $this->db->delete('school');
+    }
+
+    public function delete_class($id) {
+        $reading_list = $this->get_classes($id);
+        foreach ($reading_list as $e) {
+            $this->delete_reading_list($e['id']);
+        }
+        $this->db->where('id', $id);
+        return $this->db->delete('class');
+    }
+
+    public function delete_reading_list($id) {
+        $this->db->where('id', $id);
+        return $this->db->delete('reading_list');
+    }
+
+    public function delete_book($id) {
+        $this->db->where('id', $id);
+        return $this->db->delete('book');
+    }
 }
