@@ -23,7 +23,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+if (getenv('OPENSHIFT_MYSQL_DB_USERNAME'))
+    $config['base_url'] = 'http://raamatadmin-mihkelvilismae.rhcloud.com/AdminInterface/';
+else
+    $config['base_url'] = 'http://tvp.local/';
 
 /*
 |--------------------------------------------------------------------------

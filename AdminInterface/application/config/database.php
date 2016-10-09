@@ -94,3 +94,9 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+if (ENVIRONMENT==='production') {
+	$db['default']['username'] = getenv('OPENSHIFT_MYSQL_DB_USERNAME');
+	$db['default']['password'] = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
+	$db['default']['hostname'] = getenv('OPENSHIFT_MYSQL_DB_HOST');
+}
