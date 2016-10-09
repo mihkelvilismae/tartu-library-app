@@ -11,6 +11,11 @@ class Database_model extends CI_Model {
         return $query->row_array()['name'];
     }
 
+    public function get_class_by_id($id) {
+        $query = $this->db->get_where('class', array('id'=>$id));
+        return $query->row_array();
+    }
+
     public function get_schools() {
         $query = $this->db->get('school');
         return $query->result_array();
@@ -40,5 +45,28 @@ class Database_model extends CI_Model {
         );
 
         return $this->db->insert('class', $data);
+    }
+
+    public function edit_school($id) {
+        $this->load->helper('url');
+
+        $this->db->set('name', $this->input->post('name'));
+        $this->db->where('id', $id);
+
+        return $this->db->update('school');
+    }
+
+    public function edit_class($id) {
+        $this->load->helper('url');
+
+        $changes = array(
+            'name' => $this->input->post('name'),
+            'school_id' => $this->input->post('school_id')
+        );
+
+        $this->db->set($changes);
+        $this->db->where('id', $id);
+
+        return $this->db->update('class');
     }
 }

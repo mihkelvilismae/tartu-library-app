@@ -51,6 +51,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['Koolid'] = 'View/view_schools';
 $route['Klassid'] = 'View/view_classes';
+$route['Muuda/Kool/(:num)'] = 'Edit/edit_school/$1';
+$route['Muuda/Klass/(:num)'] = 'Edit/edit_class/$1';
 $route['Lisa/Kool'] = 'Add/add_school';
 $route['Lisa/Klass'] = 'Add/add_class';
 $route['default_controller'] = 'welcome';

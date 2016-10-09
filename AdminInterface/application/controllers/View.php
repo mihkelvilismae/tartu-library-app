@@ -12,39 +12,52 @@ class View extends CI_Controller {
     public function view_schools()
     {
         $data['schools'] = $this->database_model->get_schools();
+        $data['title'] = 'Koolid';
+
+        $i = 0;
+        foreach ($data['schools'] as $school) {
+            $data['schools'][$i]['edit'] = '<a href="'.site_url("Muuda/Kool/".$school['id']).'">Muuda</a>';
+            $i++;
+        }
+
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
             'table_close' => '<tr><td colspan="3"><a href="'.site_url('Lisa/Kool').'">Lisa uus kool</a> </td></tr></table>'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Kooli nimi");
+        $this->table->set_heading("Id", "Kooli nimi", "Muuda");
 
         $data['table'] = $this->table->generate($data['schools']);
 
+        $this->load->view('templates/header', $data);
         $this->load->view('view/view_schools', $data);
+        $this->load->view('templates/footer');
     }
 
     public function view_classes()
     {
         $data['classes'] = $this->database_model->get_classes();
-
+        $data['title'] = 'Klassid';
         $i = 0;
         foreach ($data['classes'] as $class) {
             $data['classes'][$i]['school_id'] = $this->database_model->get_school_name($class['school_id']);
+            $data['classes'][$i]['edit'] = '<a href="'.site_url("Muuda/Klass/".$class['id']).'">Muuda</a>';
             $i++;
         }
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="3"><a href="'.site_url('Lisa/Klass').'">Lisa uus klass</a> </td></tr></table>'
+            'table_close' => '<tr><td colspan="4"><a href="'.site_url('Lisa/Klass').'">Lisa uus klass</a> </td></tr></table>'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Kooli nimi", "Klassi nimi");
+        $this->table->set_heading("Id", "Kooli nimi", "Klassi nimi", "Muuda");
 
         $data['table'] = $this->table->generate($data['classes']);
 
+        $this->load->view('templates/header', $data);
         $this->load->view('view/view_classes', $data);
+        $this->load->view('templates/footer');
     }
 }
