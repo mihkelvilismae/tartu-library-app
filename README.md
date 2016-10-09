@@ -1,3 +1,1 @@
 # tartu-library-app
-
-Testing
