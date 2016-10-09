@@ -49,6 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+$route['Koolid'] = 'View/view_schools';
+$route['Klassid'] = 'View/view_classes';
+$route['Lisa/Kool'] = 'Add/add_school';
+$route['Lisa/Klass'] = 'Add/add_class';
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
