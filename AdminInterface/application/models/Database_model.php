@@ -21,8 +21,12 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_classes() {
-        $query = $this->db->get('class');
+    public function get_classes($id) {
+        if ($id) {
+            $query = $this->db->get_where('class', array('school_id'=>$id));
+        } else {
+            $query = $this->db->get('class');
+        }
         return $query->result_array();
     }
 

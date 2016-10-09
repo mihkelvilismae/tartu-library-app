@@ -62,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="body">
 
 		<a href="<?=site_url('Koolid')?>">Vaata Koole</a><br />
-		<a href="<?=site_url('Klassid')?>">Vaata Klasse</a>
+		<a href="<?=site_url('Klassid')?>">Vaata kõiki Klasse</a>
 	</div>
 
 	<p class="footer"></p>

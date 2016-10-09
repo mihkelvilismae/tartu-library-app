@@ -32,13 +32,14 @@ class Add extends CI_Controller {
         }
     }
 
-    public function add_class()
+    public function add_class($school_id = NULL)
     {
         $this->load->helper('form');
         $this->load->library('form_validation');
 
         $data['title'] = 'Klassi lisamine';
         $data['schools'] = $this->database_model->get_schools();
+        $data['default_school'] = $school_id;
 
         $schools = array();
         foreach ($data['schools'] as $school) {
@@ -51,7 +52,7 @@ class Add extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('add/add_class');
+            $this->load->view('add/add_class', $data);
             $this->load->view('templates/footer');
         } else {
             $this->database_model->add_class();

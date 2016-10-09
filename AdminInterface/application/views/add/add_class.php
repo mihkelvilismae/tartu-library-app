@@ -3,10 +3,10 @@
 <?php echo form_open('Lisa/Klass'); ?>
 
 <label for="name">Klassi nimi</label>
-<input type="input" name="name" /><br />
+<input type="input" name="name"  /><br />
 
 <label for="school_id">Kool</label>
-<?php echo form_dropdown('school_id', $schools)?><br />
+<?php echo form_dropdown('school_id', $schools, $default_school)?><br />
 
 <input type="submit" name="submit" value="Lisa klass" />
 

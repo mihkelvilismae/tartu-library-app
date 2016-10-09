@@ -17,6 +17,7 @@ class View extends CI_Controller {
         $i = 0;
         foreach ($data['schools'] as $school) {
             $data['schools'][$i]['edit'] = '<a href="'.site_url("Muuda/Kool/".$school['id']).'">Muuda</a>';
+            $data['schools'][$i]['name'] = '<a href="'.site_url("Klassid/".$school['id']).'">'.$school['name'].'</a>';
             $i++;
         }
 
@@ -35,9 +36,9 @@ class View extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function view_classes()
+    public function view_classes($id = NULL)
     {
-        $data['classes'] = $this->database_model->get_classes();
+        $data['classes'] = $this->database_model->get_classes($id);
         $data['title'] = 'Klassid';
         $i = 0;
         foreach ($data['classes'] as $class) {
@@ -48,7 +49,7 @@ class View extends CI_Controller {
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="4"><a href="'.site_url('Lisa/Klass').'">Lisa uus klass</a> </td></tr></table>'
+            'table_close' => '<tr><td colspan="4"><a href="'.site_url('Lisa/Klass/'.$id).'">Lisa uus klass</a> </td></tr></table>'
         );
 
         $this->table->set_template($template);
