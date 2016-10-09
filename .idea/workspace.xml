@@ -1,45 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a2f4ea5d-a7e0-4cbb-b574-d410f0028c6a" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\.name" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\compiler.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\copyright\profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\gradle.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\runConfigurations.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\.idea\vcs.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\app.iml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\build.gradle" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\proguard-rules.pro" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\androidTest\java\com\example\mihkel\libraryapp\ApplicationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\java\com\example\mihkel\libraryapp\MainActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\layout\activity_main.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\menu\menu_main.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\mipmap-hdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\mipmap-mdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\mipmap-xhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\mipmap-xxhdpi\ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\values-w820dp\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\values\dimens.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\values\strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app\src\main\res\values\styles.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\app_raamatukogu.iml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\build.gradle" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\gradle.properties" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\gradle\wrapper\gradle-wrapper.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\gradle\wrapper\gradle-wrapper.properties" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\gradlew" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\gradlew.bat" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\app_raamatukogu\settings.gradle" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\mihkel\Dropbox\app_raamatukogu\LibraryApp\AndroidApp\test.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a2f4ea5d-a7e0-4cbb-b574-d410f0028c6a" name="Default" comment="" />
     <ignored path="LibraryApp.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -176,14 +138,22 @@
       <option name="number" value="Default" />
       <updated>1476030851474</updated>
     </task>
+    <task id="LOCAL-00001" summary="Deleted AndroidApp">
+      <created>1476035363122</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1476035363122</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2553305" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -212,6 +182,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Deleted AndroidApp" />
+    <option name="LAST_COMMIT_MESSAGE" value="Deleted AndroidApp" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
