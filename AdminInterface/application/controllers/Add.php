@@ -66,4 +66,30 @@ class Add extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
+
+    public function add_book()
+    {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $data['title'] = 'Raamatu lisamine';
+
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('author', 'Author', 'required');
+        $this->form_validation->set_rules('year', 'Year', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('add/add_book', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_book();
+
+            $data['message'] = 'Raamatu lisamine õnnestus';
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('success', $data);
+            $this->load->view('templates/footer');
+        }
+    }
 }

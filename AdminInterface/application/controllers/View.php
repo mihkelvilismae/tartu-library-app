@@ -61,4 +61,29 @@ class View extends CI_Controller {
         $this->load->view('view/view_classes', $data);
         $this->load->view('templates/footer');
     }
+
+    public function view_books()
+    {
+        $data['books'] = $this->database_model->get_books();
+        $data['title'] = 'Raamatud';
+        $i = 0;
+        foreach ($data['books'] as $class) {
+            $data['books'][$i]['edit'] = '<a href="'.site_url("Muuda/Raamat/".$class['id']).'">Muuda</a>';
+            $i++;
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4">',
+            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr></table>'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Id", "Raamatu nimi", "Autor", "Aasta", "Muuda");
+
+        $data['table'] = $this->table->generate($data['books']);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('view/view_books', $data);
+        $this->load->view('templates/footer');
+    }
 }

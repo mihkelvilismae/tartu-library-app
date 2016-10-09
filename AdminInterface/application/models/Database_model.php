@@ -16,6 +16,11 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_book_by_id($id) {
+        $query = $this->db->get_where('book', array('id'=>$id));
+        return $query->row_array();
+    }
+
     public function get_schools() {
         $query = $this->db->get('school');
         return $query->result_array();
@@ -27,6 +32,11 @@ class Database_model extends CI_Model {
         } else {
             $query = $this->db->get('class');
         }
+        return $query->result_array();
+    }
+
+    public function get_books() {
+        $query = $this->db->get('book');
         return $query->result_array();
     }
 
@@ -53,6 +63,18 @@ class Database_model extends CI_Model {
         return $this->db->insert('class', $data);
     }
 
+    public function add_book() {
+        $this->load->helper('url');
+
+        $data = array(
+            'title' => $this->input->post('title'),
+            'author' => $this->input->post('author'),
+            'year' => $this->input->post('year')
+        );
+
+        return $this->db->insert('book', $data);
+    }
+
     public function edit_school($id) {
         $this->load->helper('url');
 
@@ -74,5 +96,20 @@ class Database_model extends CI_Model {
         $this->db->where('id', $id);
 
         return $this->db->update('class');
+    }
+
+    public function edit_book($id) {
+        $this->load->helper('url');
+
+        $changes = array(
+            'title' => $this->input->post('title'),
+            'author' => $this->input->post('author'),
+            'year' => $this->input->post('year')
+        );
+
+        $this->db->set($changes);
+        $this->db->where('id', $id);
+
+        return $this->db->update('book');
     }
 }

@@ -67,4 +67,34 @@ class Edit extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
+
+    public function edit_book($id) {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $data['title'] = 'Raamatu muutmine';
+        $book = $this->database_model->get_book_by_id($id);
+        $data['current_title'] = $book['title'];
+        $data['current_author'] = $book['author'];
+        $data['current_year'] = $book['year'];
+        $data['id'] = $id;
+
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('author', 'Author', 'required');
+        $this->form_validation->set_rules('year', 'Year', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('edit/edit_book');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->edit_book($id);
+
+            $data['message'] = 'Raamatu muutmine õnnestus';
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('success', $data);
+            $this->load->view('templates/footer');
+        }
+    }
 }

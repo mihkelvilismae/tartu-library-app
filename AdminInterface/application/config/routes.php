@@ -50,11 +50,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['Koolid'] = 'View/view_schools';
+$route['Raamatud'] = 'View/view_books';
 $route['Klassid/(:num)'] = 'View/view_classes/$1';
 $route['Klassid'] = 'View/view_classes';
 $route['Muuda/Kool/(:num)'] = 'Edit/edit_school/$1';
+$route['Muuda/Raamat/(:num)'] = 'Edit/edit_book/$1';
 $route['Muuda/Klass/(:num)'] = 'Edit/edit_class/$1';
 $route['Lisa/Kool'] = 'Add/add_school';
+$route['Lisa/Raamat'] = 'Add/add_book';
 $route['Lisa/Klass/(:num)'] = 'Add/add_class/$1';
 $route['Lisa/Klass'] = 'Add/add_class';
 $route['default_controller'] = 'welcome';
