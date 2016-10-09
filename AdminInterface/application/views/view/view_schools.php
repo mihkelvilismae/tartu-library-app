@@ -1,3 +1,3 @@
-<h1>Klassid</h1>
+<h1>Koolid</h1>
 
 <?=$table ?>

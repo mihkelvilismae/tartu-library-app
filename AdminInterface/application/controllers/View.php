@@ -18,7 +18,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Name");
+        $this->table->set_heading("Id", "Kooli nimi");
 
         $data['table'] = $this->table->generate($data['schools']);
 
@@ -41,7 +41,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Name", "1");
+        $this->table->set_heading("Id", "Kooli nimi", "Klassi nimi");
 
         $data['table'] = $this->table->generate($data['classes']);
 
