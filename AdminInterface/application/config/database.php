@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'admin',
+	'database' => 'sp-db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -100,4 +100,5 @@ if (ENVIRONMENT==='production') {
 	$db['default']['username'] = $_SERVER['OPENSHIFT_MYSQL_DB_USERNAME'];
 	$db['default']['password'] = $_SERVER['OPENSHIFT_MYSQL_DB_PASSWORD'];
 	$db['default']['hostname'] = $_SERVER['OPENSHIFT_MYSQL_DB_HOST'];
+	$db['default']['database'] = "admin";
 }
