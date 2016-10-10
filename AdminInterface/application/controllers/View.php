@@ -23,7 +23,10 @@ class View extends CI_Controller {
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Kool').'">Lisa uus kool</a> </td></tr></table>'
+            'table_close' => '
+                <tr><td colspan="5"><a href="'.site_url('Lisa/Kool').'">Lisa uus kool</a></td></tr>
+                <tr><td colspan="5"><a href="'.site_url('Kustuta/Kool').'">Kustuta kool</a></td></tr>
+                </table>'
         );
 
         $this->table->set_template($template);
@@ -36,9 +39,9 @@ class View extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function view_classes($id = NULL)
+    public function view_classes($school_id)
     {
-        $data['classes'] = $this->database_model->get_classes($id);
+        $data['classes'] = $this->database_model->get_classes($school_id);
         $data['title'] = 'Klassid';
         $i = 0;
         foreach ($data['classes'] as $class) {
@@ -50,7 +53,9 @@ class View extends CI_Controller {
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="4"><a href="'.site_url('Lisa/Klass/'.$id).'">Lisa uus klass</a> </td></tr></table>'
+            'table_close' => '<tr><td colspan="4"><a href="'.site_url('Lisa/Klass/'.$school_id).'">Lisa uus klass</a> </td></tr>
+                <tr><td colspan="5"><a href="'.site_url('Kustuta/Klass/'.$school_id).'">Kustuta klass</a></td></tr>
+                </table>'
         );
 
         $this->table->set_template($template);
@@ -75,7 +80,9 @@ class View extends CI_Controller {
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr></table>'
+            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr>
+                <tr><td colspan="5"><a href="'.site_url('Kustuta/Raamat').'">Kustuta raamat</a></td></tr>
+                </table>'
         );
 
         $this->table->set_template($template);
@@ -90,7 +97,7 @@ class View extends CI_Controller {
 
     public function view_reading_list($class_id)
     {
-        $data['list'] = $this->database_model->get_reading_list($class_id);
+        $data['list'] = $this->database_model->get_reading_list_from_class($class_id);
         $data['title'] = 'Lugemis Nimekiri';
 
         $i = 0;
@@ -102,7 +109,9 @@ class View extends CI_Controller {
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Nimekiri/'.$class_id).'">Lisa nimekirja raamat</a> </td></tr></table>'
+            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Nimekiri/'.$class_id).'">Lisa nimekirja raamat</a> </td></tr>
+                <tr><td colspan="5"><a href="'.site_url('Kustuta/Nimekiri/'.$class_id).'">Kustuta Nimekirjast</a></td></tr>
+                </table>'
         );
 
         $this->table->set_template($template);

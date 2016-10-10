@@ -21,8 +21,13 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function get_reading_list($class_id) {
+    public function get_reading_list_from_class($class_id) {
         $query = $this->db->get_where('reading_list', array('class_id'=>$class_id));
+        return $query->result_array();
+    }
+
+    public function get_reading_list_from_book($book_id) {
+        $query = $this->db->get_where('reading_list', array('book_id'=>$book_id));
         return $query->result_array();
     }
 
@@ -129,7 +134,11 @@ class Database_model extends CI_Model {
         return $this->db->update('book');
     }
 
-    public function delete_school($id) {
+    public function delete_school($id=NULL) {
+        $this->load->helper('url');
+        if (!$id) {
+            $id = $this->input->post('item_id');
+        }
         $classes = $this->get_classes($id);
         foreach ($classes as $class) {
             $this->delete_class($class['id']);
@@ -139,8 +148,12 @@ class Database_model extends CI_Model {
         return $this->db->delete('school');
     }
 
-    public function delete_class($id) {
-        $reading_list = $this->get_classes($id);
+    public function delete_class($id=NULL) {
+        $this->load->helper('url');
+        if (!$id) {
+            $id = $this->input->post('item_id');
+        }
+        $reading_list = $this->get_reading_list_from_class($id);
         foreach ($reading_list as $e) {
             $this->delete_reading_list($e['id']);
         }
@@ -148,12 +161,24 @@ class Database_model extends CI_Model {
         return $this->db->delete('class');
     }
 
-    public function delete_reading_list($id) {
+    public function delete_reading_list($id=NULL) {
+        $this->load->helper('url');
+        if (!$id) {
+            $id = $this->input->post('item_id');
+        }
         $this->db->where('id', $id);
         return $this->db->delete('reading_list');
     }
 
-    public function delete_book($id) {
+    public function delete_book($id=NULL) {
+        $this->load->helper('url');
+        if (!$id) {
+            $id = $this->input->post('item_id');
+        }
+        $reading_list = $this->get_reading_list_from_book($id);
+        foreach ($reading_list as $e) {
+            $this->delete_reading_list($e['id']);
+        }
         $this->db->where('id', $id);
         return $this->db->delete('book');
     }

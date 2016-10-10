@@ -62,7 +62,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="body">
 
 		<a href="<?=base_url('Koolid')?>">Vaata Koole</a><br />
-		<a href="<?=base_url('Klassid')?>">Vaata kõiki Klasse</a><br />
 		<a href="<?=base_url('Raamatud')?>">Vaata raamatuid</a>
 	</div>
 
