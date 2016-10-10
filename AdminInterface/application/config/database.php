@@ -76,7 +76,7 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root1',
+	'username' => 'root',
 	'password' => '',
 	'database' => 'sp-db',
 	'dbdriver' => 'mysqli',
@@ -94,7 +94,7 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
+die("wtf '".ENVIRONMENT."'");
 if (ENVIRONMENT==='production') {
 	$db['default']['username'] = getenv('OPENSHIFT_MYSQL_DB_USERNAME');
 	$db['default']['password'] = getenv('OPENSHIFT_MYSQL_DB_PASSWORD');
