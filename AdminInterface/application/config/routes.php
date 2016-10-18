@@ -64,8 +64,9 @@ $route['Klassid/(:num)'] = 'View/view_classes/$1';
 $route['Klassid'] = 'View/view_classes';
 
 $route['Muuda/Kool/(:num)'] = 'Edit/edit_school/$1';
-$route['Muuda/Raamat/(:num)'] = 'Edit/edit_book/$1';
 $route['Muuda/Klass/(:num)'] = 'Edit/edit_class/$1';
+$route['Muuda/Nimekiri/(:num)'] = 'Edit/edit_reading_list/$1';
+$route['Muuda/Raamat/(:num)'] = 'Edit/edit_book/$1';
 
 $route['Lisa/Kool'] = 'Add/add_school';
 $route['Lisa/Raamat'] = 'Add/add_book';
