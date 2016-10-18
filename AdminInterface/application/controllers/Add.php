@@ -77,7 +77,7 @@ class Add extends CI_Controller {
             <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Klassid").'\';">'));
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
@@ -163,7 +163,7 @@ class Add extends CI_Controller {
             <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Nimekiri").'\';">'));
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
