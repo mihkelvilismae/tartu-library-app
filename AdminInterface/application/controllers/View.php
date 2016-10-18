@@ -133,7 +133,7 @@ class View extends CI_Controller {
                 array(
                     $class['name'],
                     $school,
-                    $this->database_model->get_book_by_id($row['book_id']),
+                    $this->database_model->get_book_by_id($row['book_id'])['title'],
                     $change_delete
                 )
             );

@@ -90,11 +90,11 @@ class Database_model extends CI_Model {
         return $this->db->insert('book', $data);
     }
 
-    public function add_book_to_reading_list($class_id) {
+    public function add_book_to_reading_list() {
         $this->load->helper('url');
 
         $data = array(
-            'class_id' => $class_id,
+            'class_id' => $this->input->post('class_id'),
             'book_id' => $this->input->post('book_id')
         );
 

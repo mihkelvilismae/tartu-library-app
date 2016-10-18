@@ -113,8 +113,11 @@ class Delete extends CI_Controller {
         }
     }
 
-    public function delete_book_from_list($class_id)
+    public function delete_book_from_list($id)
     {
+        $this->database_model->delete_reading_list($id);
+        redirect(base_url("Nimekiri"));
+        /*
         $this->load->helper('form');
         $this->load->library('form_validation');
 
@@ -143,6 +146,6 @@ class Delete extends CI_Controller {
             $this->load->view('templates/header', $data);
             $this->load->view('success', $data);
             $this->load->view('templates/footer');
-        }
+        }*/
     }
 }
