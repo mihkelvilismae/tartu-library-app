@@ -158,7 +158,7 @@ class Add extends CI_Controller {
         $table_rows = array();
 
         array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
-        array_push($table_rows, array('<label for="book_id">Klass</label>', form_dropdown('book_id', $dropdown_rows_books)));
+        array_push($table_rows, array('<label for="book_id">Raamat</label>', form_dropdown('book_id', $dropdown_rows_books)));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
             <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Nimekiri").'\';">'));
 

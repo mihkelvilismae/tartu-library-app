@@ -148,7 +148,7 @@ class Edit extends CI_Controller {
         for ($i = 0; $i < count($list_rows); $i++) {
             $row = $list_rows[$i];
             if ($row['class_id'] == $class_id) {
-                $books .= '<li>'.$this->database_model->get_book_by_id($row['book_id'])['title'].'&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></li>';
+                $books .= '<li>'.$this->database_model->get_book_by_id($row['book_id'])['title'].' <span class="remove-book"><a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></span></li>';
             }
         }
         $books .= '<a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a><ul/>';
