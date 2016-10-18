@@ -26,6 +26,11 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_from_reading_list($id) {
+        $query = $this->db->get_where('reading_list', array('id'=>$id));
+        return $query->row_array();
+    }
+    
     public function get_reading_list($class_id) {
         $query = $this->db->get_where('reading_list', array('class_id'=>$class_id));
         return $query->result_array();
@@ -190,6 +195,11 @@ class Database_model extends CI_Model {
 
     public function delete_reading_list($class_id) {
         $this->db->where('class_id', $class_id);
+        return $this->db->delete('reading_list');
+    }
+
+    public function delete_from_reading_list($id) {
+        $this->db->where('id', $id);
         return $this->db->delete('reading_list');
     }
 
