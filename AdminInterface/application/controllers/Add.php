@@ -125,7 +125,7 @@ class Add extends CI_Controller {
         }
     }
 
-    public function add_book_to_list()
+    public function add_book_to_list($class_id=NULL)
     {
         $data['title'] = 'Raamatu lisamine';
         $data['form_action'] = "Lisa/Nimekiri";
@@ -157,7 +157,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
-        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes)));
+        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
         array_push($table_rows, array('<label for="book_id">Klass</label>', form_dropdown('book_id', $dropdown_rows_books)));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
             <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Nimekiri").'\';">'));

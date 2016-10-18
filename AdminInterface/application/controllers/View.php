@@ -134,14 +134,14 @@ class View extends CI_Controller {
                     $books[$row['book_id']] = $this->database_model->get_book_by_id($row['book_id'])['title'];
                 }
             }
-            array_unshift($books, 'Kokku: '.count($books));
-            if (count($books) > 1) {
+            if (count($books) > 0) {
+                $books = 'Kokku: '.count($books);
                 array_push(
                     $table_rows,
                     array(
                         $class['name'],
                         $school,
-                        form_dropdown('', $books),
+                        '<a href="Muuda/Nimekiri/'.$class['id'].'">'.$books.'</a>',
                         $change_delete
                     )
                 );
