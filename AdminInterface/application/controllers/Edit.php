@@ -144,17 +144,14 @@ class Edit extends CI_Controller {
 
         $list_rows = $this->database_model->get_list();
 
-        $books = '';
+        $books = '<ul>';
         for ($i = 0; $i < count($list_rows); $i++) {
             $row = $list_rows[$i];
             if ($row['class_id'] == $class_id) {
-                if ($books !== '') {
-                    $books .= '<br />';
-                }
-                $books .= $this->database_model->get_book_by_id($row['book_id'])['title'];
+                $books .= '<li>'.$this->database_model->get_book_by_id($row['book_id'])['title'].'&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></li>';
             }
         }
-        $books .= '<br /><a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a>';
+        $books .= '<a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a><ul/>';
         $this->form_validation->set_rules('class_id', 'Class', 'required');
 
         $table_rows = array();

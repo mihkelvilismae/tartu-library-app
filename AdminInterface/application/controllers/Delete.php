@@ -113,7 +113,15 @@ class Delete extends CI_Controller {
         }
     }
 
-    public function delete_book_from_list($id)
+    public function delete_from_list($id)
+    {
+        $list_item = $this->database_model->get_from_reading_list($id);
+        $class_id = $list_item['class_id'];
+        $this->database_model->delete_from_reading_list($id);
+        redirect(base_url("Muuda/Nimekiri/".$class_id));
+    }
+
+    public function delete_list($id)
     {
         $this->database_model->delete_reading_list($id);
         redirect(base_url("Nimekiri"));

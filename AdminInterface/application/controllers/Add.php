@@ -128,7 +128,7 @@ class Add extends CI_Controller {
     public function add_book_to_list($class_id=NULL)
     {
         $data['title'] = 'Raamatu lisamine';
-        $data['form_action'] = "Lisa/Nimekiri";
+        $data['form_action'] = "Lisa/Nimekiri/".$class_id;
 
         $books = $this->database_model->get_books();
         $schools = $this->database_model->get_schools();
@@ -177,7 +177,11 @@ class Add extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             $this->database_model->add_book_to_reading_list();
-            redirect(base_url('Nimekiri'));
+            if ($class_id) {
+                redirect("Muuda/Nimekiri/".$class_id);
+            } else {
+                redirect(base_url('Nimekiri'));
+            }
             /*
             $data['message'] = 'Raamatu lisamine nimekirja õnnestus';
 
