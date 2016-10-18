@@ -22,7 +22,7 @@ class View extends CI_Controller {
             array_push(
                 $table_rows,
                 array(
-                    '<a href="'.base_url("Klassid/".$school['id']).'">'.$school['name'].'</a>',
+                    $school['name'],
                     $school['phone'],
                     $school['email'],
                     $change_delete
