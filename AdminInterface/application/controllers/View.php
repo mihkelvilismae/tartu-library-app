@@ -109,8 +109,9 @@ class View extends CI_Controller {
 
     public function view_reading_list()
     {
-
+        $this->load->helper('form');
         $data['title'] = 'Nimekirjad';
+        $classes = $this->database_model->get_classes();
 
         $table_rows = array();
         $template = array(
@@ -118,9 +119,35 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Klassi nimi", "Kooli nimi", "Raamatu nimi", '<a href="'.base_url('Lisa/Nimekiri').'\">Lisa</a>');
+        $this->table->set_heading("Klassi nimi", "Kooli nimi", "Raamatud", '<a href="'.base_url('Lisa/Nimekiri').'\">Lisa</a>');
 
         $list_rows = $this->database_model->get_list();
+        for ($i = 0; $i < count($classes); $i++) {
+            $class = $classes[$i];
+            $school = $this->database_model->get_school_name($class['school_id']);
+            $change_delete = '<a href="'.base_url("Muuda/Nimekiri/".$class['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Nimekiri/'.$class["id"]).'">Kustuta</a>';
+
+            $books = array();
+            for ($j = 0; $j < count($list_rows); $j++) {
+                $row = $list_rows[$j];
+                if ($row['class_id'] == $class['id']) {
+                    $books[$row['book_id']] = $this->database_model->get_book_by_id($row['book_id'])['title'];
+                }
+            }
+            array_unshift($books, 'Kokku: '.count($books));
+            if (count($books) > 1) {
+                array_push(
+                    $table_rows,
+                    array(
+                        $class['name'],
+                        $school,
+                        form_dropdown('', $books),
+                        $change_delete
+                    )
+                );
+            }
+        }
+        /*
         for ($i = 0; $i < count($list_rows); $i++) {
             $row = $list_rows[$i];
             $change_delete = '<a href="'.base_url("Muuda/Nimekiri/".$row['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Nimekiri/'.$row["id"]).'">Kustuta</a>';
@@ -137,7 +164,7 @@ class View extends CI_Controller {
                     $change_delete
                 )
             );
-        }
+        }*/
 
         $data['table'] = $this->table->generate($table_rows);
 

@@ -122,16 +122,14 @@ class Edit extends CI_Controller {
         }
     }
 
-    public function edit_reading_list($id) {
-        $data['title'] = 'Raamatu lisamine';
-        $data['form_action'] = 'Muuda/Nimekiri/'.$id;
-        $reading_list_item = $this->database_model->get_reading_list_item($id);
+    public function edit_reading_list($class_id) {
+        $data['title'] = 'Raamatunimekirja muutmine';
+        $data['form_action'] = 'Muuda/Nimekiri/'.$class_id;
+        $reading_list_items = $this->database_model->get_reading_list($class_id);
 
-        $books = $this->database_model->get_books();
         $schools = $this->database_model->get_schools();
 
         $dropdown_rows_classes = array();
-        $dropdown_rows_books = array();
 
         for ($i = 0; $i < count($schools); $i++) {
             $school = $schools[$i];
@@ -144,18 +142,24 @@ class Edit extends CI_Controller {
             $dropdown_rows_classes[$school['name']] = $classes;
         }
 
-        for ($i = 0; $i < count($books); $i++) {
-            $book = $books[$i];
-            $dropdown_rows_books[$book['id']] = $book['title'];
+        $list_rows = $this->database_model->get_list();
+
+        $books = '';
+        for ($i = 0; $i < count($list_rows); $i++) {
+            $row = $list_rows[$i];
+            if ($row['class_id'] == $class_id) {
+                if ($books !== '') {
+                    $books .= '<br />';
+                }
+                $books .= $this->database_model->get_book_by_id($row['book_id'])['title'];
+            }
         }
 
-        $this->form_validation->set_rules('class_id', 'Title', 'required');
-        $this->form_validation->set_rules('book_id', 'Title', 'required');
+        $this->form_validation->set_rules('class_id', 'Class', 'required');
 
         $table_rows = array();
-
-        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $reading_list_item['class_id'])));
-        array_push($table_rows, array('<label for="book_id">Klass</label>', form_dropdown('book_id', $dropdown_rows_books, $reading_list_item['book_id'])));
+        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
+        array_push($table_rows, array('<label for="book_id">Raamatud</label>', $books));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />
             <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Nimekiri").'\';">'));
 
@@ -173,7 +177,7 @@ class Edit extends CI_Controller {
             $this->load->view('view/view_form', $data);
             $this->load->view('templates/footer');
         } else {
-            $this->database_model->edit_reading_list($id);
+            $this->database_model->edit_reading_list($class_id);
             redirect(base_url('Nimekiri'));
         }
     }
