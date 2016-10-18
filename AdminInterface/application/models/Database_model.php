@@ -149,16 +149,15 @@ class Database_model extends CI_Model {
         return $this->db->update('book');
     }
 
-    public function edit_reading_list($id) {
+    public function edit_reading_list($class_id) {
         $this->load->helper('url');
 
         $changes = array(
-            'class_id' => $this->input->post('class_id'),
-            'book_id' => $this->input->post('book_id')
+            'class_id' => $this->input->post('class_id')
         );
 
         $this->db->set($changes);
-        $this->db->where('id', $id);
+        $this->db->where('class_id', $class_id);
 
         return $this->db->update('reading_list');
     }
