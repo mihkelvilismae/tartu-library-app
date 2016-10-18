@@ -7,4 +7,5 @@
     </head>
     <body>
         <h1><?= $title?></h1>
-        <div class="container">
+        <div class="container outer">
+            <div class="container inner">

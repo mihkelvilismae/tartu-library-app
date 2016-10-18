@@ -154,7 +154,7 @@ class Edit extends CI_Controller {
                 $books .= $this->database_model->get_book_by_id($row['book_id'])['title'];
             }
         }
-
+        $books .= '<br /><a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a>';
         $this->form_validation->set_rules('class_id', 'Class', 'required');
 
         $table_rows = array();
