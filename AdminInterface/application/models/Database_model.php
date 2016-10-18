@@ -26,9 +26,9 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function get_reading_list_item($id) {
-        $query = $this->db->get_where('reading_list', array('id'=>$id));
-        return $query->row_array();
+    public function get_reading_list($class_id) {
+        $query = $this->db->get_where('reading_list', array('class_id'=>$class_id));
+        return $query->result_array();
     }
 
     public function get_list() {
@@ -149,16 +149,15 @@ class Database_model extends CI_Model {
         return $this->db->update('book');
     }
 
-    public function edit_reading_list($id) {
+    public function edit_reading_list($class_id) {
         $this->load->helper('url');
 
         $changes = array(
-            'class_id' => $this->input->post('class_id'),
-            'book_id' => $this->input->post('book_id')
+            'class_id' => $this->input->post('class_id')
         );
 
         $this->db->set($changes);
-        $this->db->where('id', $id);
+        $this->db->where('class_id', $class_id);
 
         return $this->db->update('reading_list');
     }
@@ -182,20 +181,15 @@ class Database_model extends CI_Model {
         if (!$id) {
             $id = $this->input->post('item_id');
         }
-        $reading_list = $this->get_reading_list_from_class($id);
-        foreach ($reading_list as $e) {
-            $this->delete_reading_list($e['id']);
-        }
+
+        $this->delete_reading_list($id);
+
         $this->db->where('id', $id);
         return $this->db->delete('class');
     }
 
-    public function delete_reading_list($id=NULL) {
-        $this->load->helper('url');
-        if (!$id) {
-            $id = $this->input->post('item_id');
-        }
-        $this->db->where('id', $id);
+    public function delete_reading_list($class_id) {
+        $this->db->where('class_id', $class_id);
         return $this->db->delete('reading_list');
     }
 
