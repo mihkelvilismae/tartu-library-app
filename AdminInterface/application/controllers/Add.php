@@ -28,7 +28,7 @@ class Add extends CI_Controller {
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" /> <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Koolid").'\';">'));
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);

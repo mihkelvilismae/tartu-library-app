@@ -31,7 +31,7 @@ class View extends CI_Controller {
         }
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
