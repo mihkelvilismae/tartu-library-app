@@ -5,10 +5,10 @@ class Add extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('database_model');
-        $this->load->library('table');
         $this->load->helper('url_helper');
         $this->load->helper('form');
         $this->load->library('form_validation');
+        $this->load->library('table');
     }
 
     public function add_school()
@@ -54,7 +54,6 @@ class Add extends CI_Controller {
 
     public function add_class()
     {
-
         $data['title'] = 'Klassi lisamine';
         $data['form_action'] = base_url('Lisa/Klass');
 
@@ -72,7 +71,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
-        array_push($table_rows, array('<label for="phone">Kool</label>', form_dropdown('school_id', $dropdown_rows)));
+        array_push($table_rows, array('<label for="school_id">Kool</label>', form_dropdown('school_id', $dropdown_rows)));
         array_push($table_rows, array('<label for="name">Klassi nimi</label>', '<input type="input" name="name" />'));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
             <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Klassid").'\';">'));
