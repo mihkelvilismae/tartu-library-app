@@ -1,3 +1,3 @@
-        <br /><a href="<?=site_url()?>">Pealehele</a>
+        </div>
     </body>
 </html>

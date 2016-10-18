@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 
-$route['Kustuta/Kool'] = 'Delete/delete_school';
+$route['Kustuta/Kool/(:num)'] = 'Delete/delete_school/$1';
 $route['Kustuta/Klass/(:num)'] = 'Delete/delete_class/$1';
 $route['Kustuta/Raamat'] = 'Delete/delete_book';
 $route['Kustuta/Nimekiri/(:num)'] = 'Delete/delete_book_from_list/$1';
@@ -59,6 +59,7 @@ $route['Kustuta/Nimekiri/(:num)'] = 'Delete/delete_book_from_list/$1';
 $route['Koolid'] = 'View/view_schools';
 $route['Raamatud'] = 'View/view_books';
 $route['Nimekiri/(:num)'] = 'View/view_reading_list/$1';
+$route['Nimekiri'] = 'View/view_reading_list';
 $route['Klassid/(:num)'] = 'View/view_classes/$1';
 $route['Klassid'] = 'View/view_classes';
 
@@ -69,6 +70,7 @@ $route['Muuda/Klass/(:num)'] = 'Edit/edit_class/$1';
 $route['Lisa/Kool'] = 'Add/add_school';
 $route['Lisa/Raamat'] = 'Add/add_book';
 $route['Lisa/Nimekiri/(:num)'] = 'Add/add_book_to_list/$1';
+$route['Lisa/Nimekiri'] = 'Add/add_book_to_list';
 $route['Lisa/Klass/(:num)'] = 'Add/add_class/$1';
 $route['Lisa/Klass'] = 'Add/add_class';
 

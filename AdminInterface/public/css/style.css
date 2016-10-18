@@ -1,0 +1,30 @@
+div.container {
+    width: 98%;
+}
+
+div.container {
+    padding:20px;
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 2px solid gray;
+}
+
+th, td {
+    padding: 5px;
+}
+
+span {
+    padding: 5px;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+}

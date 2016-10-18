@@ -11,60 +11,72 @@ class View extends CI_Controller {
 
     public function view_schools()
     {
-        $data['schools'] = $this->database_model->get_schools();
+        $schools = $this->database_model->get_schools();
         $data['title'] = 'Koolid';
+        $table_rows = array();
 
-        $i = 0;
-        foreach ($data['schools'] as $school) {
-            $data['schools'][$i]['edit'] = '<a href="'.site_url("Muuda/Kool/".$school['id']).'">Muuda</a>';
-            $data['schools'][$i]['name'] = '<a href="'.site_url("Klassid/".$school['id']).'">'.$school['name'].'</a>';
-            $i++;
+        for ($i = 0; $i < count($schools); $i++) {
+            $school = $schools[$i];
+            $change_delete = '<a href="'.base_url("Muuda/Kool/".$school['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Kool/'.$school["id"]).'">Kustuta</a>';
+
+            array_push(
+                $table_rows,
+                array(
+                    $school['name'],
+                    $school['phone'],
+                    $school['email'],
+                    $change_delete
+                )
+            );
         }
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '
-                <tr><td colspan="5"><a href="'.site_url('Lisa/Kool').'">Lisa uus kool</a></td></tr>
-                <tr><td colspan="5"><a href="'.site_url('Kustuta/Kool').'">Kustuta kool</a></td></tr>
-                </table>'
+            'table_open' => '<table border="1" cellpadding="4">'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Kooli nimi", "Telefon", "E-Mail", "Muuda");
+        $this->table->set_heading("Kooli nimi","Telefon","E-Mail",'<a href="'.base_url('Lisa/Kool').'\">Lisa</a>');
 
-        $data['table'] = $this->table->generate($data['schools']);
+        $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('view/view_schools', $data);
+        $this->load->view('templates/sidebar');
+        $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
 
-    public function view_classes($school_id)
+    public function view_classes()
     {
-        $data['classes'] = $this->database_model->get_classes($school_id);
         $data['title'] = 'Klassid';
-        $i = 0;
-        foreach ($data['classes'] as $class) {
-            $data['classes'][$i]['name'] = '<a href="'.site_url("Nimekiri/".$class['id']).'">'.$class['name'].'</a>';
-            $data['classes'][$i]['school_id'] = $this->database_model->get_school_name($class['school_id']);
-            $data['classes'][$i]['edit'] = '<a href="'.site_url("Muuda/Klass/".$class['id']).'">Muuda</a>';
-            $i++;
-        }
 
+        $table_rows = array();
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="4"><a href="'.site_url('Lisa/Klass/'.$school_id).'">Lisa uus klass</a> </td></tr>
-                <tr><td colspan="5"><a href="'.site_url('Kustuta/Klass/'.$school_id).'">Kustuta klass</a></td></tr>
-                </table>'
+            'table_open' => '<table border="1" cellpadding="4">'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Kooli nimi", "Klassi nimi", "Muuda");
+        $this->table->set_heading("Klassi nimi", "Kooli nimi",'<a href="'.base_url('Lisa/Klass').'\">Lisa</a>');
 
-        $data['table'] = $this->table->generate($data['classes']);
+        $classes = $this->database_model->get_classes();
+        for ($i = 0; $i < count($classes); $i++) {
+            $class = $classes[$i];
+            $change_delete = '<a href="'.base_url("Muuda/Klass/".$class['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Klass/'.$class["id"]).'">Kustuta</a>';
+
+            array_push(
+                $table_rows,
+                array(
+                    $class['name'],
+                    $this->database_model->get_school_name($class['school_id']),
+                    $change_delete
+                )
+            );
+        }
+
+        $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('view/view_classes', $data);
+        $this->load->view('templates/sidebar');
+        $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
 
@@ -74,14 +86,14 @@ class View extends CI_Controller {
         $data['title'] = 'Raamatud';
         $i = 0;
         foreach ($data['books'] as $book) {
-            $data['books'][$i]['edit'] = '<a href="'.site_url("Muuda/Raamat/".$book['id']).'">Muuda</a>';
+            $data['books'][$i]['edit'] = '<a href="'.base_url("Muuda/Raamat/".$book['id']).'">Muuda</a>';
             $i++;
         }
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr>
-                <tr><td colspan="5"><a href="'.site_url('Kustuta/Raamat').'">Kustuta raamat</a></td></tr>
+            'table_close' => '<tr><td colspan="5"><a href="'.base_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr>
+                <tr><td colspan="5"><a href="'.base_url('Kustuta/Raamat').'">Kustuta raamat</a></td></tr>
                 </table>'
         );
 
@@ -95,32 +107,44 @@ class View extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function view_reading_list($class_id)
+    public function view_reading_list()
     {
-        $data['list'] = $this->database_model->get_reading_list_from_class($class_id);
-        $data['title'] = 'Lugemis Nimekiri';
 
-        $i = 0;
-        foreach ($data['list'] as $book) {
-            $data['list'][$i]['class_id'] = $this->database_model->get_class_by_id($class_id)['name'];
-            $data['list'][$i]['book_id'] = $this->database_model->get_book_by_id($book['book_id'])['title'];
-            $i++;
-        }
+        $data['title'] = 'Nimekirjad';
 
+        $table_rows = array();
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">',
-            'table_close' => '<tr><td colspan="5"><a href="'.site_url('Lisa/Nimekiri/'.$class_id).'">Lisa nimekirja raamat</a> </td></tr>
-                <tr><td colspan="5"><a href="'.site_url('Kustuta/Nimekiri/'.$class_id).'">Kustuta Nimekirjast</a></td></tr>
-                </table>'
+            'table_open' => '<table border="1" cellpadding="4">'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Klass", "Raamatu Nimi");
+        $this->table->set_heading("Klassi nimi", "Kooli nimi", "Raamatu nimi", '<a href="'.base_url('Lisa/Nimekiri').'\">Lisa</a>');
 
-        $data['table'] = $this->table->generate($data['list']);
+        $list_rows = $this->database_model->get_list();
+        for ($i = 0; $i < count($list_rows); $i++) {
+            $row = $list_rows[$i];
+            $change_delete = '<a href="'.base_url("Muuda/Nimekiri/".$row['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Nimekiri/'.$row["id"]).'">Kustuta</a>';
+
+            $class = $this->database_model->get_class_by_id($row['class_id']);
+            $school = $this->database_model->get_school_name($class['school_id']);
+
+            array_push(
+                $table_rows,
+                array(
+                    $class['name'],
+                    $school,
+                    $this->database_model->get_book_by_id($row['book_id'])['title'],
+                    $change_delete
+                )
+            );
+        }
+
+        $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('view/reading_list', $data);
+        $this->load->view('templates/sidebar');
+        $this->load->view('view/view_table');
         $this->load->view('templates/footer');
+
     }
 }
