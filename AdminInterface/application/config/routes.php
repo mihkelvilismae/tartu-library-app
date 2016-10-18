@@ -54,7 +54,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['Kustuta/Kool/(:num)'] = 'Delete/delete_school/$1';
 $route['Kustuta/Klass/(:num)'] = 'Delete/delete_class/$1';
 $route['Kustuta/Raamat'] = 'Delete/delete_book';
-$route['Kustuta/Nimekiri/(:num)'] = 'Delete/delete_book_from_list/$1';
+$route['Kustuta/Nimekiri/(:num)'] = 'Delete/delete_list/$1';
+$route['Kustuta/Nimekirjast/(:num)'] = 'Delete/delete_from_list/$1';
 
 $route['Koolid'] = 'View/view_schools';
 $route['Raamatud'] = 'View/view_books';
