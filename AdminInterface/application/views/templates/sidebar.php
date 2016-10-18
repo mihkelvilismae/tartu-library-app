@@ -2,9 +2,6 @@
             <span>
                 <table>
                     <tr>
-                        <td>Kasutajad</td>
-                    </tr>
-                    <tr>
                         <td><a href="<?=base_url("Koolid")?>">Koolid</a></td>
                     </tr>
                     <tr>
