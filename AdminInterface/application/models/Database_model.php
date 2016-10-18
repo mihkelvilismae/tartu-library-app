@@ -21,6 +21,11 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_list() {
+        $query = $this->db->get('reading_list');
+        return $query->result_array();
+    }
+
     public function get_reading_list_from_class($class_id) {
         $query = $this->db->get_where('reading_list', array('class_id'=>$class_id));
         return $query->result_array();
@@ -36,7 +41,7 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_classes($id) {
+    public function get_classes($id=NULL) {
         if ($id) {
             $query = $this->db->get_where('class', array('school_id'=>$id));
         } else {

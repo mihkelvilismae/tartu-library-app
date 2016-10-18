@@ -8,8 +8,11 @@ class Delete extends CI_Controller {
         $this->load->helper('url_helper');
     }
 
-    public function delete_school()
+    public function delete_school($school_id)
     {
+        $this->database_model->delete_school($school_id);
+        redirect(base_url("Koolid"));
+        /*
         $this->load->helper('form');
         $this->load->library('form_validation');
 
@@ -38,11 +41,14 @@ class Delete extends CI_Controller {
             $this->load->view('templates/header', $data);
             $this->load->view('success', $data);
             $this->load->view('templates/footer');
-        }
+        }*/
     }
 
-    public function delete_class($school_id)
+    public function delete_class($class_id)
     {
+        $this->database_model->delete_class($class_id);
+        redirect(base_url("Klassid"));
+        /*
         $this->load->helper('form');
         $this->load->library('form_validation');
 
@@ -71,7 +77,7 @@ class Delete extends CI_Controller {
             $this->load->view('templates/header', $data);
             $this->load->view('success', $data);
             $this->load->view('templates/footer');
-        }
+        }*/
     }
 
     public function delete_book()
