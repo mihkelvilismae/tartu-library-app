@@ -124,8 +124,7 @@ class Edit extends CI_Controller {
 
     public function edit_reading_list($id) {
         $data['title'] = 'Raamatu lisamine';
-        $data['form_action'] = 'Muuda/Nimekiri/'.$id;
-        $reading_list_item = $this->database_model->get_reading_list_item($id);
+        $data['form_action'] = 'Lisa/Nimekiri/'.$id;
 
         $books = $this->database_model->get_books();
         $schools = $this->database_model->get_schools();
@@ -154,9 +153,9 @@ class Edit extends CI_Controller {
 
         $table_rows = array();
 
-        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $reading_list_item['class_id'])));
-        array_push($table_rows, array('<label for="book_id">Klass</label>', form_dropdown('book_id', $dropdown_rows_books, $reading_list_item['book_id'])));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />
+        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes)));
+        array_push($table_rows, array('<label for="book_id">Klass</label>', form_dropdown('book_id', $dropdown_rows_books)));
+        array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
             <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Nimekiri").'\';">'));
 
         $template = array(
