@@ -65,7 +65,7 @@ If you like this solution, you might also want to check out the 1.0 version:
 */
 .responstable {
     margin: 1em 0;
-    width: 100%;
+    /*width: 100%;*/
     overflow: hidden;
     background: #FFF;
     color: #024457;
