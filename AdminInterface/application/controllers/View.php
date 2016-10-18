@@ -145,6 +145,5 @@ class View extends CI_Controller {
         $this->load->view('templates/sidebar');
         $this->load->view('view/view_table');
         $this->load->view('templates/footer');
-
     }
 }
