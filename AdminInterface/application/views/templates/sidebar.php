@@ -1,6 +1,6 @@
 <div id="sidebar">
     <span>
-        <table class="responstable">
+        <table class="responstable sidebar-table">
             <tr>
                 <td>Kasutajad</td>
             </tr>

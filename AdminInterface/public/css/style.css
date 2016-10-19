@@ -147,3 +147,7 @@ h1 {
 h1 span {
     color: #167F92;
 }
+
+.responstable:not(.sidebar-table) {
+    width: 75%;
+}
