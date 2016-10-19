@@ -11,6 +11,10 @@ class View extends CI_Controller {
 
     public function view_schools()
     {
+        $data['active'] = 'Koolid';
+        $data['class1'] = 'class="active-tab"';
+        $data['class2'] = '';
+        $data['class3'] = '';
         $schools = $this->database_model->get_schools();
         $data['title'] = 'Koolid';
         $table_rows = array();
@@ -40,13 +44,14 @@ class View extends CI_Controller {
         $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        $this->load->view('templates/sidebar', $data);
         $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
 
     public function view_classes()
     {
+        $data['active'] = 'Klassid';
         $data['title'] = 'Klassid';
 
         $table_rows = array();
@@ -75,7 +80,7 @@ class View extends CI_Controller {
         $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        $this->load->view('templates/sidebar', $data);
         $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
@@ -109,6 +114,7 @@ class View extends CI_Controller {
 
     public function view_reading_list()
     {
+        $data['active'] = 'Nimekiri';
         $this->load->helper('form');
         $data['title'] = 'Nimekirjad';
         $classes = $this->database_model->get_classes();
@@ -169,7 +175,7 @@ class View extends CI_Controller {
         $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar');
+        $this->load->view('templates/sidebar', $data);
         $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
