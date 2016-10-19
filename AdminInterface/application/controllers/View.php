@@ -31,7 +31,7 @@ class View extends CI_Controller {
         }
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
@@ -51,7 +51,7 @@ class View extends CI_Controller {
 
         $table_rows = array();
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
@@ -91,7 +91,7 @@ class View extends CI_Controller {
         }
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">',
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">',
             'table_close' => '<tr><td colspan="5"><a href="'.base_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr>
                 <tr><td colspan="5"><a href="'.base_url('Kustuta/Raamat').'">Kustuta raamat</a></td></tr>
                 </table>'
@@ -115,7 +115,7 @@ class View extends CI_Controller {
 
         $table_rows = array();
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4">'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
