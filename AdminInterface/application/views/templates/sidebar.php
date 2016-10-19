@@ -1,9 +1,9 @@
 <div id="sidebar">
     <span>
         <table class="responstable sidebar-table">
-            <tr>
-                <td>Kasutajad</td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>Kasutajad</td>-->
+<!--            </tr>-->
             <tr>
                 <td><a href="<?=base_url("Koolid")?>">Koolid</a></td>
             </tr>
