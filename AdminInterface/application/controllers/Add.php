@@ -22,6 +22,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="name">Nimi</label>', '<input type="input" name="name" />'));
         array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="phone" />'));
         array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" />'));
@@ -71,6 +72,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="school_id">Kool</label>', form_dropdown('school_id', $dropdown_rows)));
         array_push($table_rows, array('<label for="name">Klassi nimi</label>', '<input type="input" name="name" />'));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
@@ -157,6 +159,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
         array_push($table_rows, array('<label for="book_id">Raamat</label>', form_dropdown('book_id', $dropdown_rows_books)));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />

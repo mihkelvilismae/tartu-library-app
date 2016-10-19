@@ -22,6 +22,7 @@ class Edit extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="name">Nimi</label>', '<input type="input" name="name" value="'.$school['name'].'" />'));
         array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="phone" value="'.$school['phone'].'" />'));
         array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" value="'.$school['email'].'" />'));
@@ -71,6 +72,7 @@ class Edit extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="school_id">Kool</label>', form_dropdown('school_id', $dropdown_rows, $class['school_id'])));
         array_push($table_rows, array('<label for="name">Klassi nimi</label>', '<input type="input" name="name" value="'.$class['name'].'" />'));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />
@@ -155,6 +157,7 @@ class Edit extends CI_Controller {
         $this->form_validation->set_rules('class_id', 'Class', 'required');
 
         $table_rows = array();
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
         array_push($table_rows, array('<label for="book_id">Raamatud</label>', $books));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />
