@@ -2,7 +2,7 @@
     <span>
         <table class="responstable">
             <tr>
-                <td>Kasutajad</td>
+                <td>-Kasutajad</td>
             </tr>
             <tr>
                 <td><a href="<?=base_url("Koolid")?>">Koolid</a></td>
