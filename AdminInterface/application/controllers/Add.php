@@ -13,6 +13,7 @@ class Add extends CI_Controller {
 
     public function add_school()
     {
+        $data['active'] = 'Koolid';
         $data['title'] = 'Kooli lisamine';
         $data['form_action'] = base_url('Lisa/Kool');
 
@@ -38,7 +39,7 @@ class Add extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $data);
             $this->load->view('view/view_form');
             $this->load->view('templates/footer');
         } else {
@@ -55,6 +56,7 @@ class Add extends CI_Controller {
 
     public function add_class()
     {
+        $data['active'] = 'Klassid';
         $data['title'] = 'Klassi lisamine';
         $data['form_action'] = base_url('Lisa/Klass');
 
@@ -88,7 +90,7 @@ class Add extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $data);
             $this->load->view('view/view_form');
             $this->load->view('templates/footer');
         } else {
@@ -129,6 +131,7 @@ class Add extends CI_Controller {
 
     public function add_book_to_list($class_id=NULL)
     {
+        $data['active'] = 'Nimekiri';
         $data['title'] = 'Raamatu lisamine';
         $data['form_action'] = "Lisa/Nimekiri/".$class_id;
 
