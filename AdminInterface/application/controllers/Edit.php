@@ -153,6 +153,7 @@ class Edit extends CI_Controller {
                 $books .= '<li>'.$this->database_model->get_book_by_id($row['book_id'])['title'].' <span class="remove-book"><a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></span></li>';
             }
         }
+        $books .= '</ul>';
         $this->form_validation->set_rules('class_id', 'Class', 'required');
 
         $table_rows = array();
