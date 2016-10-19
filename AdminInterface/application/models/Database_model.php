@@ -119,7 +119,13 @@ class Database_model extends CI_Model {
     public function edit_school($id) {
         $this->load->helper('url');
 
-        $this->db->set('name', $this->input->post('name'));
+        $changes = array(
+            'name' => $this->input->post('name'),
+            'phone' => $this->input->post('phone'),
+            'email' => $this->input->post('email')
+        );
+
+        $this->db->set($changes);
         $this->db->where('id', $id);
 
         return $this->db->update('school');
