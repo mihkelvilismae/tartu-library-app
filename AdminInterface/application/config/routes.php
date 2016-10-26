@@ -76,6 +76,10 @@ $route['Lisa/Nimekiri'] = 'Add/add_book_to_list';
 $route['Lisa/Klass/(:num)'] = 'Add/add_class/$1';
 $route['Lisa/Klass'] = 'Add/add_class';
 
+$route['json/Koolid'] = 'JSON/schools';
+$route['json/Klassid/(:num)'] = 'JSON/classes/$1';
+$route['json/Nimekiri/(:num)'] = 'JSON/lists/$1';
+
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

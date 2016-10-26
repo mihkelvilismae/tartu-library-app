@@ -22,6 +22,7 @@ class Welcome extends CI_Controller {
 	{
 		$this->load->helper('url');
 		$data['title'] = "";
+		$data['active'] = "";
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar', $data);
 		$this->load->view('templates/footer');
