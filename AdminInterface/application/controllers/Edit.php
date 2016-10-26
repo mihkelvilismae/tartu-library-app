@@ -12,6 +12,7 @@ class Edit extends CI_Controller {
     }
 
     public function edit_school($school_id) {
+        $data['active'] = 'Koolid';
         $data['title'] = 'Kooli muutmine';
         $data['form_action'] = 'Muuda/Kool/'.$school_id;
         $school = $this->database_model->get_school($school_id);
@@ -22,6 +23,7 @@ class Edit extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="name">Nimi</label>', '<input type="input" name="name" value="'.$school['name'].'" />'));
         array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="phone" value="'.$school['phone'].'" />'));
         array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" value="'.$school['email'].'" />'));
@@ -37,7 +39,7 @@ class Edit extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $data);
             $this->load->view('view/view_form', $data);
             $this->load->view('templates/footer');
         } else {
@@ -53,6 +55,7 @@ class Edit extends CI_Controller {
     }
 
     public function edit_class($class_id) {
+        $data['active'] = 'Klassid';
         $data['title'] = 'Klassi muutmine';
         $data['form_action'] = base_url('Muuda/Klass/'.$class_id);
         $class = $this->database_model->get_class_by_id($class_id);
@@ -71,6 +74,7 @@ class Edit extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="school_id">Kool</label>', form_dropdown('school_id', $dropdown_rows, $class['school_id'])));
         array_push($table_rows, array('<label for="name">Klassi nimi</label>', '<input type="input" name="name" value="'.$class['name'].'" />'));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />
@@ -86,7 +90,7 @@ class Edit extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $data);
             $this->load->view('view/view_form', $data);
             $this->load->view('templates/footer');
         } else {
@@ -123,6 +127,7 @@ class Edit extends CI_Controller {
     }
 
     public function edit_reading_list($class_id) {
+        $data['active'] = 'Nimekiri';
         $data['title'] = 'Raamatunimekirja muutmine';
         $data['form_action'] = 'Muuda/Nimekiri/'.$class_id;
         $reading_list_items = $this->database_model->get_reading_list($class_id);
@@ -151,10 +156,11 @@ class Edit extends CI_Controller {
                 $books .= '<li>'.$this->database_model->get_book_by_id($row['book_id'])['title'].' <span class="remove-book"><a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></span></li>';
             }
         }
-        $books .= '<a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a><ul/>';
+        $books .= '</ul>';
         $this->form_validation->set_rules('class_id', 'Class', 'required');
 
         $table_rows = array();
+        array_push($table_rows, array('', '<a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a>'));
         array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
         array_push($table_rows, array('<label for="book_id">Raamatud</label>', $books));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />

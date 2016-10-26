@@ -13,6 +13,7 @@ class Add extends CI_Controller {
 
     public function add_school()
     {
+        $data['active'] = 'Koolid';
         $data['title'] = 'Kooli lisamine';
         $data['form_action'] = base_url('Lisa/Kool');
 
@@ -22,6 +23,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="name">Nimi</label>', '<input type="input" name="name" />'));
         array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="phone" />'));
         array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" />'));
@@ -37,7 +39,7 @@ class Add extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $data);
             $this->load->view('view/view_form');
             $this->load->view('templates/footer');
         } else {
@@ -54,6 +56,7 @@ class Add extends CI_Controller {
 
     public function add_class()
     {
+        $data['active'] = 'Klassid';
         $data['title'] = 'Klassi lisamine';
         $data['form_action'] = base_url('Lisa/Klass');
 
@@ -71,6 +74,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="school_id">Kool</label>', form_dropdown('school_id', $dropdown_rows)));
         array_push($table_rows, array('<label for="name">Klassi nimi</label>', '<input type="input" name="name" />'));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
@@ -86,7 +90,7 @@ class Add extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $data);
             $this->load->view('view/view_form');
             $this->load->view('templates/footer');
         } else {
@@ -127,6 +131,7 @@ class Add extends CI_Controller {
 
     public function add_book_to_list($class_id=NULL)
     {
+        $data['active'] = 'Nimekiri';
         $data['title'] = 'Raamatu lisamine';
         $data['form_action'] = "Lisa/Nimekiri/".$class_id;
 
@@ -157,6 +162,7 @@ class Add extends CI_Controller {
 
         $table_rows = array();
 
+        array_push($table_rows, array('', ''));
         array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
         array_push($table_rows, array('<label for="book_id">Raamat</label>', form_dropdown('book_id', $dropdown_rows_books)));
         array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
