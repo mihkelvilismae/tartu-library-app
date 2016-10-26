@@ -44,7 +44,6 @@ public class SchoolsListActivity extends Activity {
 
             List<String> list = new ArrayList<String>(databaseLayer.getSchools().values());
 
-    
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
               android.R.layout.simple_list_item_1, android.R.id.text1, list);
     
@@ -60,15 +59,15 @@ public class SchoolsListActivity extends Activity {
                     
                    // ListView Clicked item index
                    int itemPosition     = position;
-                   
                    // ListView Clicked item value
                    String  itemValue    = (String) listView.getItemAtPosition(position);
-                      
-                    // Show Alert 
+
+                    // Show Alert
                     Toast.makeText(getApplicationContext(),
                       "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
                       .show();
 
+                    new JsonTask(SchoolsListActivity.this).execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Koolid");
                     Intent calendarStartIntent = new Intent(getApplication(), ClassesListActivity.class);
                     startActivity(calendarStartIntent);
                   }
