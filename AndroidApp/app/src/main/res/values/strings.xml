@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="startReadingList">Kohustuslik kirjandus</string>
+    <string name="startRecommendation">Raamatusoovitus</string>
 </resources>
