@@ -9,6 +9,6 @@ import java.util.Map;
 public interface DatabaseLayer {
 
     public Map<Integer, String> getSchools();
-    public Map<Integer, String> getClasses();
-    public Map<Integer, String> getReadingList();
+    public Map<Integer, String> getClasses(Integer schoolId);
+    public Map<Integer, String> getReadingList(Integer classId);
 }

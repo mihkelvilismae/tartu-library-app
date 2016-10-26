@@ -20,12 +20,27 @@ public class DatabaseLayerImpl implements DatabaseLayer {
     }
 
     @Override
-    public Map<Integer, String> getClasses() {
-        return null;
+    public Map<Integer, String> getClasses(Integer schoolId) {
+        HashMap<Integer, String> classesById = new HashMap<>();
+        classesById.put(1, "5B");
+        classesById.put(2, "3G");
+        classesById.put(3, "4G");
+        classesById.put(4, "11C");
+        classesById.put(5, "15B");
+
+        return classesById;
     }
 
     @Override
-    public Map<Integer, String> getReadingList() {
-        return null;
+    public Map<Integer, String> getReadingList(Integer classId) {
+        HashMap<Integer, String> classesById = new HashMap<>();
+        classesById.put(1, "Pasapeetri aabits");
+        classesById.put(2, "Berti päevikud");
+        classesById.put(3, "Armastus hobuse vastu");
+        classesById.put(4, "Tõde ja õigus");
+        classesById.put(5, "Vale ja õiglusetus");
+
+        return classesById;
     }
+
 }

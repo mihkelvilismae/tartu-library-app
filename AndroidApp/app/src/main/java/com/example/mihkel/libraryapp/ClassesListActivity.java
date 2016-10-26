@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchoolsListActivity extends Activity {
+public class ClassesListActivity extends Activity {
         ListView listView ;
         
         @Override
@@ -42,7 +42,7 @@ public class SchoolsListActivity extends Activity {
             // Third parameter - ID of the TextView to which the data is written
             // Forth - the Array of data
 
-            List<String> list = new ArrayList<String>(databaseLayer.getSchools().values());
+            List<String> list = new ArrayList<String>(databaseLayer.getClasses(1).values());
 
     
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -56,7 +56,8 @@ public class SchoolsListActivity extends Activity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
  
                   @Override
-                  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                  public void onItemClick(AdapterView<?> parent, View view,
+                     int position, long id) {
                     
                    // ListView Clicked item index
                    int itemPosition     = position;
@@ -68,12 +69,23 @@ public class SchoolsListActivity extends Activity {
                     Toast.makeText(getApplicationContext(),
                       "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
                       .show();
-
-                    Intent calendarStartIntent = new Intent(getApplication(), ClassesListActivity.class);
+                    Intent calendarStartIntent = new Intent(getApplication(), BooksListActivity.class);
                     startActivity(calendarStartIntent);
+//        }
+                 
                   }
     
              }); 
         }
+
+//        public void onClick(View v) {
+//            toast("start");
+//            Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
+//            startActivity(calendarStartIntent);
+//        }
+//
+//         public void toast(String text) {
+//            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+//        }
     
     }
