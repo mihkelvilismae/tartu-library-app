@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,14 +15,22 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
-class JsonTask extends AsyncTask<String, String, String> {
+class JsonTask extends AsyncTask<String, String, String>  {
 
-    ProgressDialog pd;
+    CallBackListener mListener;
     Context context;
+    ProgressDialog pd;
+
 
     public JsonTask(Context context) {
         this.context = context;
+    }
+
+    public JsonTask setListener(CallBackListener listener){
+        mListener = listener;
+        return this;
     }
 
     protected void onPreExecute() {
@@ -33,7 +44,6 @@ class JsonTask extends AsyncTask<String, String, String> {
 
     protected String doInBackground(String... params) {
 
-
         HttpURLConnection connection = null;
         BufferedReader reader = null;
 
@@ -41,8 +51,6 @@ class JsonTask extends AsyncTask<String, String, String> {
             URL url = new URL(params[0]);
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
-
-
             InputStream stream = connection.getInputStream();
 
             reader = new BufferedReader(new InputStreamReader(stream));
@@ -53,12 +61,9 @@ class JsonTask extends AsyncTask<String, String, String> {
             while ((line = reader.readLine()) != null) {
                 buffer.append(line + "\n");
                 Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
+                setResult(line);
             }
-
             return buffer.toString();
-
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -78,13 +83,24 @@ class JsonTask extends AsyncTask<String, String, String> {
         return null;
     }
 
+    private void setResult(String jsonString) {
+//        Object x = new Gson().fromJson(line, new TypeToken<HashMap<Integer, String>>(){}.getType());
+        HashMap<Integer,String> map = new Gson().fromJson(jsonString, new TypeToken<HashMap<Integer, String>>(){}.getType());
+        AppManagerSingleton.getInstance().setDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY, map);
+        //AppManagerSingleton.getInstance().setDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY);
+    }
+
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         if (pd.isShowing()) {
             pd.dismiss();
         }
+       mListener.callback();
+
 //            /txtJson.setText(result);
 
     }
+
+
 }

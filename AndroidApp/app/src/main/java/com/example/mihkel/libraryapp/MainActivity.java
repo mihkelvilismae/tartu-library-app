@@ -3,12 +3,13 @@ package com.example.mihkel.libraryapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CallBackListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +39,37 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-     public void onClick(View v) {
+    public void onClick(View v) {
         toast("start");
-        Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
-        startActivity(calendarStartIntent);
+        if (!AppManagerSingleton.getInstance().hasDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY))
+            fetchDataFromServer();
+        else
+            startNextActvity();
     }
 
-     public void toast(String text) {
+    public void startNextActvity() {
+        Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
+        startActivity(calendarStartIntent);
+        toast("_startnewactivity");
+    }
+
+    public void toast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void fetchDataFromServer() {
+        Log.v("fetchDataFromServer","fetchDataFromServer");
+        Log.v("fetchDataFromServer","fetchDataFromServer");
+        Log.v("fetchDataFromServer","fetchDataFromServer");
+        JsonTask jsonTask = new JsonTask(MainActivity.this).setListener(this);
+        jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Koolid");
+    }
+
+    @Override
+    public void callback() {
+        startNextActvity();
+        toast("JAAAAAAAAAAAAAAAAAAA");
+        toast("JAAAAAAAAAAAAAAAAAAA");
+        toast("JAAAAAAAAAAAAAAAAAAA");
     }
 }

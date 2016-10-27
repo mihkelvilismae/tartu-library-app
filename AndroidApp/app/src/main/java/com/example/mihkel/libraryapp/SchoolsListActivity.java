@@ -2,6 +2,7 @@ package com.example.mihkel.libraryapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchoolsListActivity extends Activity {
+public class SchoolsListActivity extends Activity implements CallBackListener {
         ListView listView ;
         
         @Override
@@ -22,26 +23,7 @@ public class SchoolsListActivity extends Activity {
 
             DatabaseLayerImpl databaseLayer = new DatabaseLayerImpl();
             
-            // Get ListView object from xml
             listView = (ListView) findViewById(R.id.schoolsList);
-            
-//            // Defined Array values to show in ListView
-//            String[] values = new String[] { "Android List View",
-//                                             "Adapter implementation",
-//                                             "Simple List View In Android",
-//                                             "Create List View Android",
-//                                             "Android Example",
-//                                             "List View Source Code",
-//                                             "List View Array Adapter",
-//                                             "Android Example List View"
-//                                            };
-    
-            // Define a new Adapter
-            // First parameter - Context
-            // Second parameter - Layout for the row
-            // Third parameter - ID of the TextView to which the data is written
-            // Forth - the Array of data
-
             List<String> list = new ArrayList<String>(databaseLayer.getSchools().values());
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -67,12 +49,24 @@ public class SchoolsListActivity extends Activity {
                       "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
                       .show();
 
-                    new JsonTask(SchoolsListActivity.this).execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Koolid");
+
+                    //jsonTask.setLi
                     Intent calendarStartIntent = new Intent(getApplication(), ClassesListActivity.class);
                     startActivity(calendarStartIntent);
                   }
     
              }); 
         }
-    
+
+
+    @Override
+    public void callback() {
+        System.out.println("caaaaaaaalbaaaaaaaaack");
+        System.out.println("caaaaaaaalbaaaaaaaaack");
+        System.out.println("caaaaaaaalbaaaaaaaaack");
+        System.out.println("caaaaaaaalbaaaaaaaaack");
+        System.out.println("caaaaaaaalbaaaaaaaaack");
+        System.out.println("caaaaaaaalbaaaaaaaaack");
+        System.out.println("caaaaaaaalbaaaaaaaaack");
     }
+}

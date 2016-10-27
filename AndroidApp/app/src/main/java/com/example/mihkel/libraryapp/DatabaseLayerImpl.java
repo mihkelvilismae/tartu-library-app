@@ -9,14 +9,15 @@ import java.util.Map;
 public class DatabaseLayerImpl implements DatabaseLayer {
     @Override
     public Map<Integer, String> getSchools() {
-        HashMap<Integer, String> schoolsById = new HashMap<>();
-        schoolsById.put(1, "Desquartee kool");
-        schoolsById.put(2, "MHG");
-        schoolsById.put(3, "Viinakuradi gümnaasium");
-        schoolsById.put(4, "GAGSWag");
-        schoolsById.put(5, "Eluülikool");
-
-        return schoolsById;
+//        HashMap<Integer, String> schoolsById = new HashMap<>();
+//        schoolsById.put(1, "Desquartee kool");
+//        schoolsById.put(2, "MHG");
+//        schoolsById.put(3, "Viinakuradi gümnaasium");
+//        schoolsById.put(4, "GAGSWag");
+//        schoolsById.put(5, "Eluülikool");
+///
+//        return schoolsById;
+        return AppManagerSingleton.getInstance().getDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY);
     }
 
     @Override
