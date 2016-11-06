@@ -2,7 +2,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.mihkel.libraryapp.MainActivity;
+import com.example.mihkel.libraryapp.Activities.MainActivity;
 import com.example.mihkel.libraryapp.R;
 
 import org.junit.Rule;

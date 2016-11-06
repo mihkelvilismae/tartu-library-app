@@ -1,12 +1,11 @@
-package com.example.mihkel.libraryapp;
+package com.example.mihkel.libraryapp.Various;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,11 +14,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 
-class JsonTask extends AsyncTask<String, String, String>  {
+public class JsonTask extends AsyncTask<String, String, String> {
 
-    CallBackListener mListener;
+    ParseStringCallBackListener mListener;
     Context context;
     ProgressDialog pd;
 
@@ -28,7 +26,7 @@ class JsonTask extends AsyncTask<String, String, String>  {
         this.context = context;
     }
 
-    public JsonTask setListener(CallBackListener listener){
+    public JsonTask setListener(ParseStringCallBackListener listener) {
         mListener = listener;
         return this;
     }
@@ -61,7 +59,7 @@ class JsonTask extends AsyncTask<String, String, String>  {
             while ((line = reader.readLine()) != null) {
                 buffer.append(line + "\n");
                 Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-                setResult(line);
+//                setResult(line);
             }
             return buffer.toString();
         } catch (MalformedURLException e) {
@@ -83,12 +81,13 @@ class JsonTask extends AsyncTask<String, String, String>  {
         return null;
     }
 
-    private void setResult(String jsonString) {
-//        Object x = new Gson().fromJson(line, new TypeToken<HashMap<Integer, String>>(){}.getType());
-        HashMap<Integer,String> map = new Gson().fromJson(jsonString, new TypeToken<HashMap<Integer, String>>(){}.getType());
-        AppManagerSingleton.getInstance().setDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY, map);
-        //AppManagerSingleton.getInstance().setDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY);
-    }
+//    private void setResult(String jsonString) {
+////        Object x = new Gson().fromJson(line, new TypeToken<HashMap<Integer, String>>(){}.getType());
+//        HashMap<Integer, String> map = new Gson().fromJson(jsonString, new TypeToken<HashMap<Integer, String>>() {
+//        }.getType());
+//        AppManagerSingleton.getInstance().setDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY, map);
+//        //AppManagerSingleton.getInstance().setDataAtKey(AppManagerSingleton.SCHOOLS_DATA_KEY);
+//    }
 
     @Override
     protected void onPostExecute(String result) {
@@ -96,7 +95,8 @@ class JsonTask extends AsyncTask<String, String, String>  {
         if (pd.isShowing()) {
             pd.dismiss();
         }
-       mListener.callback();
+        if (mListener != null)
+            mListener.callback(result);
 
 //            /txtJson.setText(result);
 
