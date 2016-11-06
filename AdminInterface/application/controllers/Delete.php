@@ -160,4 +160,10 @@ class Delete extends CI_Controller {
             $this->load->view('templates/footer');
         }*/
     }
+
+    public function delete_user($user_id)
+    {
+        $this->database_model->delete_user($user_id);
+        redirect(base_url("Kasutajad"));
+    }
 }

@@ -121,6 +121,26 @@ class Database_model extends CI_Model {
         return $this->db->insert('reading_list', $data);
     }
 
+    public function add_user() {
+        $this->load->helper('url');
+
+        $is_admin = 1;
+        if ($this->input->post('is_admin') == NULL) {
+            $is_admin = 0;
+        }
+
+        $data = array(
+            'firstname' => $this->input->post('firstname'),
+            'lastname' => $this->input->post('lastname'),
+            'pass' => $this->input->post('password'),
+            'email' => $this->input->post('email'),
+            'phone' => $this->input->post('phone'),
+            'is_admin' => $is_admin
+        );
+
+        return $this->db->insert('account', $data);
+    }
+
     public function edit_school($id) {
         $this->load->helper('url');
 
@@ -225,6 +245,11 @@ class Database_model extends CI_Model {
         }
         $this->db->where('id', $id);
         return $this->db->delete('book');
+    }
+
+    public function delete_user($user_id) {
+        $this->db->where('id', $user_id);
+        return $this->db->delete('account');
     }
 
     public function get_user() {
