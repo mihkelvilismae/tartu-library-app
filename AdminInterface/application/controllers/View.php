@@ -7,7 +7,6 @@ class View extends CI_Controller {
         $this->load->model('database_model');
         $this->load->library('table');
         $this->load->helper('url_helper');
-        $this->load->library('session');
 
         if (!isset($_SESSION['logged_in'])) {
             redirect(base_url());

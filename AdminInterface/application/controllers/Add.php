@@ -9,6 +9,10 @@ class Add extends CI_Controller {
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->library('table');
+
+        if (!isset($_SESSION['logged_in'])) {
+            redirect(base_url());
+        }
     }
 
     public function add_school()
@@ -194,6 +198,50 @@ class Add extends CI_Controller {
             $this->load->view('templates/header', $data);
             $this->load->view('success', $data);
             $this->load->view('templates/footer');*/
+        }
+    }
+
+    public function add_user()
+    {
+        if ($_SESSION['is_admin'] != 1) {
+            redirect(base_url('Koolid'));
+        }
+        $data['active'] = 'Kasutajad';
+        $data['title'] = 'Kasutaja lisamine';
+        $data['form_action'] = base_url('Lisa/Kasutaja');
+
+        $this->form_validation->set_rules('firstname', 'Firstname', 'required');
+        $this->form_validation->set_rules('lastname', 'Lastname', 'required');
+        $this->form_validation->set_rules('email', 'E-Mail', 'required');
+        $this->form_validation->set_rules('phone', 'Phone', 'required');
+        $this->form_validation->set_rules('is_admin', 'Is admin', 'required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array('<label for="firstname">Eesnimi</label>', '<input type="input" name="firstname" />'));
+        array_push($table_rows, array('<label for="lastname">Perenimi</label>', '<input type="input" name="lastname" />'));
+        array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" />'));
+        array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="telefon" />'));
+        array_push($table_rows, array('<label for="is_admin">Admin</label>', form_checkbox("is_admin")));
+        array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" /> <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Koolid").'\';">'));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_user();
+            redirect(base_url("Kasutajad"));
         }
     }
 }

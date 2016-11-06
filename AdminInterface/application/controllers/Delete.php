@@ -6,7 +6,6 @@ class Delete extends CI_Controller {
         parent::__construct();
         $this->load->model('database_model');
         $this->load->helper('url_helper');
-        $this->load->library('session');
 
         if (!isset($_SESSION['logged_in'])) {
             redirect(base_url());
