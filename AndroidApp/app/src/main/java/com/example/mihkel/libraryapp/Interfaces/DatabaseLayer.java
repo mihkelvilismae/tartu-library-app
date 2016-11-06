@@ -1,5 +1,6 @@
 package com.example.mihkel.libraryapp.Interfaces;
 
+import com.example.mihkel.libraryapp.Item.Author;
 import com.example.mihkel.libraryapp.Item.Book;
 import com.example.mihkel.libraryapp.Item.Clazz;
 import com.example.mihkel.libraryapp.Item.School;
@@ -16,4 +17,5 @@ public interface DatabaseLayer {
     public Map<Integer, School> getSchools();
     public HashMap<Integer, Clazz> getClasses(Integer schoolId);
     public Map<Integer, Book> getReadingList(Integer classId);
+//    public Map<Integer, Author> getAuthors();
 }

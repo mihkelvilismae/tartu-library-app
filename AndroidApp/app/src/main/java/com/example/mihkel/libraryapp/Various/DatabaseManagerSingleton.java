@@ -1,12 +1,16 @@
 package com.example.mihkel.libraryapp.Various;
 
+import com.example.mihkel.libraryapp.Item.Author;
 import com.example.mihkel.libraryapp.Item.Book;
 import com.example.mihkel.libraryapp.Item.Clazz;
+import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.Item.School;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DatabaseManagerSingleton {
@@ -128,5 +132,17 @@ public class DatabaseManagerSingleton {
         return bookMap;
     }
 
-
+    public ArrayList<Item> getAuthors() {
+        String[] arr = {"Paries,France", "PA,United States", "Parana,Brazil", "Padua,Italy", "Pasadena,CA,United States"};
+        ArrayList<Item> authorList = new ArrayList<>();
+        int i = 0;
+        for (String name : arr) {
+            Item school = new Item();
+            school.setId(i);
+            school.setName(name);
+            authorList.add(school);
+            i++;
+        }
+        return authorList;
+    }
 }

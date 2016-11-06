@@ -30,30 +30,30 @@ public class AuthorListAdapter extends ArrayAdapter<Item> {
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.table_row, null);
+            v = vi.inflate(R.layout.dropdown, null);
         }
 
         Item p = getItem(position);
 
         if (p != null) {
-            TextView tt1 = (TextView) v.findViewById(R.id.id);
-            TextView tt2 = (TextView) v.findViewById(R.id.categoryId);
-            TextView tt3 = (TextView) v.findViewById(R.id.description);
+            TextView tt1 = (TextView) v.findViewById(R.id.dropdownItem);
+//            TextView tt2 = (TextView) v.findViewById(R.id.categoryId);
+//            TextView tt3 = (TextView) v.findViewById(R.id.description);
 
             if (tt1 != null) {
 //                tt1.setText("i");
-                tt1.setText(Integer.toString(p.getId()));
+                tt1.setText(p.getName());
             }
 
-            if (tt2 != null) {
+//            if (tt2 != null) {
 //                tt2.setText("xxx");
 //                tt2.setText(p.getCategory().getId());
-            }
-
-            if (tt3 != null) {
-                tt3.setText(p.getName());
+//            }
+//
+//            if (tt3 != null) {
+//                tt3.setText(p.getName());
 //                tt3.setText(p.getDescription());
-            }
+//            }
         }
 
         return v;

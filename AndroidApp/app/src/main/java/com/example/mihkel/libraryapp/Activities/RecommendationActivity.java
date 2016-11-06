@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -12,9 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
+import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.R;
+import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
 import com.example.mihkel.libraryapp.Various.AuthorListAdapter;
+import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,15 +71,21 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
 
     public void handleEditAuthor() {
-//        int layoutItemId = android.R.layout.simple_dropdown_item_1line;
-        int layoutItemId = R.layout.dropdown;
-//        String[] dogsArr = getResources().getStringArray(R.array.dogs_list);
-//        List<String> dogList = Arrays.asList(dogsArr);
+        ArrayList<Item> authors = DatabaseManagerSingleton.getInstance().getAuthors();
+        AuthorListAdapter adapter = new AuthorListAdapter(this, R.layout.dropdown, authors);
 
-        String[] arr = { "Paries,France", "PA,United States","Parana,Brazil", "Padua,Italy", "Pasadena,CA,United States"};
+        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //// id contains item if from database
+                    toast("vajutati:" +id);
+                }
+            });
+//        String[] arr = {"Paries,France", "PA,United States", "Parana,Brazil", "Padua,Italy", "Pasadena,CA,United States"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+//                (this, R.layout.dropdown, arr);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, layoutItemId, arr);
-//        AuthorListAdapter<String> adapter = new AuthorListAdapter<>(this, layoutItemId, arr);
+
         autocompleteView.setAdapter(adapter);
         autocompleteView.setThreshold(1);
 

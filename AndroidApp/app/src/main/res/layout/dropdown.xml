@@ -1,5 +1,5 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dropdown"
+    android:id="@+id/dropdownItem"
     style="?android:attr/dropDownItemStyle"
     android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
     android:maxLines="1"
