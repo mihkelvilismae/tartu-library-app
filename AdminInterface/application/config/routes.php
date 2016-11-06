@@ -53,7 +53,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['Kustuta/Kool/(:num)'] = 'Delete/delete_school/$1';
 $route['Kustuta/Klass/(:num)'] = 'Delete/delete_class/$1';
-$route['Kustuta/Raamat'] = 'Delete/delete_book';
 $route['Kustuta/Nimekiri/(:num)'] = 'Delete/delete_list/$1';
 $route['Kustuta/Nimekirjast/(:num)'] = 'Delete/delete_from_list/$1';
 
@@ -63,6 +62,7 @@ $route['Nimekiri/(:num)'] = 'View/view_reading_list/$1';
 $route['Nimekiri'] = 'View/view_reading_list';
 $route['Klassid/(:num)'] = 'View/view_classes/$1';
 $route['Klassid'] = 'View/view_classes';
+$route['Kasutajad'] = 'View/view_users';
 
 $route['Muuda/Kool/(:num)'] = 'Edit/edit_school/$1';
 $route['Muuda/Klass/(:num)'] = 'Edit/edit_class/$1';
@@ -80,6 +80,6 @@ $route['json/Koolid'] = 'JSON/schools';
 $route['json/Klassid/(:num)'] = 'JSON/classes/$1';
 $route['json/Nimekiri/(:num)'] = 'JSON/lists/$1';
 
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'Login/login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
