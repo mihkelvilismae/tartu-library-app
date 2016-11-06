@@ -213,8 +213,8 @@ class Add extends CI_Controller {
         $this->form_validation->set_rules('firstname', 'Firstname', 'required');
         $this->form_validation->set_rules('lastname', 'Lastname', 'required');
         $this->form_validation->set_rules('email', 'E-Mail', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
         $this->form_validation->set_rules('phone', 'Phone', 'required');
-        $this->form_validation->set_rules('is_admin', 'Is admin', 'required');
 
         $table_rows = array();
 
@@ -222,9 +222,10 @@ class Add extends CI_Controller {
         array_push($table_rows, array('<label for="firstname">Eesnimi</label>', '<input type="input" name="firstname" />'));
         array_push($table_rows, array('<label for="lastname">Perenimi</label>', '<input type="input" name="lastname" />'));
         array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" />'));
-        array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="telefon" />'));
-        array_push($table_rows, array('<label for="is_admin">Admin</label>', form_checkbox("is_admin")));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" /> <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Koolid").'\';">'));
+        array_push($table_rows, array('<label for="password">Parool</label>', '<input type="password" name="password" />'));
+        array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="phone" />'));
+        array_push($table_rows, array('<label for="is_admin">Admin</label>', form_checkbox('is_admin', 1)));
+        array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" /> <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Kasutajad").'\';">'));
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4" class="responstable">'

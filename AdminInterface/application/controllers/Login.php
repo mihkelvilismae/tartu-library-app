@@ -14,6 +14,9 @@ class Login extends CI_Controller {
 
     public function login()
     {
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE) {
+            redirect(base_url("Koolid"));
+        }
         $data['title'] = 'Logi sisse';
         $data['form_action'] = base_url();
 
