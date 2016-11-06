@@ -65,6 +65,11 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_users() {
+        $query = $this->db->get('account');
+        return $query->result_array();
+    }
+
     public function get_books() {
         $query = $this->db->get('book');
         return $query->result_array();
@@ -220,5 +225,11 @@ class Database_model extends CI_Model {
         }
         $this->db->where('id', $id);
         return $this->db->delete('book');
+    }
+
+    public function get_user() {
+        $this->load->helper('url');
+        $query = $this->db->get_where('account', array('email'=>$this->input->post("email"), 'pass'=>$this->input->post("password")));
+        return $query->row_array();
     }
 }

@@ -7,14 +7,16 @@ class View extends CI_Controller {
         $this->load->model('database_model');
         $this->load->library('table');
         $this->load->helper('url_helper');
+        $this->load->library('session');
+
+        if (!isset($_SESSION['logged_in'])) {
+            redirect(base_url());
+        }
     }
 
     public function view_schools()
     {
         $data['active'] = 'Koolid';
-        $data['class1'] = 'class="active-tab"';
-        $data['class2'] = '';
-        $data['class3'] = '';
         $schools = $this->database_model->get_schools();
         $data['title'] = 'Koolid';
         $table_rows = array();
@@ -171,6 +173,47 @@ class View extends CI_Controller {
                 )
             );
         }*/
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_users() {
+        if ($_SESSION['is_admin'] != 1) {
+            redirect(base_url('Koolid'));
+        }
+        $data['active'] = 'Kasutajad';
+        $users = $this->database_model->get_users();
+        $data['title'] = 'Kasutajad';
+        $table_rows = array();
+
+        for ($i = 0; $i < count($users); $i++) {
+            $user = $users[$i];
+            $delete = '<a href="'.base_url('Kustuta/Kasutaja/'.$user["id"]).'">Kustuta</a>';
+
+            array_push(
+                $table_rows,
+                array(
+                    $user['firstname'],
+                    $user['lastname'],
+                    $user['email'],
+                    $user['phone'],
+                    $user['is_admin'],
+                    $delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Eesnimi","Perenimi","E-Mail","Telefon", "Admin",'<a href="'.base_url('Lisa/Kasutaja').'\">Lisa</a>');
 
         $data['table'] = $this->table->generate($table_rows);
 

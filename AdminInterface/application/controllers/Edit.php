@@ -9,6 +9,11 @@ class Edit extends CI_Controller {
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->library('table');
+        $this->load->library('session');
+
+        if (!isset($_SESSION['logged_in'])) {
+            redirect(base_url());
+        }
     }
 
     public function edit_school($school_id) {
