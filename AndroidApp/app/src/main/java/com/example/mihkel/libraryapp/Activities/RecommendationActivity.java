@@ -1,42 +1,117 @@
 package com.example.mihkel.libraryapp.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 import com.example.mihkel.libraryapp.R;
-import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
-import com.example.mihkel.libraryapp.Various.JsonTask;
+import com.example.mihkel.libraryapp.Various.AuthorListAdapter;
 
-public class RecommendationActivity extends AppCompatActivity implements ParseStringCallBackListener {
+import java.util.Arrays;
+import java.util.List;
+
+public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener {
+
+    public Integer visibleLevel = 0;
+    public Integer activeLevel = 0;
+
+    //    private Fragment authorFragment;
+    private LinearLayout sexLayout;
+    private LinearLayout previouslyLikedLayout;
+    private LinearLayout authorLayout;
+    private LinearLayout genreLayout;
+    private LinearLayout keywordsLayout;
+    private LinearLayout likesReadingLayout;
+    private Button nextButton;
+    private Button previousButton;
+    private AutoCompleteTextView autocompleteView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recommendation);
+
+        sexLayout = (LinearLayout) findViewById(R.id.sexLayout);
+        previouslyLikedLayout = (LinearLayout) findViewById(R.id.previouslyLikedLayout);
+        authorLayout = (LinearLayout) findViewById(R.id.authorLayout);
+        genreLayout = (LinearLayout) findViewById(R.id.genreLayout);
+        keywordsLayout = (LinearLayout) findViewById(R.id.keywordsLayout);
+        likesReadingLayout = (LinearLayout) findViewById(R.id.likesReadingLayout);
+
+        nextButton = (Button) findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(this);
+
+        previousButton = (Button) findViewById(R.id.previousButton);
+        previousButton.setOnClickListener(this);
+
+        autocompleteView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
+        handleEditAuthor();
+        hideAll();
+
+//        LinearLayout ageLayout = (LinearLayout) findViewById(R.id.age);
+
+//        authorFragment = getSupportFragmentManager().findFragmentById(R.id.authorFragment);
+//        TextView textView = (TextView) authorFragment.getView().findViewById(R.id.textView2);
+//        textView.setText("aaaaaaaaaaa");
+
+    }
+
+
+    public void handleEditAuthor() {
+//        int layoutItemId = android.R.layout.simple_dropdown_item_1line;
+        int layoutItemId = R.layout.dropdown;
+//        String[] dogsArr = getResources().getStringArray(R.array.dogs_list);
+//        List<String> dogList = Arrays.asList(dogsArr);
+
+        String[] arr = { "Paries,France", "PA,United States","Parana,Brazil", "Padua,Italy", "Pasadena,CA,United States"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, layoutItemId, arr);
+//        AuthorListAdapter<String> adapter = new AuthorListAdapter<>(this, layoutItemId, arr);
+        autocompleteView.setAdapter(adapter);
+        autocompleteView.setThreshold(1);
+
+//        autocompleteView.setDropDownAnchor();
+    }
+
+    public void hideAll() {
+        sexLayout.setVisibility(View.GONE);
+        previouslyLikedLayout.setVisibility(View.GONE);
+        authorLayout.setVisibility(View.GONE);
+        genreLayout.setVisibility(View.GONE);
+        keywordsLayout.setVisibility(View.GONE);
+        likesReadingLayout.setVisibility(View.GONE);
+    }
 
 
     //------------------------------------------------------------------------------------------------------
     // DRAWING FIELDS start:
     //------------------------------------------------------------------------------------------------------
     public void showToLevel(int level) {
-        if (level>=0)
+        if (level >= 0)
             showAgeField();
-        if (level>=1)
+        if (level >= 1)
             showSexField();
-        if (level>=2)
+        if (level >= 2)
             showLikesReadingField();
-        if (level>=3)
+        if (level >= 3)
             showLanguageField();
-        if (level>=4)
+        if (level >= 4)
             showAuthorField();
-        if (level>=5)
+        if (level >= 5)
             showGenreField();
-        if (level>=6)
+        if (level >= 6)
             showYearField();
-        if (level>=7)
+        if (level >= 7)
             showPreviouslyLikedField();
-        if (level>=8)
+        if (level >= 8)
             showKeyWordsField();
     }
 
@@ -45,50 +120,69 @@ public class RecommendationActivity extends AppCompatActivity implements ParseSt
     }
 
     public void showSexField() {
-
+        sexLayout.setVisibility(View.VISIBLE);
     }
 
     public void showLikesReadingField() {
-
+        likesReadingLayout.setVisibility(View.VISIBLE);
     }
 
     public void showLanguageField() {
+//        lan.setVisibility(View.VISIBLE);
 
     }
 
     public void showAuthorField() {
-
+        authorLayout.setVisibility(View.VISIBLE);
     }
 
     public void showGenreField() {
+        genreLayout.setVisibility(View.VISIBLE);
 
     }
 
     public void showYearField() {
+//        genreLayout.setVisibility(View.VISIBLE);
 
     }
 
     public void showPreviouslyLikedField() {
-
+        previouslyLikedLayout.setVisibility(View.VISIBLE);
     }
 
     public void showKeyWordsField() {
+        keywordsLayout.setVisibility(View.VISIBLE);
 
     }
 
     //------------------------------------------------------------------------------------------------------
     // DRAWING FIELDS end
     //------------------------------------------------------------------------------------------------------
-
+    @Override
     public void onClick(View v) {
-        toast("start");
-//        switch (v.getId()) {
-//            case R.id.startMandatoryReading:
-//                startMandatoryReading();
-//            case R.id.startRecommendation:
-//                startRecommendationActivity();
-//        }
+        switch (v.getId()) {
+            case R.id.nextButton:
+                showNextField();
+                break;
+            case R.id.previousButton:
+                showPreviousField();
+                break;
+        }
 
+    }
+
+    private void showPreviousField() {
+        visibleLevel--;
+        activeLevel--;
+        showToLevel(visibleLevel);
+        toast("level now: " + visibleLevel);
+    }
+
+    private void showNextField() {
+        visibleLevel++;
+        activeLevel++;
+        showToLevel(visibleLevel);
+        toast("level now: " + visibleLevel);
     }
 
     public void startResultActivity() {
@@ -122,11 +216,6 @@ public class RecommendationActivity extends AppCompatActivity implements ParseSt
     //-----------------------------------------------------------------------------------------------------------------------
     // DEFAULT start:
     //-----------------------------------------------------------------------------------------------------------------------
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recommendation);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
     public void startRecommendationActivity() {
         Intent calendarStartIntent = new Intent(this, RecommendationActivity.class);
         startActivity(calendarStartIntent);
-        toast("startRecommendationActivity");
+//        toast("startRecommendationActivity");
     }
 
     public void startMandatoryReading() {

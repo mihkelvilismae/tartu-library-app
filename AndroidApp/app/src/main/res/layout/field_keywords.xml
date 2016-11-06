@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/keywordsLayout"
     android:layout_height="match_parent">
 
 
     <TextView
-        android:text="Tekst"
+        android:text="märksõnad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView2" />
@@ -14,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="sisendtexkst"
+        android:text="Sisesta märksõnad"
         android:ems="10"
         android:id="@+id/editText" />
 </LinearLayout>
