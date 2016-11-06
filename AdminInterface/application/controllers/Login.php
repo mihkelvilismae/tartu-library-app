@@ -58,7 +58,7 @@ class Login extends CI_Controller {
 
             $user = $this->database_model->get_user($this->input->post("username"), $this->input->post("password"));
             if (!isset($user['email'])) {
-                //redirect(base_url());
+                redirect(base_url());
             }
             $_SESSION['email'] = $user['email'];
             $_SESSION['is_admin'] = $user['is_admin'];
