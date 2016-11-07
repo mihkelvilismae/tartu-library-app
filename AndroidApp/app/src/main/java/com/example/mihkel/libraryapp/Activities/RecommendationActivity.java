@@ -77,19 +77,42 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         hideAll();
 
     }
+
     //-----------------------------------------------------------------------------------------------------------------------
     // GENERIC text function start:
     private void removeChoiceFromSelected(Item choiceItem, Integer type) {
-        if (type==R.id.TAG_AUTHOR) {
+        if (type == R.id.TAG_AUTHOR) {
             selectedAuthors.remove(choiceItem);
             authorAdapter.add(choiceItem);
         }
     }
 
     private void addChoiceToSelected(Item choiceItem, Integer type) {
-        if (type==R.id.TAG_AUTHOR) {
+        if (type == R.id.TAG_AUTHOR) {
             selectedAuthors.add(choiceItem);
             authorAdapter.remove(choiceItem);
+        }
+    }
+
+    private void removeItem(View buttonView) {
+        Integer itemType = (Integer) buttonView.getTag(R.id.TAG_TYPE);
+        switch (itemType) {
+            case R.id.TAG_AUTHOR:
+                removeChoiceFromSelected((Item) buttonView.getTag(R.id.TAG_OBJECT), R.id.TAG_AUTHOR);
+                drawSelectedAuthors();
+                break;
+            case R.id.TAG_BOOK:
+                removeChoiceFromSelected((Item) buttonView.getTag(R.id.TAG_OBJECT), R.id.TAG_BOOK);
+                drawSelectedBooks();
+                break;
+            case R.id.TAG_GENRE:
+                removeChoiceFromSelected((Item) buttonView.getTag(R.id.TAG_OBJECT), R.id.TAG_GENRE);
+                drawSelectedGenres();
+                break;
+            case R.id.TAG_KEYWORD:
+                removeChoiceFromSelected((Item) buttonView.getTag(R.id.TAG_OBJECT), R.id.TAG_KEYWORD);
+                drawSelectedKeywords();
+                break;
         }
     }
     // GENERIC text function end.
@@ -125,7 +148,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             authorResult.addView(theInflatedView);
             //remove button
             Button removeButton = (Button) theInflatedView.findViewById(R.id.removeButton);
-            removeButton.setTag(R.id.TAG_AUTHOR);
+            removeButton.setTag(R.id.TAG_TYPE, R.id.TAG_AUTHOR);
             removeButton.setTag(R.id.TAG_OBJECT, author);
             removeButton.setOnClickListener(this);
         }
@@ -163,25 +186,84 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             textInRow.setText(author.getName());
             authorResult.addView(theInflatedView);
             Button removeButton = (Button) theInflatedView.findViewById(R.id.removeButton);
-            removeButton.setTag(R.id.TAG_AUTHOR);
+            removeButton.setTag(R.id.TAG_TYPE, R.id.TAG_BOOK);
             removeButton.setTag(R.id.TAG_OBJECT, author);
             removeButton.setOnClickListener(this);
         }
     }
     // BOOKS end:
     //-----------------------------------------------------------------------------------------------------------------------
+    // GENRES start:
 
-    private void removeItem(View buttonView) {
-        Integer itemType = (Integer) buttonView.getTag();
-        switch (itemType) {
-            case R.id.TAG_AUTHOR:
-                removeChoiceFromSelected((Item) buttonView.getTag(R.id.TAG_AUTHOR), R.id.TAG_AUTHOR);
+    public void handleGenreAutocomplete() {
+        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_GENRE));
+
+        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
+                Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
+                autocompleteView.setText("");
+                addChoiceToSelected(book, R.id.TAG_GENRE);
+                toast(book.toString());
                 drawSelectedAuthors();
-                break;
-        }
+            }
+        });
+        autocompleteView.setAdapter(authorAdapter);
+        autocompleteView.setThreshold(0);
     }
 
+    public void drawSelectedGenres() {
+        LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
+        LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
+        authorResult.removeAllViews();
+        for (final Item author : selectedAuthors) {
+            View theInflatedView = inflater.inflate(R.layout.result_row_with_button, null); // 2 and 3
+            TextView textInRow = (TextView) theInflatedView.findViewById(R.id.textInRow);
+            textInRow.setText(author.getName());
+            authorResult.addView(theInflatedView);
+            Button removeButton = (Button) theInflatedView.findViewById(R.id.removeButton);
+            removeButton.setTag(R.id.TAG_TYPE, R.id.TAG_GENRE);
+            removeButton.setTag(R.id.TAG_OBJECT, author);
+            removeButton.setOnClickListener(this);
+        }
+    }
+    // GENRES end:
+    //-----------------------------------------------------------------------------------------------------------------------
+    // KEYWORDS start:
 
+    public void handleKeywordsAutocomplete() {
+        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_KEYWORD));
+
+        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
+                Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
+                autocompleteView.setText("");
+                addChoiceToSelected(book, R.id.TAG_KEYWORD);
+                toast(book.toString());
+                drawSelectedAuthors();
+            }
+        });
+        autocompleteView.setAdapter(authorAdapter);
+        autocompleteView.setThreshold(0);
+    }
+
+    public void drawSelectedKeywords() {
+        LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
+        LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
+        authorResult.removeAllViews();
+        for (final Item author : selectedAuthors) {
+            View theInflatedView = inflater.inflate(R.layout.result_row_with_button, null); // 2 and 3
+            TextView textInRow = (TextView) theInflatedView.findViewById(R.id.textInRow);
+            textInRow.setText(author.getName());
+            authorResult.addView(theInflatedView);
+            Button removeButton = (Button) theInflatedView.findViewById(R.id.removeButton);
+            removeButton.setTag(R.id.TAG_TYPE, R.id.TAG_KEYWORD);
+            removeButton.setTag(R.id.TAG_OBJECT, author);
+            removeButton.setOnClickListener(this);
+        }
+    }
+    // KEYWORDS end:
     //------------------------------------------------------------------------------------------------------
     // DRAWING FIELDS start:
 

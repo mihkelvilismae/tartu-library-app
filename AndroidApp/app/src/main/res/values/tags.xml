@@ -1,5 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
       <item name="TAG_OBJECT" type="id"/>
+      <item name="TAG_TYPE" type="id"/>
+
       <item name="TAG_AUTHOR" type="id"/>
       <item name="TAG_BOOK" type="id"/>
       <item name="TAG_KEYWORD" type="id"/>
