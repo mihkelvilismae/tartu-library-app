@@ -94,7 +94,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         likesReadingButtonN = (Button) findViewById(R.id.likesReadingN);
         likesReadingButtonN.setOnClickListener(this);
 
-
         handleAuthorAutocomplete();
         handleGenreAutocomplete();
         handleBookAutocomplete();
@@ -109,11 +108,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     //-----------------------------------------------------------------------------------------------------------------------
     // BUTTONS start:
 
-
-    public void initToggleButtons(Button button1, Button button2) {
-        button1.setPressed(true);
-        button2.setPressed(true);
-    }
     // BUTTONS end
     //-----------------------------------------------------------------------------------------------------------------------
     // GENERIC text function start:
@@ -453,9 +447,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 ((Button) findViewById(R.id.sexButtonF)).setBackgroundColor(defaultBackgroundColor);
                 break;
         }
-
     }
-
 
     public void startResultActivity() {
 //        Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
