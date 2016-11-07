@@ -18,13 +18,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/sexButtonM"
             android:layout_width="183dp"
             android:layout_height="wrap_content"
             android:text="Mees" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/sexButtonF"
             android:layout_width="184dp"
             android:layout_height="wrap_content"
             android:text="Naine" />

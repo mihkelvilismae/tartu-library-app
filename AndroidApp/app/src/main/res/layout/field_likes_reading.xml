@@ -18,13 +18,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/likesReadingY"
             android:layout_width="183dp"
             android:layout_height="wrap_content"
             android:text="Jah" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/likesReadingN"
             android:layout_width="184dp"
             android:layout_height="wrap_content"
             android:text="Ei" />

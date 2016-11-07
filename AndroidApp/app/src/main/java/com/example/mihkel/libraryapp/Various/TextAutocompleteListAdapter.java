@@ -12,14 +12,16 @@ import com.example.mihkel.libraryapp.R;
 
 import java.util.List;
 
-public class AuthorAutocompleteListAdapter extends ArrayAdapter<Item> {
+public class TextAutocompleteListAdapter extends ArrayAdapter<Item> {
 
-    public AuthorAutocompleteListAdapter(Context context, int textViewResourceId) {
+    Integer mTagType;
+    public TextAutocompleteListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
-    public AuthorAutocompleteListAdapter(Context context, int resource, List<Item> items) {
+    public TextAutocompleteListAdapter(Context context, int resource, List<Item> items, int tagType) {
         super(context, resource, items);
+        mTagType = tagType;
     }
 
     @Override
@@ -35,7 +37,9 @@ public class AuthorAutocompleteListAdapter extends ArrayAdapter<Item> {
 
         Item p = getItem(position);
 
-        v.setTag(R.id.TAG_AUTHOR, p);
+        v.setTag(R.id.TAG_OBJECT, p);
+        v.setTag(R.id.TAG_TYPE, mTagType);
+
         if (p != null) {
             TextView tt1 = (TextView) v.findViewById(R.id.dropdownItem);
 //            TextView tt2 = (TextView) v.findViewById(R.id.categoryId);

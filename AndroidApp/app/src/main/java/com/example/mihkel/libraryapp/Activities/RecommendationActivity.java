@@ -1,5 +1,6 @@
 package com.example.mihkel.libraryapp.Activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -16,13 +17,12 @@ import android.widget.Toast;
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.R;
-import com.example.mihkel.libraryapp.Various.AuthorAutocompleteListAdapter;
+import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 
 import java.util.ArrayList;
 
 public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener {
-
 //    private static final int OBJECT = 1;
 //    private static final int TAG_AUTHOR = 2;
 //    private static final int TAKE_PICTURE = 1;
@@ -40,7 +40,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private LinearLayout likesReadingLayout;
     private Button nextButton;
     private Button previousButton;
-    private AutoCompleteTextView autocompleteView;
 
     private ArrayList<Item> selectedAuthors = new ArrayList<>();
     private ArrayList<Item> authors;
@@ -48,10 +47,22 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private ArrayList<Item> books;
     private ArrayList<Item> selectedKeywords = new ArrayList<>();
     private ArrayList<Item> keywords;
-    private ArrayList<Item> selectedGenre = new ArrayList<>();
+    private ArrayList<Item> selectedGenres = new ArrayList<>();
     private ArrayList<Item> genres;
 
-    private AuthorAutocompleteListAdapter authorAdapter;
+    private TextAutocompleteListAdapter authorAdapter;
+    private TextAutocompleteListAdapter genreAdapter;
+    private TextAutocompleteListAdapter keywordAdapter;
+    private TextAutocompleteListAdapter bookAdapter;
+
+    AutoCompleteTextView authorAutoCompleteTextView;
+    AutoCompleteTextView genreAutoCompleteTextView;
+    AutoCompleteTextView keywordAutoCompleteTextView;
+    AutoCompleteTextView bookAutoCompleteTextView;
+    private Button sexButtonF;
+    private Button sexButtonM;
+    private Button likesReadingButtonY;
+    private Button likesReadingButtonN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +70,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_recommendation);
 
         sexLayout = (LinearLayout) findViewById(R.id.sexLayout);
-        previouslyLikedLayout = (LinearLayout) findViewById(R.id.previouslyLikedLayout);
+        previouslyLikedLayout = (LinearLayout) findViewById(R.id.booksLayout);
         authorLayout = (LinearLayout) findViewById(R.id.authorLayout);
         genreLayout = (LinearLayout) findViewById(R.id.genreLayout);
         keywordsLayout = (LinearLayout) findViewById(R.id.keywordsLayout);
@@ -71,26 +82,80 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         previousButton = (Button) findViewById(R.id.previousButton);
         previousButton.setOnClickListener(this);
 
-        autocompleteView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
+        sexButtonF = (Button) findViewById(R.id.sexButtonF);
+        sexButtonF.setOnClickListener(this);
+
+        sexButtonM = (Button) findViewById(R.id.sexButtonM);
+        sexButtonM.setOnClickListener(this);
+
+        likesReadingButtonY = (Button) findViewById(R.id.likesReadingY);
+        likesReadingButtonY.setOnClickListener(this);
+
+        likesReadingButtonN = (Button) findViewById(R.id.likesReadingN);
+        likesReadingButtonN.setOnClickListener(this);
+
 
         handleAuthorAutocomplete();
+        handleGenreAutocomplete();
+        handleBookAutocomplete();
+        handleKeywordsAutocomplete();
+
+//        initToggleButtons(likes);
+
         hideAll();
 
     }
 
     //-----------------------------------------------------------------------------------------------------------------------
+    // BUTTONS start:
+
+
+    public void initToggleButtons(Button button1, Button button2) {
+        button1.setPressed(true);
+        button2.setPressed(true);
+    }
+    // BUTTONS end
+    //-----------------------------------------------------------------------------------------------------------------------
     // GENERIC text function start:
     private void removeChoiceFromSelected(Item choiceItem, Integer type) {
-        if (type == R.id.TAG_AUTHOR) {
-            selectedAuthors.remove(choiceItem);
-            authorAdapter.add(choiceItem);
+        switch (type) {
+            case R.id.TAG_AUTHOR:
+                selectedAuthors.remove(choiceItem);
+                authorAdapter.add(choiceItem);
+                break;
+            case R.id.TAG_BOOK:
+                selectedBooks.remove(choiceItem);
+                bookAdapter.add(choiceItem);
+                break;
+            case R.id.TAG_GENRE:
+                selectedGenres.remove(choiceItem);
+                genreAdapter.add(choiceItem);
+                break;
+            case R.id.TAG_KEYWORD:
+                selectedKeywords.remove(choiceItem);
+                keywordAdapter.add(choiceItem);
+                break;
         }
     }
 
     private void addChoiceToSelected(Item choiceItem, Integer type) {
-        if (type == R.id.TAG_AUTHOR) {
-            selectedAuthors.add(choiceItem);
-            authorAdapter.remove(choiceItem);
+        switch (type) {
+            case R.id.TAG_AUTHOR:
+                selectedAuthors.add(choiceItem);
+                authorAdapter.remove(choiceItem);
+                break;
+            case R.id.TAG_BOOK:
+                selectedBooks.add(choiceItem);
+                bookAdapter.remove(choiceItem);
+                break;
+            case R.id.TAG_GENRE:
+                selectedGenres.add(choiceItem);
+                genreAdapter.remove(choiceItem);
+                break;
+            case R.id.TAG_KEYWORD:
+                selectedKeywords.add(choiceItem);
+                keywordAdapter.remove(choiceItem);
+                break;
         }
     }
 
@@ -120,20 +185,21 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // AUTHOR start:
 
     public void handleAuthorAutocomplete() {
-        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_AUTHOR));
+        authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_AUTHOR), R.id.TAG_AUTHOR);
 
-        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
+        authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
-                Item author = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
-                autocompleteView.setText("");
+            public void onItemClick(AdapterView<?> parent, View dropdownViewItem, int position, long id) {
+                Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
+                authorAutoCompleteTextView.setText("");
                 addChoiceToSelected(author, R.id.TAG_AUTHOR);
                 toast(author.toString());
                 drawSelectedAuthors();
             }
         });
-        autocompleteView.setAdapter(authorAdapter);
-        autocompleteView.setThreshold(0);
+        authorAutoCompleteTextView.setAdapter(authorAdapter);
+        authorAutoCompleteTextView.setThreshold(0);
     }
 
     public void drawSelectedAuthors() {
@@ -160,27 +226,28 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // BOOKS start:
 
     public void handleBookAutocomplete() {
-        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_BOOK));
+        bookAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_BOOK), R.id.TAG_BOOK);
 
-        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        bookAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editBook);
+        bookAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
-                autocompleteView.setText("");
+                bookAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_BOOK);
                 toast(book.toString());
-                drawSelectedAuthors();
+                drawSelectedBooks();
             }
         });
-        autocompleteView.setAdapter(authorAdapter);
-        autocompleteView.setThreshold(0);
+        bookAutoCompleteTextView.setAdapter(bookAdapter);
+        bookAutoCompleteTextView.setThreshold(0);
     }
 
     public void drawSelectedBooks() {
-        LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
+        LinearLayout authorResult = (LinearLayout) findViewById(R.id.bookResult);
         LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
         authorResult.removeAllViews();
-        for (final Item author : selectedAuthors) {
+        for (final Item author : selectedBooks) {
             View theInflatedView = inflater.inflate(R.layout.result_row_with_button, null); // 2 and 3
             TextView textInRow = (TextView) theInflatedView.findViewById(R.id.textInRow);
             textInRow.setText(author.getName());
@@ -196,27 +263,28 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // GENRES start:
 
     public void handleGenreAutocomplete() {
-        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_GENRE));
+        genreAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_GENRE), R.id.TAG_GENRE);
 
-        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        genreAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editGenre);
+        genreAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
-                autocompleteView.setText("");
+                genreAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_GENRE);
                 toast(book.toString());
-                drawSelectedAuthors();
+                drawSelectedGenres();
             }
         });
-        autocompleteView.setAdapter(authorAdapter);
-        autocompleteView.setThreshold(0);
+        genreAutoCompleteTextView.setAdapter(genreAdapter);
+        genreAutoCompleteTextView.setThreshold(0);
     }
 
     public void drawSelectedGenres() {
-        LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
+        LinearLayout authorResult = (LinearLayout) findViewById(R.id.genreResult);
         LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
         authorResult.removeAllViews();
-        for (final Item author : selectedAuthors) {
+        for (final Item author : selectedGenres) {
             View theInflatedView = inflater.inflate(R.layout.result_row_with_button, null); // 2 and 3
             TextView textInRow = (TextView) theInflatedView.findViewById(R.id.textInRow);
             textInRow.setText(author.getName());
@@ -232,27 +300,28 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // KEYWORDS start:
 
     public void handleKeywordsAutocomplete() {
-        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_KEYWORD));
+        keywordAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_KEYWORD), R.id.TAG_KEYWORD);
 
-        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        keywordAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editKeyword);
+        keywordAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
-                autocompleteView.setText("");
+                keywordAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_KEYWORD);
                 toast(book.toString());
-                drawSelectedAuthors();
+                drawSelectedKeywords();
             }
         });
-        autocompleteView.setAdapter(authorAdapter);
-        autocompleteView.setThreshold(0);
+        keywordAutoCompleteTextView.setAdapter(keywordAdapter);
+        keywordAutoCompleteTextView.setThreshold(0);
     }
 
     public void drawSelectedKeywords() {
-        LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
+        LinearLayout authorResult = (LinearLayout) findViewById(R.id.keywordResult);
         LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
         authorResult.removeAllViews();
-        for (final Item author : selectedAuthors) {
+        for (final Item author : selectedKeywords) {
             View theInflatedView = inflater.inflate(R.layout.result_row_with_button, null); // 2 and 3
             TextView textInRow = (TextView) theInflatedView.findViewById(R.id.textInRow);
             textInRow.setText(author.getName());
@@ -356,6 +425,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     //------------------------------------------------------------------------------------------------------
     @Override
     public void onClick(View v) {
+        Integer defaultBackgroundColor = 0;
         switch (v.getId()) {
             case R.id.nextButton:
                 showNextField();
@@ -365,6 +435,22 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.removeButton:
                 removeItem(v);
+                break;
+            case R.id.likesReadingY:
+                v.setBackgroundColor(Color.GRAY);
+                ((Button) findViewById(R.id.likesReadingN)).setBackgroundColor(defaultBackgroundColor);
+                break;
+            case R.id.likesReadingN:
+                v.setBackgroundColor(Color.GRAY);
+                ((Button) findViewById(R.id.likesReadingY)).setBackgroundColor(defaultBackgroundColor);
+                break;
+            case R.id.sexButtonF:
+                v.setBackgroundColor(Color.GRAY);
+                ((Button) findViewById(R.id.sexButtonM)).setBackgroundColor(defaultBackgroundColor);
+                break;
+            case R.id.sexButtonM:
+                v.setBackgroundColor(Color.GRAY);
+                ((Button) findViewById(R.id.sexButtonF)).setBackgroundColor(defaultBackgroundColor);
                 break;
         }
 

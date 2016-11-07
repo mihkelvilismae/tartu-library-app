@@ -6,4 +6,9 @@
       <item name="TAG_BOOK" type="id"/>
       <item name="TAG_KEYWORD" type="id"/>
       <item name="TAG_GENRE" type="id"/>
+
+      <item name="TOGGLE_LIKES" type="id"/>
+      <item name="TOGGLE_SEX" type="id"/>
+
+
 </resources>
