@@ -44,6 +44,13 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     private ArrayList<Item> selectedAuthors = new ArrayList<>();
     private ArrayList<Item> authors;
+    private ArrayList<Item> selectedBooks = new ArrayList<>();
+    private ArrayList<Item> books;
+    private ArrayList<Item> selectedKeywords = new ArrayList<>();
+    private ArrayList<Item> keywords;
+    private ArrayList<Item> selectedGenre = new ArrayList<>();
+    private ArrayList<Item> genres;
+
     private AuthorAutocompleteListAdapter authorAdapter;
 
     @Override
@@ -66,31 +73,87 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
 
-        handleSelectingAuthor();
+        handleAuthorAutocomplete();
         hideAll();
 
     }
     //-----------------------------------------------------------------------------------------------------------------------
+    // GENERIC text function start:
+    private void removeChoiceFromSelected(Item choiceItem, Integer type) {
+        if (type==R.id.TAG_AUTHOR) {
+            selectedAuthors.remove(choiceItem);
+            authorAdapter.add(choiceItem);
+        }
+    }
+
+    private void addChoiceToSelected(Item choiceItem, Integer type) {
+        if (type==R.id.TAG_AUTHOR) {
+            selectedAuthors.add(choiceItem);
+            authorAdapter.remove(choiceItem);
+        }
+    }
+    // GENERIC text function end.
+    //-----------------------------------------------------------------------------------------------------------------------
     // AUTHOR start:
 
-    public void handleSelectingAuthor() {
-        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getAuthors());
+    public void handleAuthorAutocomplete() {
+        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_AUTHOR));
 
         autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
-                Item author = (Item) dropdownView.getTag(R.id.TAG_AUTHOR);
+                Item author = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
                 autocompleteView.setText("");
-                addAuthorToSelected(author);
+                addChoiceToSelected(author, R.id.TAG_AUTHOR);
                 toast(author.toString());
                 drawSelectedAuthors();
             }
         });
         autocompleteView.setAdapter(authorAdapter);
-        autocompleteView.setThreshold(1);
+        autocompleteView.setThreshold(0);
     }
 
     public void drawSelectedAuthors() {
+        LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
+        LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
+        authorResult.removeAllViews();
+        for (final Item author : selectedAuthors) {
+            //view generation
+            View theInflatedView = inflater.inflate(R.layout.result_row_with_button, null); // 2 and 3
+            TextView textInRow = (TextView) theInflatedView.findViewById(R.id.textInRow);
+            textInRow.setText(author.getName());
+            authorResult.addView(theInflatedView);
+            //remove button
+            Button removeButton = (Button) theInflatedView.findViewById(R.id.removeButton);
+            removeButton.setTag(R.id.TAG_AUTHOR);
+            removeButton.setTag(R.id.TAG_OBJECT, author);
+            removeButton.setOnClickListener(this);
+        }
+    }
+
+
+    // AUTHOR end:
+    //-----------------------------------------------------------------------------------------------------------------------
+    // BOOKS start:
+
+    public void handleBookAutocomplete() {
+        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_BOOK));
+
+        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
+                Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
+                autocompleteView.setText("");
+                addChoiceToSelected(book, R.id.TAG_BOOK);
+                toast(book.toString());
+                drawSelectedAuthors();
+            }
+        });
+        autocompleteView.setAdapter(authorAdapter);
+        autocompleteView.setThreshold(0);
+    }
+
+    public void drawSelectedBooks() {
         LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
         LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
         authorResult.removeAllViews();
@@ -101,30 +164,18 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             authorResult.addView(theInflatedView);
             Button removeButton = (Button) theInflatedView.findViewById(R.id.removeButton);
             removeButton.setTag(R.id.TAG_AUTHOR);
-            removeButton.setTag(R.id.TAG_AUTHOR, author);
+            removeButton.setTag(R.id.TAG_OBJECT, author);
             removeButton.setOnClickListener(this);
         }
     }
-
-    private void removeAuthorFromSelected(Item author) {
-        selectedAuthors.remove(author);
-        authorAdapter.add(author);
-    }
-
-    private void addAuthorToSelected(Item author) {
-        selectedAuthors.add(author);
-        authorAdapter.remove(author);
-    }
-
-    // AUTHOR end:
+    // BOOKS end:
     //-----------------------------------------------------------------------------------------------------------------------
-    //
 
     private void removeItem(View buttonView) {
         Integer itemType = (Integer) buttonView.getTag();
         switch (itemType) {
             case R.id.TAG_AUTHOR:
-                removeAuthorFromSelected((Item) buttonView.getTag(R.id.TAG_AUTHOR));
+                removeChoiceFromSelected((Item) buttonView.getTag(R.id.TAG_AUTHOR), R.id.TAG_AUTHOR);
                 drawSelectedAuthors();
                 break;
         }

@@ -5,10 +5,12 @@ import com.example.mihkel.libraryapp.Item.Book;
 import com.example.mihkel.libraryapp.Item.Clazz;
 import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.Item.School;
+import com.example.mihkel.libraryapp.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,6 +142,34 @@ public class DatabaseManagerSingleton {
             Item school = new Item();
             school.setId(i);
             school.setName(name);
+            authorList.add(school);
+            i++;
+        }
+        return authorList;
+    }
+
+    public ArrayList<Item> getGenericList(int type) {
+        List<String> list = new ArrayList<>();
+        switch (type) {
+            case R.id.TAG_AUTHOR:
+                list = Arrays.asList("Rowling", "oskar luts", "otomann otoo", "oolo");
+                break;
+            case R.id.TAG_BOOK:
+                list = Arrays.asList("harry potter", "lord of the rings", "lord of the flies", "bonanza", "laaadapäevad");
+                break;
+            case R.id.TAG_GENRE:
+                list = Arrays.asList("ulme", "komöödia", "noortele", "õudus");
+                break;
+            case R.id.TAG_KEYWORD:
+                list = Arrays.asList("lapsed", "loomad", "suvi", "talv");
+                break;
+        }
+        ArrayList<Item> authorList = new ArrayList<>();
+        int i = 0;
+        for (String name : list) {
+            Item school = new Item();
+            school.setId(i);
+            school.setName("a"+name);
             authorList.add(school);
             i++;
         }
