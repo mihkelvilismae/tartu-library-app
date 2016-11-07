@@ -1,5 +1,6 @@
 package com.example.mihkel.libraryapp.Activities;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +70,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private Button likesReadingButtonY;
     private Button likesReadingButtonN;
     private Button ageButton;
+    private Button startYearButton;
+    private Button endYearButton;
 //    private GridView ageGridView;
 
     @Override
@@ -101,8 +105,14 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         likesReadingButtonN = (Button) findViewById(R.id.likesReadingN);
         likesReadingButtonN.setOnClickListener(this);
 
-        ageButton = (Button) findViewById(R.id.ageButton);
-        ageButton.setOnClickListener(this);
+//        ageButton = (Button) findViewById(R.id.ageButton);
+//        ageButton.setOnClickListener(this);
+
+        startYearButton = (Button) findViewById(R.id.startYearButton);
+        startYearButton.setOnClickListener(this);
+
+        endYearButton = (Button) findViewById(R.id.endYearButton);
+        endYearButton.setOnClickListener(this);
 
         handleAuthorAutocomplete();
         handleGenreAutocomplete();
@@ -362,6 +372,55 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
     // KEYWORDS end:
     //------------------------------------------------------------------------------------------------------
+    // YEAR start:
+
+    public void initYear() {
+//        b.setText("" + year);
+        startYearButton.setOnClickListener(this);
+        endYearButton.setOnClickListener(this);
+
+
+    }
+
+    public void showYearDialog(View v) {
+        final Boolean isStartYearDialog = (v.getId() == R.id.startYearButton);
+        final Dialog d = new Dialog(this);
+        d.setTitle("Year Picker");
+        d.setContentView(R.layout.dialog_year);
+        Button set = (Button) d.findViewById(R.id.button1);
+        Button cancel = (Button) d.findViewById(R.id.button2);
+        final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPicker1);
+
+        int year = 2016;
+        nopicker.setMaxValue(year + 50);
+        nopicker.setMinValue(year - 50);
+        nopicker.setWrapSelectorWheel(false);
+        nopicker.setValue(year);
+        nopicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isStartYearDialog)
+                    ((Button) findViewById(R.id.startYearButton)).setText("Alates " + String.valueOf(nopicker.getValue()));
+                else
+                    ((Button) findViewById(R.id.endYearButton)).setText("Kuni " + String.valueOf(nopicker.getValue()));
+                d.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+        d.show();
+
+
+    }
+    // YEAR end
+    //----------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
     // DRAWING FIELDS start:
 
 
@@ -410,7 +469,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void showAgeField() {
-        ageLayout.setVisibility(View.VISIBLE);
+//        ageLayout.setVisibility(View.VISIBLE);
     }
 
     public void showSexField() {
@@ -479,6 +538,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.sexButtonM:
                 v.setBackgroundColor(Color.GRAY);
                 ((Button) findViewById(R.id.sexButtonF)).setBackgroundColor(defaultBackgroundColor);
+                break;
+            case R.id.startYearButton:
+                showYearDialog(v);
+                break;
+            case R.id.endYearButton:
+                showYearDialog(v);
                 break;
         }
     }
