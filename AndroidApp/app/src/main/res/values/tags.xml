@@ -1,0 +1,4 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+      <item name="TAG_TYPE" type="id"/>
+      <item name="TAG_AUTHOR" type="id"/>
+</resources>

@@ -2,28 +2,31 @@ package com.example.mihkel.libraryapp.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.R;
-import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
-import com.example.mihkel.libraryapp.Various.AuthorListAdapter;
+import com.example.mihkel.libraryapp.Various.AuthorAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener {
+
+//    private static final int OBJECT = 1;
+//    private static final int TAG_AUTHOR = 2;
+//    private static final int TAKE_PICTURE = 1;
+
 
     public Integer visibleLevel = 0;
     public Integer activeLevel = 0;
@@ -38,6 +41,10 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private Button nextButton;
     private Button previousButton;
     private AutoCompleteTextView autocompleteView;
+
+    private ArrayList<Item> selectedAuthors = new ArrayList<>();
+    private ArrayList<Item> authors;
+    private AuthorAutocompleteListAdapter authorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,38 +65,88 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         previousButton.setOnClickListener(this);
 
         autocompleteView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
-        handleEditAuthor();
+
+        handleSelectingAuthor();
         hideAll();
 
-//        LinearLayout ageLayout = (LinearLayout) findViewById(R.id.age);
+    }
+    //-----------------------------------------------------------------------------------------------------------------------
+    // AUTHOR start:
 
-//        authorFragment = getSupportFragmentManager().findFragmentById(R.id.authorFragment);
-//        TextView textView = (TextView) authorFragment.getView().findViewById(R.id.textView2);
-//        textView.setText("aaaaaaaaaaa");
+    public void handleSelectingAuthor() {
+        authorAdapter = new AuthorAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getAuthors());
 
+        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
+                Item author = (Item) dropdownView.getTag(R.id.TAG_AUTHOR);
+                autocompleteView.setText("");
+                addAuthorToSelected(author);
+                toast(author.toString());
+                drawSelectedAuthors();
+            }
+        });
+        autocompleteView.setAdapter(authorAdapter);
+        autocompleteView.setThreshold(1);
+    }
+
+    public void drawSelectedAuthors() {
+        LinearLayout authorResult = (LinearLayout) findViewById(R.id.authorResult);
+        LayoutInflater inflater = LayoutInflater.from(RecommendationActivity.this); // 1
+        authorResult.removeAllViews();
+        for (final Item author : selectedAuthors) {
+            View theInflatedView = inflater.inflate(R.layout.result_row_with_button, null); // 2 and 3
+            TextView textInRow = (TextView) theInflatedView.findViewById(R.id.textInRow);
+            textInRow.setText(author.getName());
+            authorResult.addView(theInflatedView);
+            Button removeButton = (Button) theInflatedView.findViewById(R.id.removeButton);
+            removeButton.setTag(R.id.TAG_AUTHOR);
+            removeButton.setTag(R.id.TAG_AUTHOR, author);
+            removeButton.setOnClickListener(this);
+        }
+    }
+
+    private void removeAuthorFromSelected(Item author) {
+        selectedAuthors.remove(author);
+        authorAdapter.add(author);
+    }
+
+    private void addAuthorToSelected(Item author) {
+        selectedAuthors.add(author);
+        authorAdapter.remove(author);
+    }
+
+    // AUTHOR end:
+    //-----------------------------------------------------------------------------------------------------------------------
+    //
+
+    private void removeItem(View buttonView) {
+        Integer itemType = (Integer) buttonView.getTag();
+        switch (itemType) {
+            case R.id.TAG_AUTHOR:
+                removeAuthorFromSelected((Item) buttonView.getTag(R.id.TAG_AUTHOR));
+                drawSelectedAuthors();
+                break;
+        }
     }
 
 
-    public void handleEditAuthor() {
-        ArrayList<Item> authors = DatabaseManagerSingleton.getInstance().getAuthors();
-        AuthorListAdapter adapter = new AuthorListAdapter(this, R.layout.dropdown, authors);
-
-        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //// id contains item if from database
-                    toast("vajutati:" +id);
-                }
-            });
-//        String[] arr = {"Paries,France", "PA,United States", "Parana,Brazil", "Padua,Italy", "Pasadena,CA,United States"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                (this, R.layout.dropdown, arr);
+    //------------------------------------------------------------------------------------------------------
+    // DRAWING FIELDS start:
 
 
-        autocompleteView.setAdapter(adapter);
-        autocompleteView.setThreshold(1);
+    private void showPreviousField() {
+        visibleLevel--;
+        activeLevel--;
+        showToLevel(visibleLevel);
+//        toast("level now: " + visibleLevel);
+    }
 
-//        autocompleteView.setDropDownAnchor();
+    private void showNextField() {
+        visibleLevel++;
+        activeLevel++;
+        showToLevel(visibleLevel);
+//        toast("level now: " + visibleLevel);
     }
 
     public void hideAll() {
@@ -101,10 +158,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         likesReadingLayout.setVisibility(View.GONE);
     }
 
-
-    //------------------------------------------------------------------------------------------------------
-    // DRAWING FIELDS start:
-    //------------------------------------------------------------------------------------------------------
     public void showToLevel(int level) {
         if (level >= 0)
             showAgeField();
@@ -166,7 +219,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     }
 
-    //------------------------------------------------------------------------------------------------------
     // DRAWING FIELDS end
     //------------------------------------------------------------------------------------------------------
     @Override
@@ -178,23 +230,13 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.previousButton:
                 showPreviousField();
                 break;
+            case R.id.removeButton:
+                removeItem(v);
+                break;
         }
 
     }
 
-    private void showPreviousField() {
-        visibleLevel--;
-        activeLevel--;
-        showToLevel(visibleLevel);
-        toast("level now: " + visibleLevel);
-    }
-
-    private void showNextField() {
-        visibleLevel++;
-        activeLevel++;
-        showToLevel(visibleLevel);
-        toast("level now: " + visibleLevel);
-    }
 
     public void startResultActivity() {
 //        Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);

@@ -35,8 +35,6 @@ public class SchoolsListActivity extends Activity implements ParseStringCallBack
         List<Item> list = new ArrayList<Item>(databaseLayer.getSchools().values());
         ListAdapter adapter = new ListAdapter(this, R.layout.table_row, list);
 
-
-
         // Assign adapter to ListView
         listView.setAdapter(adapter);
 

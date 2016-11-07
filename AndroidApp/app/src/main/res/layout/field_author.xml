@@ -19,4 +19,11 @@
         android:ems="10"
         android:id="@+id/editAuthor" />
         <!--android:inputType="textPersonName"-->
+    <LinearLayout
+        android:id="@+id/authorResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </LinearLayout>
 </LinearLayout>

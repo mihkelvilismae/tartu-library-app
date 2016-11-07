@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="182dp"
+        android:layout_height="28dp"
+        android:id="@+id/textInRow"
+        android:text="_placeholder_"
+        android:layout_weight="0.66" />
+
+    <Button
+        android:text="Eemalda"
+        android:layout_width="101dp"
+        android:layout_height="36dp"
+        android:id="@+id/removeButton"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+</LinearLayout>

@@ -12,13 +12,13 @@ import com.example.mihkel.libraryapp.R;
 
 import java.util.List;
 
-public class AuthorListAdapter extends ArrayAdapter<Item> {
+public class AuthorAutocompleteListAdapter extends ArrayAdapter<Item> {
 
-    public AuthorListAdapter(Context context, int textViewResourceId) {
+    public AuthorAutocompleteListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
-    public AuthorListAdapter(Context context, int resource, List<Item> items) {
+    public AuthorAutocompleteListAdapter(Context context, int resource, List<Item> items) {
         super(context, resource, items);
     }
 
@@ -35,6 +35,7 @@ public class AuthorListAdapter extends ArrayAdapter<Item> {
 
         Item p = getItem(position);
 
+        v.setTag(R.id.TAG_AUTHOR, p);
         if (p != null) {
             TextView tt1 = (TextView) v.findViewById(R.id.dropdownItem);
 //            TextView tt2 = (TextView) v.findViewById(R.id.categoryId);
@@ -42,7 +43,7 @@ public class AuthorListAdapter extends ArrayAdapter<Item> {
 
             if (tt1 != null) {
 //                tt1.setText("i");
-                tt1.setText(p.getName());
+                tt1.setText(p.getName()+"....");
             }
 
 //            if (tt2 != null) {
