@@ -32,7 +32,7 @@ public class TextAutocompleteListAdapter extends ArrayAdapter<Item> {
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.dropdown, null);
+            v = vi.inflate(R.layout.autocomplete_dropdown_item, null);
         }
 
         Item p = getItem(position);
@@ -47,7 +47,7 @@ public class TextAutocompleteListAdapter extends ArrayAdapter<Item> {
 
             if (tt1 != null) {
 //                tt1.setText("i");
-                tt1.setText(p.getName()+"....");
+                tt1.setText(p.getName());
             }
 
 //            if (tt2 != null) {

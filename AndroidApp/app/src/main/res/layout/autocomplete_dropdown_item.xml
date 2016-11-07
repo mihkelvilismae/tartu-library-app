@@ -1,10 +1,11 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dropdownItem"
-    style="?android:attr/dropDownItemStyle"
-    android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
-    android:maxLines="1"
     android:layout_width="match_parent"
+    style="?android:attr/dropDownItemStyle"
     android:layout_height="?android:attr/listPreferredItemHeight"
+    android:maxLines="1"
+    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
     android:ellipsize="marquee" />
+    <!--android:textAppearance="?android:attr/textAppearanceLargePopupMenu"-->
 
 
