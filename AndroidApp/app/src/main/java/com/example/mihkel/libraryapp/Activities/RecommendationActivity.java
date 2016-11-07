@@ -44,6 +44,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private LinearLayout keywordsLayout;
     private LinearLayout likesReadingLayout;
     private LinearLayout ageLayout;
+    private LinearLayout languageLayout;
+    private LinearLayout yearLayout;
+
     private Button nextButton;
     private Button previousButton;
 
@@ -65,6 +68,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     AutoCompleteTextView genreAutoCompleteTextView;
     AutoCompleteTextView keywordAutoCompleteTextView;
     AutoCompleteTextView bookAutoCompleteTextView;
+
     private Button sexButtonF;
     private Button sexButtonM;
     private Button likesReadingButtonY;
@@ -86,6 +90,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         keywordsLayout = (LinearLayout) findViewById(R.id.keywordsLayout);
         likesReadingLayout = (LinearLayout) findViewById(R.id.likesReadingLayout);
         ageLayout = (LinearLayout) findViewById(R.id.ageLayout);
+        yearLayout = (LinearLayout) findViewById(R.id.yearLayout);
+        languageLayout = (LinearLayout) findViewById(R.id.languageLayout);
 
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
@@ -450,6 +456,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         keywordsLayout.setVisibility(View.GONE);
         likesReadingLayout.setVisibility(View.GONE);
         ageLayout.setVisibility(View.GONE);
+        yearLayout.setVisibility(View.GONE);
+        languageLayout.setVisibility(View.GONE);
     }
 
     public void showToLevel(int level) {
@@ -486,7 +494,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void showLanguageField() {
-//        lan.setVisibility(View.VISIBLE);
+        languageLayout.setVisibility(View.VISIBLE);
 
     }
 
@@ -500,7 +508,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void showYearField() {
-//        genreLayout.setVisibility(View.VISIBLE);
+       yearLayout.setVisibility(View.VISIBLE);
 
     }
 

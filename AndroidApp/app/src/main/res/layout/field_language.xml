@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/languageLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Keel" />
+
+    <CheckBox
+        android:id="@+id/languageCheckboxEE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eesti" />
+
+    <CheckBox
+        android:id="@+id/languageCheckboxEN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Inglise" />
+
+    <CheckBox
+        android:id="@+id/languageCheckboxRU"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vene" />
+
+
+</LinearLayout>
