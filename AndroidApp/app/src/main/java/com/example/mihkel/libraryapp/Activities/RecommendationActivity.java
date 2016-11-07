@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener {
 //    private static final int OBJECT = 1;
@@ -38,6 +41,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private LinearLayout genreLayout;
     private LinearLayout keywordsLayout;
     private LinearLayout likesReadingLayout;
+    private LinearLayout ageLayout;
     private Button nextButton;
     private Button previousButton;
 
@@ -63,6 +67,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private Button sexButtonM;
     private Button likesReadingButtonY;
     private Button likesReadingButtonN;
+    private Button ageButton;
+//    private GridView ageGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         genreLayout = (LinearLayout) findViewById(R.id.genreLayout);
         keywordsLayout = (LinearLayout) findViewById(R.id.keywordsLayout);
         likesReadingLayout = (LinearLayout) findViewById(R.id.likesReadingLayout);
+        ageLayout = (LinearLayout) findViewById(R.id.ageLayout);
 
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
@@ -93,6 +100,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
         likesReadingButtonN = (Button) findViewById(R.id.likesReadingN);
         likesReadingButtonN.setOnClickListener(this);
+
+        ageButton = (Button) findViewById(R.id.ageButton);
+        ageButton.setOnClickListener(this);
 
         handleAuthorAutocomplete();
         handleGenreAutocomplete();
@@ -291,6 +301,30 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
     // GENRES end:
     //-----------------------------------------------------------------------------------------------------------------------
+    // AGE start:
+//    public List<String> makeAgeList() {
+//        List<String> ageList = new ArrayList<>();
+//        for (int i = 7; i < 99; i++) {
+//            ageList.add(String.valueOf(i));
+//        }
+//        return ageList;
+//    }
+//
+//    public void createAgeGrid() {
+//        ageGridView = (GridView) findViewById(R.id.gridView1);
+//
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, makeAgeList());
+//
+//		ageGridView.setAdapter(adapter);
+//
+//		ageGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//			   Toast.makeText(getApplicationContext(), ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
+//			}
+//		});
+//    }
+    // AGE
+    //-----------------------------------------------------------------------------------------------------------------------
     // KEYWORDS start:
 
     public void handleKeywordsAutocomplete() {
@@ -376,7 +410,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void showAgeField() {
-
+        ageLayout.setVisibility(View.VISIBLE);
     }
 
     public void showSexField() {
