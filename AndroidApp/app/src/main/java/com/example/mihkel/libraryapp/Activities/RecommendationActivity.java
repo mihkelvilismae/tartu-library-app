@@ -105,8 +105,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         likesReadingButtonN = (Button) findViewById(R.id.likesReadingN);
         likesReadingButtonN.setOnClickListener(this);
 
-//        ageButton = (Button) findViewById(R.id.ageButton);
-//        ageButton.setOnClickListener(this);
+        ageButton = (Button) findViewById(R.id.ageButton);
+        ageButton.setOnClickListener(this);
 
         startYearButton = (Button) findViewById(R.id.startYearButton);
         startYearButton.setOnClickListener(this);
@@ -372,18 +372,14 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
     // KEYWORDS end:
     //------------------------------------------------------------------------------------------------------
-    // YEAR start:
-
-    public void initYear() {
-//        b.setText("" + year);
-        startYearButton.setOnClickListener(this);
-        endYearButton.setOnClickListener(this);
-
-
-    }
+    // YEAR/AGE start:
 
     public void showYearDialog(View v) {
-        final Boolean isStartYearDialog = (v.getId() == R.id.startYearButton);
+        final Boolean isStartYear = (v.getId() == R.id.startYearButton);
+        final Boolean isEndYear = (v.getId() == R.id.endYearButton);
+        final Boolean isAge = (v.getId() == R.id.ageButton);
+
+//        final Boolean isStartYearDialog = (v.getId() == R.id.startYearButton);
         final Dialog d = new Dialog(this);
         d.setTitle("Year Picker");
         d.setContentView(R.layout.dialog_year);
@@ -394,6 +390,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         int year = 2016;
         nopicker.setMaxValue(year + 50);
         nopicker.setMinValue(year - 50);
+
+        if (isAge) {
+            year = 15;
+            nopicker.setMaxValue(99);
+            nopicker.setMinValue(5);
+        }
         nopicker.setWrapSelectorWheel(false);
         nopicker.setValue(year);
         nopicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -401,10 +403,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isStartYearDialog)
+                if (isStartYear)
                     ((Button) findViewById(R.id.startYearButton)).setText("Alates " + String.valueOf(nopicker.getValue()));
-                else
+                else if (isEndYear)
                     ((Button) findViewById(R.id.endYearButton)).setText("Kuni " + String.valueOf(nopicker.getValue()));
+                else if (isAge)
+                    ((Button) findViewById(R.id.ageButton)).setText("Vanus: " + String.valueOf(nopicker.getValue()));
                 d.dismiss();
             }
         });
@@ -418,7 +422,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
 
     }
-    // YEAR end
+    // YEAR/AGE end
     //----------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------
     // DRAWING FIELDS start:
@@ -445,6 +449,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         genreLayout.setVisibility(View.GONE);
         keywordsLayout.setVisibility(View.GONE);
         likesReadingLayout.setVisibility(View.GONE);
+        ageLayout.setVisibility(View.GONE);
     }
 
     public void showToLevel(int level) {
@@ -469,7 +474,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void showAgeField() {
-//        ageLayout.setVisibility(View.VISIBLE);
+        ageLayout.setVisibility(View.VISIBLE);
     }
 
     public void showSexField() {
@@ -543,6 +548,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 showYearDialog(v);
                 break;
             case R.id.endYearButton:
+                showYearDialog(v);
+                break;
+            case R.id.ageButton:
                 showYearDialog(v);
                 break;
         }
