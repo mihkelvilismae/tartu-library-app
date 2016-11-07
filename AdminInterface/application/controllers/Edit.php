@@ -14,6 +14,8 @@ class Edit extends CI_Controller {
             redirect(base_url());
         }
     }
+    
+    
 
     public function edit_school($school_id) {
         $data['active'] = 'Koolid';
@@ -21,17 +23,17 @@ class Edit extends CI_Controller {
         $data['form_action'] = 'Muuda/Kool/'.$school_id;
         $school = $this->database_model->get_school($school_id);
 
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('phone', 'Phone', 'required');
-        $this->form_validation->set_rules('email', 'E-Mail', 'required');
+        $this->form_validation->set_rules('name', 'Name', 'is_unique[school.name]|required');
+        $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
+        $this->form_validation->set_rules('email', 'E-Mail', 'valid_email|required');
 
         $table_rows = array();
 
         array_push($table_rows, array('', ''));
-        array_push($table_rows, array('<label for="name">Nimi</label>', '<input type="input" name="name" value="'.$school['name'].'" />'));
-        array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="phone" value="'.$school['phone'].'" />'));
-        array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" value="'.$school['email'].'" />'));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" /> <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Koolid").'\';">'));
+        array_push($table_rows, array(form_label('Nimi', 'name'), form_input('name', $school['name'])));
+        array_push($table_rows, array(form_label('Telefon', 'phone'), form_input('phone', $school['phone'])));
+        array_push($table_rows, array(form_label('E-Mail', 'email'), form_input('email', $school['email'])));
+        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Koolid').'\';"')));
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4" class="responstable">'
@@ -49,12 +51,6 @@ class Edit extends CI_Controller {
         } else {
             $this->database_model->edit_school($school_id);
             redirect(base_url('Koolid'));
-            /*
-            $data['message'] = 'Kooli muutmine õnnestus';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('success', $data);
-            $this->load->view('templates/footer');*/
         }
     }
 
@@ -73,16 +69,17 @@ class Edit extends CI_Controller {
             $dropdown_rows[$school['id']] = $school['name'];
         }
 
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('school_id', 'Kooli nimi', 'required');
+        $this->form_validation->set_message('class_name_check', 'The school already has a class named that.');
+        $this->form_validation->set_rules('name', 'Name', 'required|callback_class_name_check['.$this->input->post('school_id').']');
+        $this->form_validation->set_rules('school_id', 'Kooli nimi', 'numeric|required');
 
         $table_rows = array();
 
         array_push($table_rows, array('', ''));
-        array_push($table_rows, array('<label for="school_id">Kool</label>', form_dropdown('school_id', $dropdown_rows, $class['school_id'])));
-        array_push($table_rows, array('<label for="name">Klassi nimi</label>', '<input type="input" name="name" value="'.$class['name'].'" />'));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />
-            <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Klassid").'\';">'));
+        array_push($table_rows, array(form_label('Kool', 'school_id'), form_dropdown('school_id', $dropdown_rows, $class['school_id'])));
+        array_push($table_rows, array(form_label('Klassi nimi', 'name'), form_input('name', $class['name'])));
+
+        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Klassid').'\';"')));
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4" class="responstable">'
@@ -113,7 +110,7 @@ class Edit extends CI_Controller {
 
         $this->form_validation->set_rules('title', 'Title', 'required');
         $this->form_validation->set_rules('author', 'Author', 'required');
-        $this->form_validation->set_rules('year', 'Year', 'required');
+        $this->form_validation->set_rules('year', 'Year', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
@@ -134,7 +131,6 @@ class Edit extends CI_Controller {
         $data['active'] = 'Nimekiri';
         $data['title'] = 'Raamatunimekirja muutmine';
         $data['form_action'] = 'Muuda/Nimekiri/'.$class_id;
-        $reading_list_items = $this->database_model->get_reading_list($class_id);
 
         $schools = $this->database_model->get_schools();
 
@@ -161,14 +157,15 @@ class Edit extends CI_Controller {
             }
         }
         $books .= '</ul>';
-        $this->form_validation->set_rules('class_id', 'Class', 'required');
+
+        $this->form_validation->set_message('is_unique', 'The class already has a reading list.');
+        $this->form_validation->set_rules('class_id', 'Class', 'numeric|required|is_unique[reading_list.class_id]');
 
         $table_rows = array();
         array_push($table_rows, array('', '<a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a>'));
-        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
-        array_push($table_rows, array('<label for="book_id">Raamatud</label>', $books));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Salvesta" />
-            <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Nimekiri").'\';">'));
+        array_push($table_rows, array(form_label('Klass', 'class_id'), form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
+        array_push($table_rows, array(form_label('Raamatud', 'book_id'), $books));
+        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Nimekiri').'\';"')));
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4" class="responstable">'
@@ -187,5 +184,15 @@ class Edit extends CI_Controller {
             $this->database_model->edit_reading_list($class_id);
             redirect(base_url('Nimekiri'));
         }
+    }
+
+    public function class_name_check($class_name, $school_id) {
+        $classes = $this->database_model->get_classes($school_id);
+        foreach ($classes as $class) {
+            if ($class['name'] === $class_name) {
+                return FALSE;
+            }
+        }
+        return TRUE;
     }
 }
