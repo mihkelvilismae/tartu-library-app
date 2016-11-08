@@ -15,22 +15,27 @@
         android:weightSum="1">
 
         <include
-            layout="@layout/field_sex"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
             layout="@layout/field_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
-            layout="@layout/field_year"
+            layout="@layout/field_sex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
             layout="@layout/field_likes_reading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            layout="@layout/field_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            layout="@layout/field_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -55,10 +60,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <include
-            layout="@layout/field_language"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
 
         <!--<include-->
