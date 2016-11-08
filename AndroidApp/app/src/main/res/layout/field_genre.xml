@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:text="zanr"
+        android:text="Žanr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView2" />
@@ -15,7 +15,7 @@
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Sisesta zanr..."
+        android:hint="Sisesta žanr..."
         android:ems="10"
         android:id="@+id/editGenre" />
         <!--android:inputType="textPersonName"-->

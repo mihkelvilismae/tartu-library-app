@@ -9,10 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -25,7 +23,6 @@ import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener {
 //    private static final int OBJECT = 1;
@@ -387,10 +384,10 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
 //        final Boolean isStartYearDialog = (v.getId() == R.id.startYearButton);
         final Dialog d = new Dialog(this);
-        d.setTitle("Year Picker");
+        d.setTitle("Vali aasta");
         d.setContentView(R.layout.dialog_year);
-        Button set = (Button) d.findViewById(R.id.button1);
-        Button cancel = (Button) d.findViewById(R.id.button2);
+        Button set = (Button) d.findViewById(R.id.yearDialogSet);
+        Button cancel = (Button) d.findViewById(R.id.yearDialogCancel);
         final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPicker1);
 
         int year = 2016;

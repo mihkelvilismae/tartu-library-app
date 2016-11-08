@@ -15,17 +15,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/yearDialogCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="Katkesta" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/yearDialogSet"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Set" />
+            android:text="Vali" />
     </LinearLayout>
 </LinearLayout>
