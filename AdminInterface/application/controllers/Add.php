@@ -11,6 +11,7 @@ class Add extends CI_Controller {
         $this->load->library('table');
 
         if (!isset($_SESSION['logged_in'])) {
+            $_SESSION['REFERER'] = base_url($_SERVER['REQUEST_URI']);
             redirect(base_url());
         }
     }

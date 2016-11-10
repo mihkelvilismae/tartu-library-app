@@ -8,6 +8,7 @@ class Delete extends CI_Controller {
         $this->load->helper('url_helper');
 
         if (!isset($_SESSION['logged_in'])) {
+            $_SESSION['REFERER'] = base_url($_SERVER['REQUEST_URI']);
             redirect(base_url());
         }
     }
