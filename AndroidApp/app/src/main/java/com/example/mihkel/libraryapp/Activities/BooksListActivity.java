@@ -1,6 +1,7 @@
 package com.example.mihkel.libraryapp.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,7 +32,6 @@ public class BooksListActivity extends Activity {
         listView = (ListView) findViewById(R.id.schoolsList);
         List<Item> list = new ArrayList<Item>(databaseLayer.getReadingList(AppManagerSingleton.selectedClassId).values());
         ListAdapter adapter = new ListAdapter(this, R.layout.table_row, list);
-
 
 
 //            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -65,13 +65,17 @@ public class BooksListActivity extends Activity {
 //                    fetchDataFromServer(itemValue.getId());
 //                else
 //                    startNextActivity();
+                startResultBookViewActivity();
 
             }
 
         });
     }
 
-
+    public void startResultBookViewActivity() {
+        Intent calendarStartIntent = new Intent(this, BookViewActivity.class);
+        startActivity(calendarStartIntent);
+    }
 
 
 }
