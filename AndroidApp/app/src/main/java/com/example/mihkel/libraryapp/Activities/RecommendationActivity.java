@@ -126,6 +126,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
         hideAll();
 
+        showToLevel(0);
+
     }
 
     //-----------------------------------------------------------------------------------------------------------------------
