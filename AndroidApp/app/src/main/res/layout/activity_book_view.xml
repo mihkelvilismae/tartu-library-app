@@ -14,69 +14,78 @@
         android:text="Raamatu pealkiri"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp"
-        android:id="@+id/textView3"
+        android:id="@+id/bookHeading"
         android:layout_alignParentTop="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:text="Autor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/bookHeading"
         android:layout_marginTop="12dp"
-        android:id="@+id/textView4" />
+        android:id="@+id/bookAuthor"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/bookLocation"
+        android:layout_alignEnd="@+id/bookLocation" />
 
     <TextView
         android:text="Aasta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4"
+        android:layout_below="@+id/bookAuthor"
+        android:layout_alignLeft="@+id/bookAuthor"
+        android:layout_alignStart="@+id/bookAuthor"
         android:layout_marginTop="10dp"
-        android:id="@+id/textView5" />
-
-    <TextView
-        android:text="Asukoht"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView5"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignStart="@+id/textView5"
-        android:layout_marginTop="11dp"
-        android:id="@+id/textView6" />
+        android:id="@+id/bookYear"
+        android:layout_alignRight="@+id/bookLocation"
+        android:layout_alignEnd="@+id/bookLocation" />
 
     <TextView
         android:text="Lehekülgi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView6"
-        android:layout_alignRight="@+id/textView6"
-        android:layout_alignEnd="@+id/textView6"
+        android:layout_below="@+id/bookLocation"
         android:layout_marginTop="12dp"
-        android:id="@+id/textView7" />
+        android:id="@+id/bookPages"
+        android:layout_alignRight="@+id/bookKeyword"
+        android:layout_alignEnd="@+id/bookKeyword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:text="Zanr1, zanr2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:id="@+id/textView8"
-        android:layout_below="@+id/textView7"
-        android:layout_alignLeft="@+id/textView7"
-        android:layout_alignStart="@+id/textView7" />
+        android:id="@+id/bookGenre"
+        android:layout_below="@+id/bookPages"
+        android:layout_alignLeft="@+id/bookPages"
+        android:layout_alignStart="@+id/bookPages"
+        android:layout_alignRight="@+id/bookPages"
+        />
 
     <TextView
         android:text="Märksõna1, Märksõna2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView8"
+        android:layout_below="@+id/bookGenre"
         android:layout_marginTop="12dp"
-        android:id="@+id/textView9" />
+        android:id="@+id/bookKeyword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Asukoht"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:id="@+id/bookLocation"
+        android:layout_below="@+id/bookYear"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
 </RelativeLayout>

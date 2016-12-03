@@ -7,6 +7,7 @@ public class AppManagerSingleton
     public static Integer selectedSchoolId;
     public static Integer selectedClassId;
     public static Integer selectedBookListId;
+    public static Integer selectedBookId;
 //    public static Integer selectedId;
 
     private static AppManagerSingleton _instance;

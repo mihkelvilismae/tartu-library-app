@@ -26,6 +26,7 @@ public class DatabaseManagerSingleton {
     private static HashMap<Integer, School> schoolsData = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Clazz>> classesBySchoolData = new HashMap<>();
     private static HashMap<Integer, HashMap<Integer, Book>> booksByClassesData = new HashMap<>();
+    private static HashMap<Integer, Book> booksData = new HashMap<>();
 
     private DatabaseManagerSingleton() {
 
@@ -38,44 +39,34 @@ public class DatabaseManagerSingleton {
         return _instance;
     }
 
+    //
+    //----------------------------------------------------------------------------------------------------
+    // SETTERS begin:
+
     public void setSchoolsList(HashMap<Integer, School> map) {
         schoolsData = map;
-    }
-
-    public HashMap<Integer, School> getSchoolsList() {
-        return schoolsData;
-    }
-
-    public boolean hasSchoolsList() {
-        return schoolsData != null;
-    }
-
-    public boolean hasClassesInSchool(int schoolId) {
-        return classesBySchoolData.get(schoolId) != null;
     }
 
     public void setClassesInSchool(int schoolId, HashMap<Integer, Clazz> map) {
         classesBySchoolData.put(schoolId, map);
     }
 
-    public HashMap<Integer, Clazz> getClassesInSchool(int schoolId) {
-        return classesBySchoolData.get(schoolId);
+    public void addBook(Book book) {
+        if (!hasBook(book.getId()))
+            booksData.put(book.getId(), book);
     }
 
-    public boolean hasBooksListInClass(int classId) {
-        return booksByClassesData.get(classId) != null;
-    }
-
-    public HashMap<Integer, Book> getBooksListInClass(int classId) {
-        return booksByClassesData.get(classId);
-    }
-
-    public void setBooksListInClass(int classId, HashMap<Integer, Book> map) {
-        booksByClassesData.put(classId, map);
-    }
 
     public void setSchoolListResult(String jsonString) {
         setSchoolsList(parseJsonToSchoolMap(jsonString));
+    }
+
+
+    public void setBooksListInClass(int classId, HashMap<Integer, Book> map) {
+        booksByClassesData.put(classId, map);
+        for (Book book : map.values()) {
+            addBook(book);
+        }
     }
 
     public void setClassesInSchoolJson(int schoolId, String jsonString) {
@@ -85,6 +76,54 @@ public class DatabaseManagerSingleton {
     public void setBooksListInClassJson(int classId, String jsonString) {
         setBooksListInClass(classId, parseJsonToBookMap(jsonString));
     }
+
+
+    // SETTERS end
+    //----------------------------------------------------------------------------------------------------
+    // GETTERS begin
+
+    public Book getBook(Integer bookId) {
+        return booksData.get(bookId);
+    }
+
+    public HashMap<Integer, School> getSchoolsList() {
+        return schoolsData;
+    }
+
+    public HashMap<Integer, Clazz> getClassesInSchool(int schoolId) {
+        return classesBySchoolData.get(schoolId);
+    }
+
+    public HashMap<Integer, Book> getBooksListInClass(int classId) {
+        return booksByClassesData.get(classId);
+    }
+
+    // GETTERS end
+    //----------------------------------------------------------------------------------------------------
+    // CHECKERS start
+
+    public boolean hasSchoolsList() {
+        return schoolsData != null;
+    }
+
+    public boolean hasClassesInSchool(int schoolId) {
+        return classesBySchoolData.get(schoolId) != null;
+    }
+
+
+    public boolean hasBook(Integer selectedBookId) {
+        return booksData.get(selectedBookId) != null;
+    }
+
+    public boolean hasBooksListInClass(int classId) {
+        return booksByClassesData.get(classId) != null;
+    }
+
+
+    // CHECKERS end
+    //----------------------------------------------------------------------------------------------------
+    //
+
 
     public HashMap<Integer, String> parseJsonToMap(String jsonString) {
         HashMap<Integer, String> map = new Gson().fromJson(jsonString, new TypeToken<HashMap<Integer, String>>() {
@@ -169,10 +208,12 @@ public class DatabaseManagerSingleton {
         for (String name : list) {
             Item school = new Item();
             school.setId(i);
-            school.setName("a"+name);
+            school.setName("a" + name);
             authorList.add(school);
             i++;
         }
         return authorList;
     }
+
+
 }

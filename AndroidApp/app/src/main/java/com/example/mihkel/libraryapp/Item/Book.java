@@ -5,5 +5,10 @@ package com.example.mihkel.libraryapp.Item;
  */
 
 public class Book extends Item {
-
+   public String author;
+   public String year;
+   public String pages;
+   public String genre;
+   public String keyword;
+   public String bookLocation;
 }

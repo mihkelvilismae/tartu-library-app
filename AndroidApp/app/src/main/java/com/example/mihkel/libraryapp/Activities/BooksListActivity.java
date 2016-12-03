@@ -8,17 +8,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
 import com.example.mihkel.libraryapp.Various.DatabaseLayerImpl;
 import com.example.mihkel.libraryapp.Item.Book;
 import com.example.mihkel.libraryapp.Item.Item;
+import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
+import com.example.mihkel.libraryapp.Various.JsonTask;
 import com.example.mihkel.libraryapp.Various.ListAdapter;
 import com.example.mihkel.libraryapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BooksListActivity extends Activity {
+public class BooksListActivity extends Activity implements ParseStringCallBackListener {
     ListView listView;
 
     @Override
@@ -55,17 +58,16 @@ public class BooksListActivity extends Activity {
                 Book itemValue = (Book) listView.getItemAtPosition(position);
 
                 // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(getApplicationContext(),"Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG).show();
+                AppManagerSingleton.selectedBookId = itemValue.getId();
 //                    Intent calendarStartIntent = new Intent(this, BooksListActivity.class);
 //                    startActivity(calendarStartIntent);
 //        }
-//                if (true || !DatabaseManagerSingleton.getInstance().hasClassesInSchool(AppManagerSingleton.selectedSchoolId))
-//                    fetchDataFromServer(itemValue.getId());
-//                else
-//                    startNextActivity();
-                startResultBookViewActivity();
+
+                if (true || !DatabaseManagerSingleton.getInstance().hasBook(AppManagerSingleton.selectedBookId))
+                    fetchDataFromServer(itemValue.getId());
+                else
+                    startResultBookViewActivity();
 
             }
 
@@ -75,6 +77,19 @@ public class BooksListActivity extends Activity {
     public void startResultBookViewActivity() {
         Intent calendarStartIntent = new Intent(this, BookViewActivity.class);
         startActivity(calendarStartIntent);
+    }
+
+    public void fetchDataFromServer(int schoolId) {
+        JsonTask jsonTask = new JsonTask(BooksListActivity.this).setListener(this);
+        jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Klassid/" + schoolId);
+    }
+
+
+    @Override
+    public void callback(String jsonString) {
+        DatabaseManagerSingleton.getInstance().setClassesInSchoolJson(AppManagerSingleton.selectedSchoolId, jsonString);
+        startResultBookViewActivity();
+
     }
 
 
