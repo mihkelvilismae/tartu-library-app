@@ -12,6 +12,11 @@
 - Start Selenium server:
 
    `$ java -jar selenium-server/selenium-server-standalone-2.53.1.jar &`
+- Configure test server paths in AdminInterfaceTestCase class:
+
+    `const SELENIUM_SERVER_PATH = 'http://localhost:4444/';`
+    
+    `const APPLICATION_PATH = 'http://tvp.l/';`
 - Run tests (must be ran from AdminInterface/test directory):
 
    `$ php phpunit.phar acceptance`
