@@ -4,8 +4,8 @@
 
 - Install (update) Dependencies through composer
 - Java 8 JDK (for Selenium server)
-- PHP (with php-curl and php-zip modules)
-- Firefox
+- PHP (with php-curl and php-zip modules) - tested with PHP 7
+- Firefox (I had problems with later Firefox versions - downgrading to v39 worked. See https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/6955)
 
 #### Running tests (tested on Linux; commands assume working directory is AdminInterface/test):
 
