@@ -40,7 +40,7 @@ class JSON extends CI_Controller {
 
         for ($i = 0; $i < count($items); $i++) {
             $item = $items[$i];
-            $arr[$item['id']] = $this->database_model->get_book_by_id($item['book_id'])['title'];
+            $arr[$item['id']] = $this->database_model->get_book($item['book_id'])['title'];
         }
 
         echo json_encode($arr);

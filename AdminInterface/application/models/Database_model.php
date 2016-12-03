@@ -21,8 +21,8 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function get_book_by_id($id) {
-        $query = $this->db->get_where('book', array('id'=>$id));
+    public function get_book($book_id) {
+        $query = $this->db->get_where('book', array('id'=>$book_id));
         return $query->row_array();
     }
 
@@ -234,16 +234,14 @@ class Database_model extends CI_Model {
         return $this->db->delete('reading_list');
     }
 
-    public function delete_book($id=NULL) {
-        $this->load->helper('url');
-        if (!$id) {
-            $id = $this->input->post('item_id');
-        }
-        $reading_list = $this->get_reading_list_from_book($id);
-        foreach ($reading_list as $e) {
-            $this->delete_reading_list($e['id']);
-        }
-        $this->db->where('id', $id);
+    public function delete_book_from_reading_lists($book_id) {
+        $this->db->where('book_id', $book_id);
+        return $this->db->delete('reading_list');
+    }
+
+    public function delete_book($book_id) {
+        $this->delete_book_from_reading_lists($book_id);
+        $this->db->where('id', $book_id);
         return $this->db->delete('book');
     }
 

@@ -101,30 +101,40 @@ class Edit extends CI_Controller {
         }
     }
 
-    public function edit_book($id) {
+    public function edit_book($book_id) {
+        $data['active'] = 'Raamatud';
         $data['title'] = 'Raamatu muutmine';
-        $book = $this->database_model->get_book_by_id($id);
-        $data['current_title'] = $book['title'];
-        $data['current_author'] = $book['author'];
-        $data['current_year'] = $book['year'];
-        $data['id'] = $id;
+        $data['form_action'] = 'Muuda/Raamat/'.$book_id;
+        $school = $this->database_model->get_book($book_id);
 
-        $this->form_validation->set_rules('title', 'Title', 'required');
-        $this->form_validation->set_rules('author', 'Author', 'required');
-        $this->form_validation->set_rules('year', 'Year', 'numeric|required');
+        $this->form_validation->set_rules('title', 'title', 'is_unique[book.title]|required');
+        $this->form_validation->set_rules('author', 'author', 'required');
+        $this->form_validation->set_rules('year', 'year', 'numeric|required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Raamatu nimi', 'title'), form_input('title', $school['title'])));
+        array_push($table_rows, array(form_label('Autor', 'author'), form_input('author', $school['author'])));
+        array_push($table_rows, array(form_label('Aasta', 'year'), form_input('year', $school['year'])));
+        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('edit/edit_book');
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form', $data);
             $this->load->view('templates/footer');
         } else {
-            $this->database_model->edit_book($id);
-
-            $data['message'] = 'Raamatu muutmine õnnestus';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('success', $data);
-            $this->load->view('templates/footer');
+            $this->database_model->edit_book($book_id);
+            redirect(base_url('Raamatud'));
         }
     }
 
@@ -154,7 +164,7 @@ class Edit extends CI_Controller {
         for ($i = 0; $i < count($list_rows); $i++) {
             $row = $list_rows[$i];
             if ($row['class_id'] == $class_id) {
-                $books .= '<li>'.$this->database_model->get_book_by_id($row['book_id'])['title'].' <span class="remove-book"><a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></span></li>';
+                $books .= '<li>'.$this->database_model->get_book($row['book_id'])['title'].' <span class="remove-book"><a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></span></li>';
             }
         }
         $books .= '</ul>';

@@ -101,24 +101,38 @@ class Add extends CI_Controller {
     public function add_book()
     {
 
+        $data['active'] = 'Raamatud';
         $data['title'] = 'Raamatu lisamine';
+        $data['form_action'] = base_url('Lisa/Raamat');
 
-        $this->form_validation->set_rules('title', 'Title', 'required');
-        $this->form_validation->set_rules('author', 'Author', 'required');
-        $this->form_validation->set_rules('year', 'Year', 'numeric|required');
+        $this->form_validation->set_rules('title', 'title', 'is_unique[book.title]|required');
+        $this->form_validation->set_rules('author', 'author', 'required');
+        $this->form_validation->set_rules('year', 'year', 'numeric|required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Raamatu nimi', 'title'), form_input('title', $this->input->post('title'))));
+        array_push($table_rows, array(form_label('Autor', 'author'), form_input('author', $this->input->post('author'))));
+        array_push($table_rows, array(form_label('Aasta', 'year'), form_input('year', $this->input->post('year'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('add/add_book', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->add_book();
-
-            $data['message'] = 'Raamatu lisamine õnnestus';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('success', $data);
-            $this->load->view('templates/footer');
+            redirect(base_url("Raamatud"));
         }
     }
 

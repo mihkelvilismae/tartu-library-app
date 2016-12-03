@@ -89,28 +89,38 @@ class View extends CI_Controller {
 
     public function view_books()
     {
-        $data['books'] = $this->database_model->get_books();
+        $data['active'] = 'Raamatud';
+        $books = $this->database_model->get_books();
         $data['title'] = 'Raamatud';
-        $i = 0;
-        foreach ($data['books'] as $book) {
-            $data['books'][$i]['edit'] = '<a href="'.base_url("Muuda/Raamat/".$book['id']).'">Muuda</a>';
-            $i++;
+        $table_rows = array();
+
+        for ($i = 0; $i < count($books); $i++) {
+            $book = $books[$i];
+            $change_delete = '<a href="'.base_url("Muuda/Raamat/".$book['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Raamat/'.$book["id"]).'">Kustuta</a>';
+
+            array_push(
+                $table_rows,
+                array(
+                    $book['title'],
+                    $book['author'],
+                    $book['year'],
+                    $change_delete
+                )
+            );
         }
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">',
-            'table_close' => '<tr><td colspan="5"><a href="'.base_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr>
-                <tr><td colspan="5"><a href="'.base_url('Kustuta/Raamat').'">Kustuta raamat</a></td></tr>
-                </table>'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Raamatu nimi", "Autor", "Aasta", "Muuda");
+        $this->table->set_heading("Raamatu pealkiri","Autor","Aasta",'<a href="'.base_url('Lisa/Raamat').'\">Lisa</a>');
 
-        $data['table'] = $this->table->generate($data['books']);
+        $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('view/view_books', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
 
@@ -139,7 +149,7 @@ class View extends CI_Controller {
             for ($j = 0; $j < count($list_rows); $j++) {
                 $row = $list_rows[$j];
                 if ($row['class_id'] == $class['id']) {
-                    $books[$row['book_id']] = $this->database_model->get_book_by_id($row['book_id'])['title'];
+                    $books[$row['book_id']] = $this->database_model->get_book($row['book_id'])['title'];
                 }
             }
             if (count($books) > 0) {

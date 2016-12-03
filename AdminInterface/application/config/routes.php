@@ -56,6 +56,7 @@ $route['Kustuta/Klass/(:num)'] = 'Delete/delete_class/$1';
 $route['Kustuta/Nimekiri/(:num)'] = 'Delete/delete_list/$1';
 $route['Kustuta/Nimekirjast/(:num)'] = 'Delete/delete_from_list/$1';
 $route['Kustuta/Kasutaja/(:num)'] = 'Delete/delete_user/$1';
+$route['Kustuta/Raamat/(:num)'] = 'Delete/delete_book/$1';
 
 $route['Koolid'] = 'View/view_schools';
 $route['Raamatud'] = 'View/view_books';
