@@ -56,4 +56,11 @@ class Delete extends CI_Controller {
         $this->database_model->delete_keyword($keyword_id);
         redirect(base_url("Märksõnad"));
     }
+
+    public function delete_keyword_from_book($id)
+    {
+        $book_id = $this->database_model->get_book_keyword_entry($id)['book_id'];
+        $this->database_model->delete_keyword_from_book($id);
+        redirect(base_url("Raamat/".$book_id));
+    }
 }

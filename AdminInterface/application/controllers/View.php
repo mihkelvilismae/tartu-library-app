@@ -98,12 +98,16 @@ class View extends CI_Controller {
             $book = $books[$i];
             $change_delete = '<a href="'.base_url("Muuda/Raamat/".$book['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Raamat/'.$book["id"]).'">Kustuta</a>';
 
+            $book_keywords = $this->database_model->get_keywords($book['id']);
+            $keywords = '<a href="'.base_url("Raamat/".$book['id']).'">'.count($book_keywords)." märksõna</a>";
+
             array_push(
                 $table_rows,
                 array(
                     $book['title'],
                     $book['author'],
                     $book['year'],
+                    $keywords,
                     $change_delete
                 )
             );
@@ -114,7 +118,44 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Raamatu pealkiri","Autor","Aasta",'<a href="'.base_url('Lisa/Raamat').'\">Lisa</a>');
+        $this->table->set_heading("Raamatu pealkiri","Autor","Aasta", "Märksõnad",'<a href="'.base_url('Lisa/Raamat').'\">Lisa</a>');
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_book($book_id)
+    {
+        $this->load->helper('form');
+        $data['active'] = 'Raamatud';
+        $data['title'] = 'Raamatud';
+
+        $book = $this->database_model->get_book($book_id);
+        $keywords = '<ul>';
+        foreach ($this->database_model->get_keywords($book_id) as $keyword) {
+            $kw = $this->database_model->get_keyword($keyword['keyword_id']);
+            $keywords.='<li>'.$kw['name'].' <span class="remove-book"><a href="'.base_url('Kustuta/Raamatult/'.$keyword['id']).'">Kustuta</a></span></li>';
+        }
+        $keywords .= '</ul>';
+
+        $keywords .= '<a href="'.base_url("Lisa/Märksõna/".$book_id).'">Lisa märksõna</a>';
+
+        $table_rows = array();
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("","");
+
+        array_push($table_rows, array("Raamat", $book['title']));
+        array_push($table_rows, array("Märksõnad", $keywords));
+        array_push($table_rows, array("tagasi", form_button('', 'Tagasi', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
 
         $data['table'] = $this->table->generate($table_rows);
 

@@ -75,13 +75,22 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_keywords() {
-        $query = $this->db->get('keyword');
+    public function get_keywords($book_id=NULL) {
+        if ($book_id) {
+            $query = $this->db->get_where('book_keyword', array('book_id'=>$book_id));
+        } else {
+            $query = $this->db->get('keyword');
+        }
         return $query->result_array();
     }
 
     public function get_keyword($keyword_id) {
         $query = $this->db->get_where('keyword', array('id'=>$keyword_id));
+        return $query->row_array();
+    }
+
+    public function get_book_keyword_entry($id) {
+        $query = $this->db->get_where('book_keyword', array('id'=>$id));
         return $query->row_array();
     }
 
@@ -159,6 +168,17 @@ class Database_model extends CI_Model {
         );
 
         return $this->db->insert('keyword', $data);
+    }
+
+    public function add_keyword_to_book($book_id) {
+        $this->load->helper('url');
+
+        $data = array(
+            'book_id' => $book_id,
+            'keyword_id' => $this->input->post('keyword_id')
+        );
+
+        return $this->db->insert('book_keyword', $data);
     }
 
     public function edit_school($id) {
@@ -286,6 +306,11 @@ class Database_model extends CI_Model {
     public function delete_keyword($keyword_id) {
         $this->db->where('id', $keyword_id);
         return $this->db->delete('keyword');
+    }
+
+    public function delete_keyword_from_book($id) {
+        $this->db->where('id', $id);
+        return $this->db->delete('book_keyword');
     }
 
     public function get_user() {
