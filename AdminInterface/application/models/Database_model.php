@@ -75,9 +75,16 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_keywords($book_id=NULL) {
-        if ($book_id) {
-            $query = $this->db->get_where('book_keyword', array('book_id'=>$book_id));
+    public function get_keywords($book_id=NULL, $keyword_id=NULL) {
+        if ($book_id||$keyword_id) {
+            $where = array();
+            if ($book_id) {
+                $where['book_id'] = $book_id;
+            }
+            if ($keyword_id) {
+                $where['keyword_id'] = $keyword_id;
+            }
+            $query = $this->db->get_where('book_keyword', $where);
         } else {
             $query = $this->db->get('keyword');
         }
