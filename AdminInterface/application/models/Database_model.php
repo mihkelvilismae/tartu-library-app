@@ -325,4 +325,21 @@ class Database_model extends CI_Model {
         $query = $this->db->get_where('account', array('email'=>$this->input->post("email"), 'pass'=>$this->input->post("password")));
         return $query->row_array();
     }
+
+    public function search($author, $keywords=array()) {
+        $this->db->select('book.id, book.title');
+        $this->db->from('book');
+        if (!empty($keywords)) {
+            $this->db->join('book_keyword', 'book.id = book_keyword.book_id', 'inner');
+            $this->db->join('keyword', 'book_keyword.keyword_id = keyword.id', 'inner');
+            $this->db->where_in("keyword.name", $keywords);
+            $this->db->group_by("book.id, book.title");
+            $this->db->having('COUNT(DISTINCT keyword.id) = ', count($keywords));
+        }
+        if (!($author == '')) {
+            $this->db->like('book.author', $author);
+        }
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

@@ -89,6 +89,7 @@ $route['Lisa/M%C3%A4rks%C3%B5na/(:num)'] = 'Add/add_keyword_to_book/$1';
 $route['json/Koolid'] = 'JSON/schools';
 $route['json/Klassid/(:num)'] = 'JSON/classes/$1';
 $route['json/Nimekiri/(:num)'] = 'JSON/lists/$1';
+$route['json/Otsing'] = 'JSON/search';
 
 $route['default_controller'] = 'Login/login';
 $route['404_override'] = '';

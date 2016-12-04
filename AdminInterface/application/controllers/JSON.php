@@ -45,4 +45,19 @@ class JSON extends CI_Controller {
 
         echo json_encode($arr);
     }
+
+    public function search() {
+        $author = $this->input->get('author');
+        $keyword = $this->input->get('genre');
+
+        $keywords = array();
+
+        if (!($keyword == '')) {
+            foreach (explode(',', $keyword) as $kwd) {
+                array_push($keywords, $kwd);
+            }
+        }
+
+        echo json_encode($this->database_model->search($author, $keywords));
+    }
 }
