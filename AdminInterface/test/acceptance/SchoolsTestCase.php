@@ -75,11 +75,11 @@ class SchoolsTestCase extends AdminInterfaceTestCase
     public function deleteTestSchool()
     {
         $this->goToSchoolsOverviewPage();
-        $this->deleteSchoolWithName(self::TEST_SCHOOL_DATA['name']);
+        $this->clickTestSchoolsRemoveButton(self::TEST_SCHOOL_DATA['name']);
     }
 
     // TODO: DRY
-    public function deleteSchoolWithName($schoolName)
+    public function clickTestSchoolsRemoveButton($schoolName)
     {
         $this->goToSchoolsOverviewPage();
 
@@ -107,12 +107,22 @@ class SchoolsTestCase extends AdminInterfaceTestCase
     public function assertSchoolWithDataExists($schoolData)
     {
         $this->goToSchoolsOverviewPage();
+        $this->assertSchoolWithDataCountIs($schoolData, 1);
+    }
 
-        $this->assertElementsCountIs(1,
+    public function assertSchoolWithDataDoesNotExist($schoolData)
+    {
+        $this->goToSchoolsOverviewPage();
+        $this->assertSchoolWithDataCountIs($schoolData, 0);
+    }
+
+    public function assertSchoolWithDataCountIs($schoolData, $count)
+    {
+        $this->assertElementsCountIs($count,
                 WebDriverBy::xpath('//td[text()="' . $schoolData['name'] . '"]'));
-        $this->assertElementsCountIs(1,
+        $this->assertElementsCountIs($count,
                 WebDriverBy::xpath('//td[text()="' . $schoolData['phone'] . '"]'));
-        $this->assertElementsCountIs(1,
+        $this->assertElementsCountIs($count,
                 WebDriverBy::xpath('//td[text()="' . $schoolData['email'] . '"]'));
     }
 }

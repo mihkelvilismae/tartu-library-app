@@ -17,7 +17,7 @@ class UseCase_AddingSchools_Test extends SchoolsTestCase
 {
     function tearDown()
     {
-        $this->deleteSchoolWithName(self::TEST_SCHOOL_DATA['name']);
+        $this->clickTestSchoolsRemoveButton(self::TEST_SCHOOL_DATA['name']);
         parent::tearDown();
     }
 

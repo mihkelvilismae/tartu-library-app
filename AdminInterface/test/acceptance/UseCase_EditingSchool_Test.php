@@ -28,7 +28,7 @@ class UseCase_EditSchool_Test extends SchoolsTestCase
 
     function tearDown()
     {
-        $this->deleteSchoolWithName(self::EDITED_SCHOOL_DATA['name']);
+        $this->clickTestSchoolsRemoveButton(self::EDITED_SCHOOL_DATA['name']);
         parent::tearDown();
     }
 
