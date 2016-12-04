@@ -37,7 +37,7 @@ class AdminInterfaceTestCase extends \PHPUnit_Framework_TestCase
 
     public function typeToFormInput($inputName, $text)
     {
-        $this->findElementByName($inputName)->sendKeys($text);
+        $this->findElementByName($inputName)->clear()->sendKeys($text);
     }
 
     public function clickLinkWithText($linkText)

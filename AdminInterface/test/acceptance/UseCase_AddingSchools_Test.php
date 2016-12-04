@@ -1,7 +1,5 @@
 <?php namespace Test\Acceptance;
 
-use Facebook\WebDriver\WebDriverBy;
-
 require_once('SchoolsTestCase.php');
 
 /**
@@ -17,43 +15,23 @@ require_once('SchoolsTestCase.php');
  */
 class UseCase_AddingSchools_Test extends SchoolsTestCase
 {
-    const ADD_SCHOOL_LINK_TEXT = 'Lisa';
-
     function tearDown()
     {
-        $this->deleteTestSchool(); // Delete school before we close webdriver
+        $this->deleteTestSchool();
         parent::tearDown();
     }
 
     public function testCanAddSchools()
     {
-        $this->clickLinkWithText(self::ADD_SCHOOL_LINK_TEXT);
-        $this->submitTestDataToAddSchoolForm();
+        $addedSchoolData = array(
+                'name' => self::TEST_SCHOOL_NAME,
+                'phone' => self::TEST_SCHOOL_PHONE,
+                'email' => self::TEST_SCHOOL_EMAIL
+        );
 
-        $this->assertSchoolWithTestDataExists();
-    }
-
-    public function submitTestDataToAddSchoolForm()
-    {
-        $this->typeToFormInput(self::ADD_SCHOOL_FORM_SCHOOL_NAME_INPUT_NAME,
-                self::TEST_SCHOOL_NAME);
-        $this->typeToFormInput(self::ADD_SCHOOL_FORM_SCHOOL_PHONE_INPUT_NAME,
-                self::TEST_SCHOOL_PHONE);
-        $this->typeToFormInput(self::ADD_SCHOOL_FORM_SCHOOL_EMAIL_INPUT_NAME,
-                self::TEST_SCHOOL_EMAIL);
-
-        $this->clickButton(self::ADD_SCHOOL_FORM_SUBMIT_BUTTON_NAME);
-    }
-
-    public function assertSchoolWithTestDataExists()
-    {
-        $this->goToSchoolsListPage();
-
-        $this->assertElementsCountIs(1,
-                WebDriverBy::xpath('//td[text()="' . self::TEST_SCHOOL_NAME . '"]'));
-        $this->assertElementsCountIs(1,
-                WebDriverBy::xpath('//td[text()="' . self::TEST_SCHOOL_PHONE . '"]'));
-        $this->assertElementsCountIs(1,
-                WebDriverBy::xpath('//td[text()="' . self::TEST_SCHOOL_EMAIL . '"]'));
+        $this->goToSchoolsOverviewPage();
+        $this->goToAddSchoolPageFromOverview();
+        $this->submitAddSchoolFormWithData($addedSchoolData);
+        $this->assertSchoolWithDataExists($addedSchoolData);
     }
 }
