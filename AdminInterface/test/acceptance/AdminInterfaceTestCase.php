@@ -30,9 +30,13 @@ class AdminInterfaceTestCase extends \PHPUnit_Framework_TestCase
         $this->driver->quit();
     }
 
-    public function findElementByTag($tag)
+    public function submitForm($submitButton, $inputData)
     {
-        return $this->findElement(WebDriverBy::tagName($tag));
+        foreach ($inputData as $inputName => $inputValue) {
+            $this->typeToFormInput($inputName, $inputValue);
+        }
+
+        $this->clickButton($submitButton);
     }
 
     public function typeToFormInput($inputName, $text)
@@ -48,6 +52,11 @@ class AdminInterfaceTestCase extends \PHPUnit_Framework_TestCase
     public function clickLink($locator)
     {
         $this->driver->findElement($locator)->click();
+    }
+
+    public function findElementByTag($tag)
+    {
+        return $this->findElement(WebDriverBy::tagName($tag));
     }
 
     public function findElementByName($name)

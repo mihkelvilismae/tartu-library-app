@@ -26,10 +26,11 @@ class SchoolsTestCase extends AdminInterfaceTestCase
     const EDIT_SCHOOL_FORM_SCHOOL_EMAIL_INPUT_NAME = 'email';
     const EDIT_SCHOOL_FORM_SUBMIT_BUTTON_NAME = 'submit';
 
-    // TODO: To array?
-    const TEST_SCHOOL_NAME = 'test_school_name';
-    const TEST_SCHOOL_EMAIL = 'test.school@ema.il';
-    const TEST_SCHOOL_PHONE = '123456789';
+    const TEST_SCHOOL_DATA = [
+            'name' => 'test_school_name',
+            'email' => 'test.school@ema.il',
+            'phone' => '123456789'
+    ];
 
     public function goToSchoolsOverviewPage()
     {
@@ -45,51 +46,36 @@ class SchoolsTestCase extends AdminInterfaceTestCase
         $this->clickLinkWithText(self::ADD_SCHOOL_LINK_TEXT);
     }
 
-    public function clickTestSchoolsEditButton()
-    {
-        $pattern = '//'; // Element from anywhere
-        $pattern .= 'td[text()="' . self::TEST_SCHOOL_NAME . '"]'; // <td> of school
-        $pattern .= '/..'; // Select parent element (should be <tr> holding school info <td>'s)
-        $pattern .= '/td[last()]'; // Last <td> (with delete link)
-        $pattern .= '/a[text()="' . self::EDIT_SCHOOL_LINK_TEXT . '"]'; // Select edit link
-
-        $this->clickLink(WebDriverBy::xpath($pattern));
-    }
-
     // TODO: Duplicates UseCase_AddingSchools_Test, but don't want to hide usage in there.
     public function addTestSchool()
     {
         $this->goToSchoolsOverviewPage();
         $this->goToAddSchoolPageFromOverview();
-        $this->submitAddSchoolFormWithData(array(
-                'name' => self::TEST_SCHOOL_NAME,
-                'phone' => self::TEST_SCHOOL_PHONE,
-                'email' => self::TEST_SCHOOL_EMAIL
-        ));
+        $this->submitAddSchoolFormWithData(self::TEST_SCHOOL_DATA);
     }
 
     public function submitAddSchoolFormWithData($schoolData)
     {
-        $this->typeToFormInput(self::ADD_SCHOOL_FORM_SCHOOL_NAME_INPUT_NAME, $schoolData['name']);
-        $this->typeToFormInput(self::ADD_SCHOOL_FORM_SCHOOL_PHONE_INPUT_NAME, $schoolData['phone']);
-        $this->typeToFormInput(self::ADD_SCHOOL_FORM_SCHOOL_EMAIL_INPUT_NAME, $schoolData['email']);
-
-        $this->clickButton(self::ADD_SCHOOL_FORM_SUBMIT_BUTTON_NAME);
+        $this->submitForm(self::ADD_SCHOOL_FORM_SUBMIT_BUTTON_NAME, [
+                self::ADD_SCHOOL_FORM_SCHOOL_NAME_INPUT_NAME => $schoolData['name'],
+                self::ADD_SCHOOL_FORM_SCHOOL_PHONE_INPUT_NAME => $schoolData['phone'],
+                self::ADD_SCHOOL_FORM_SCHOOL_EMAIL_INPUT_NAME => $schoolData['email']
+        ]);
     }
 
     public function submitEditSchoolFormWithData($schoolData)
     {
-        $this->typeToFormInput(self::EDIT_SCHOOL_FORM_SCHOOL_NAME_INPUT_NAME, $schoolData['name']);
-        $this->typeToFormInput(self::EDIT_SCHOOL_FORM_SCHOOL_PHONE_INPUT_NAME, $schoolData['phone']);
-        $this->typeToFormInput(self::EDIT_SCHOOL_FORM_SCHOOL_EMAIL_INPUT_NAME, $schoolData['email']);
-
-        $this->clickButton(self::EDIT_SCHOOL_FORM_SUBMIT_BUTTON_NAME);
+        $this->submitForm(self::EDIT_SCHOOL_FORM_SUBMIT_BUTTON_NAME, [
+                self::EDIT_SCHOOL_FORM_SCHOOL_NAME_INPUT_NAME => $schoolData['name'],
+                self::EDIT_SCHOOL_FORM_SCHOOL_PHONE_INPUT_NAME => $schoolData['phone'],
+                self::EDIT_SCHOOL_FORM_SCHOOL_EMAIL_INPUT_NAME => $schoolData['email']
+        ]);
     }
 
     public function deleteTestSchool()
     {
         $this->goToSchoolsOverviewPage();
-        $this->deleteSchoolWithName(self::TEST_SCHOOL_NAME);
+        $this->deleteSchoolWithName(self::TEST_SCHOOL_DATA['name']);
     }
 
     // TODO: DRY
@@ -102,6 +88,18 @@ class SchoolsTestCase extends AdminInterfaceTestCase
         $pattern .= '/..'; // Select parent element (should be <tr> holding school info <td>'s)
         $pattern .= '/td[last()]'; // Last <td> (with delete link)
         $pattern .= '/a[text()="' . self::DELETE_SCHOOL_LINK_TEXT . '"]'; // Select delete link
+
+        $this->clickLink(WebDriverBy::xpath($pattern));
+    }
+
+    // TODO: DRY
+    public function clickTestSchoolsEditButton()
+    {
+        $pattern = '//'; // Element from anywhere
+        $pattern .= 'td[text()="' . self::TEST_SCHOOL_DATA['name'] . '"]'; // <td> of school
+        $pattern .= '/..'; // Select parent element (should be <tr> holding school info <td>'s)
+        $pattern .= '/td[last()]'; // Last <td> (with delete link)
+        $pattern .= '/a[text()="' . self::EDIT_SCHOOL_LINK_TEXT . '"]'; // Select edit link
 
         $this->clickLink(WebDriverBy::xpath($pattern));
     }

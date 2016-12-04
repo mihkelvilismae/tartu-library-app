@@ -17,21 +17,15 @@ class UseCase_AddingSchools_Test extends SchoolsTestCase
 {
     function tearDown()
     {
-        $this->deleteTestSchool();
+        $this->deleteSchoolWithName(self::TEST_SCHOOL_DATA['name']);
         parent::tearDown();
     }
 
     public function testCanAddSchools()
     {
-        $addedSchoolData = array(
-                'name' => self::TEST_SCHOOL_NAME,
-                'phone' => self::TEST_SCHOOL_PHONE,
-                'email' => self::TEST_SCHOOL_EMAIL
-        );
-
         $this->goToSchoolsOverviewPage();
         $this->goToAddSchoolPageFromOverview();
-        $this->submitAddSchoolFormWithData($addedSchoolData);
-        $this->assertSchoolWithDataExists($addedSchoolData);
+        $this->submitAddSchoolFormWithData(self::TEST_SCHOOL_DATA);
+        $this->assertSchoolWithDataExists(self::TEST_SCHOOL_DATA);
     }
 }

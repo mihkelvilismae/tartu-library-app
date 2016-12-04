@@ -15,9 +15,9 @@ require_once('SchoolsTestCase.php');
 class UseCase_EditSchool_Test extends SchoolsTestCase
 {
     const EDITED_SCHOOL_DATA = [
-        'name' => self::TEST_SCHOOL_NAME . '_new',
+        'name' => self::TEST_SCHOOL_DATA['name'] . '_new',
         'phone' => '666666',
-        'email' => self::TEST_SCHOOL_EMAIL . '.new'
+        'email' => self::TEST_SCHOOL_DATA['email'] . '.new'
     ];
 
     function setUp()
