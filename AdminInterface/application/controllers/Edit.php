@@ -24,7 +24,8 @@ class Edit extends CI_Controller {
         $data['form_action'] = 'Muuda/Kool/'.$school_id;
         $school = $this->database_model->get_school($school_id);
 
-        $this->form_validation->set_rules('name', 'Name', 'is_unique[school.name]|required');
+        $this->form_validation->set_message('unique_school_name', 'The school name must be unique.');
+        $this->form_validation->set_rules('name', 'Name', 'callback_unique_school_name['.$school_id.']|required');
         $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
         $this->form_validation->set_rules('email', 'E-Mail', 'valid_email|required');
 
@@ -107,7 +108,8 @@ class Edit extends CI_Controller {
         $data['form_action'] = 'Muuda/Raamat/'.$book_id;
         $school = $this->database_model->get_book($book_id);
 
-        $this->form_validation->set_rules('title', 'title', 'is_unique[book.title]|required');
+        $this->form_validation->set_message('unique_book_title', 'The book title must be unique.');
+        $this->form_validation->set_rules('title', 'title', 'callback_unique_book_title['.$book_id.']|required');
         $this->form_validation->set_rules('author', 'author', 'required');
         $this->form_validation->set_rules('year', 'year', 'numeric|required');
 
@@ -203,7 +205,8 @@ class Edit extends CI_Controller {
         $data['form_action'] = 'Muuda/Märksõna/'.$keyword_id;
         $school = $this->database_model->get_keyword($keyword_id);
 
-        $this->form_validation->set_rules('name', 'Name', 'is_unique[keyword.name]|required');
+        $this->form_validation->set_message('unique_keyword_name', 'The keyword name must be unique.');
+        $this->form_validation->set_rules('name', 'Name', 'callback_unique_keyword_name['.$keyword_id.']|required');
         $table_rows = array();
 
         array_push($table_rows, array('', ''));
@@ -229,14 +232,52 @@ class Edit extends CI_Controller {
         }
     }
 
-    public function is_unique($school_name, $school_id) {
+    public function unique_school_name($school_name, $school_id) {
+        $schools = $this->database_model->get_schools();
+        foreach ($schools as $school) {
+            if ($school['id'] == $school_id) {
+                continue;
+            }
+            if ($school['name'] === $school_name) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
 
+    public function unique_book_title($book_title, $book_id) {
+        $books = $this->database_model->get_schools();
+        foreach ($books as $book) {
+            if ($book['id'] == $book_id) {
+                continue;
+            }
+            if ($book['title'] === $book_title) {
+                return FALSE;
+            }
+        }
+        return TRUE;
     }
 
     public function class_name_check($class_name, $school_id) {
         $classes = $this->database_model->get_classes($school_id);
         foreach ($classes as $class) {
+            if ($class['id'] == $this->uri->segment(3)) {
+                continue;
+            }
             if ($class['name'] === $class_name) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+    public function unique_keyword_name($keyword_name, $keyword_id) {
+        $keywords = $this->database_model->get_keywords();
+        foreach ($keywords as $keyword) {
+            if ($keyword['id'] == $keyword_id) {
+                continue;
+            }
+            if ($keyword['name'] === $keyword_name) {
                 return FALSE;
             }
         }
