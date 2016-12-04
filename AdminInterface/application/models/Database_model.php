@@ -328,8 +328,8 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function search($author, $keywords=array()) {
-        $this->db->select('book.id, book.title');
+    public function search($author, $keywords, $language, $year) {
+        $this->db->select('book.*');
         $this->db->from('book');
         if (!empty($keywords)) {
             $this->db->join('book_keyword', 'book.id = book_keyword.book_id', 'inner');
@@ -340,6 +340,17 @@ class Database_model extends CI_Model {
         }
         if (!($author == '')) {
             $this->db->like('book.author', $author);
+        }
+        if (!($language == '')) {
+            $this->db->where('book.lang', $language);
+        }
+        if (!empty($year)) {
+            if (count($year) == 1) {
+                $this->db->where('book.year', $year[0]);
+            } else {
+                $this->db->where('book.year >=', $year[0]);
+                $this->db->where('book.year <=', $year[1]);
+            }
         }
         $query = $this->db->get();
         return $query->result_array();
