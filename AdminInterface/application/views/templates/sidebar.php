@@ -23,7 +23,13 @@
                 <td><a href="<?=base_url("Nimekiri")?>" <?php if (isset($active) && $active==="Nimekiri") {echo "class=\"active-class\"";} ?>>Raamatunimekirjad</a></td>
             </tr>
             <tr>
-                <td><a href="<?=base_url("Login/logout")?>">Logi v�lja</a></td>
+                <td><a href="<?=base_url("Raamatud")?>" <?php if (isset($active) && $active==="Raamatud") {echo "class=\"active-class\"";} ?>>Raamatud</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?=base_url("Märksõnad")?>" <?php if (isset($active) && $active==="Märksõnad") {echo "class=\"active-class\"";} ?>>Märksõnad</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?=base_url("Login/logout")?>">Logi välja</a></td>
             </tr>
                 </table>
     </span>
