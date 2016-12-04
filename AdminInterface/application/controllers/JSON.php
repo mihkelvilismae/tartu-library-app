@@ -47,8 +47,47 @@ class JSON extends CI_Controller {
     }
 
     public function keywords() {
-        $keywords = $this->database_model->get_keywords();
+        $start = strtolower($this->input->get('sõna'));
+        $keywords = array();
+        foreach ($this->database_model->get_keywords() as $keyword) {
+            if (substr(strtolower($keyword['name']), 0, strlen($start)) === $start) {
+                if (!in_array($keyword['name'], $keywords)) {
+                    array_push($keywords, $keyword['name']);
+                }
+            }
+        }
+        sort($keywords);
         echo json_encode($keywords);
+    }
+
+    public function authors() {
+        $start = strtolower($this->input->get('sõna'));
+        $authors = array();
+        $last_names = array();
+        foreach ($this->database_model->get_authors() as $author) {
+            if (substr(strtolower($author['lastname']), 0, strlen($start)) === $start) {
+                if (!in_array($author, $authors)) {
+                    array_push($authors, $author['firstname'].' '.$author['lastname']);
+                    array_push($last_names, $author['lastname']);
+                }
+            }
+        }
+        array_multisort($last_names, SORT_STRING, $authors);
+        echo json_encode($authors);
+    }
+
+    public function genres() {
+        $start = strtolower($this->input->get('sõna'));
+        $genres = array();
+        foreach ($this->database_model->get_genres() as $genre) {
+            if (substr(strtolower($genre['name']), 0, strlen($start)) === $start) {
+                if (!in_array($genre['name'], $genres)) {
+                    array_push($genres, $genre['name']);
+                }
+            }
+        }
+        sort($genres);
+        echo json_encode($genres);
     }
 
     public function search() {
