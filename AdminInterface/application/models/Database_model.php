@@ -70,6 +70,12 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_user() {
+        $this->load->helper('url');
+        $query = $this->db->get_where('account', array('email'=>$this->input->post("email"), 'pass'=>$this->input->post("password")));
+        return $query->row_array();
+    }
+
     public function get_books() {
         $query = $this->db->get('book');
         return $query->result_array();
@@ -101,6 +107,58 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_authors($book_id=NULL, $author_id=NULL) {
+        if ($book_id||$author_id) {
+            $where = array();
+            if ($book_id) {
+                $where['book_id'] = $book_id;
+            }
+            if ($author_id) {
+                $where['author_id'] = $author_id;
+            }
+            $query = $this->db->get_where('book_author', $where);
+        } else {
+            $query = $this->db->get('author');
+        }
+        return $query->result_array();
+    }
+
+    public function get_author($author_id) {
+        $query = $this->db->get_where('author', array('id'=>$author_id));
+        return $query->row_array();
+    }
+
+    public function get_book_author_entry($id) {
+        $query = $this->db->get_where('book_author', array('id'=>$id));
+        return $query->row_array();
+    }
+
+    public function get_genres($book_id=NULL, $genre_id=NULL) {
+        if ($book_id||$genre_id) {
+            $where = array();
+            if ($book_id) {
+                $where['book_id'] = $book_id;
+            }
+            if ($genre_id) {
+                $where['genre_id'] = $genre_id;
+            }
+            $query = $this->db->get_where('book_genre', $where);
+        } else {
+            $query = $this->db->get('genre');
+        }
+        return $query->result_array();
+    }
+
+    public function get_genre($genre_id) {
+        $query = $this->db->get_where('genre', array('id'=>$genre_id));
+        return $query->row_array();
+    }
+
+    public function get_book_genre_entry($id) {
+        $query = $this->db->get_where('book_genre', array('id'=>$id));
+        return $query->row_array();
+    }
+
     public function add_school() {
         $this->load->helper('url');
 
@@ -129,7 +187,6 @@ class Database_model extends CI_Model {
 
         $data = array(
             'title' => $this->input->post('title'),
-            'author' => $this->input->post('author'),
             'lang' => $this->input->post('lang'),
             'year' => $this->input->post('year')
         );
@@ -189,6 +246,49 @@ class Database_model extends CI_Model {
         return $this->db->insert('book_keyword', $data);
     }
 
+    public function add_author() {
+        $this->load->helper('url');
+
+        $data = array(
+            'firstname' => $this->input->post('firstname'),
+            'lastname' => $this->input->post('lastname')
+        );
+
+        return $this->db->insert('author', $data);
+    }
+
+    public function add_author_to_book($book_id) {
+        $this->load->helper('url');
+
+        $data = array(
+            'book_id' => $book_id,
+            'author_id' => $this->input->post('author_id')
+        );
+
+        return $this->db->insert('book_author', $data);
+    }
+
+    public function add_genre() {
+        $this->load->helper('url');
+
+        $data = array(
+            'name' => $this->input->post('name')
+        );
+
+        return $this->db->insert('genre', $data);
+    }
+
+    public function add_genre_to_book($book_id) {
+        $this->load->helper('url');
+
+        $data = array(
+            'book_id' => $book_id,
+            'genre_id' => $this->input->post('genre_id')
+        );
+
+        return $this->db->insert('book_genre', $data);
+    }
+
     public function edit_school($id) {
         $this->load->helper('url');
 
@@ -223,7 +323,6 @@ class Database_model extends CI_Model {
 
         $changes = array(
             'title' => $this->input->post('title'),
-            'author' => $this->input->post('author'),
             'lang' => $this->input->post('lang'),
             'year' => $this->input->post('year')
         );
@@ -258,6 +357,33 @@ class Database_model extends CI_Model {
         $this->db->where('id', $keyword_id);
 
         return $this->db->update('keyword');
+    }
+
+    public function edit_author($author_id) {
+        $this->load->helper('url');
+
+        $changes = array(
+            'firstname' => $this->input->post('firstname'),
+            'lastname' => $this->input->post('lastname')
+        );
+
+        $this->db->set($changes);
+        $this->db->where('id', $author_id);
+
+        return $this->db->update('author');
+    }
+
+    public function edit_genre($genre_id) {
+        $this->load->helper('url');
+
+        $changes = array(
+            'name' => $this->input->post('name')
+        );
+
+        $this->db->set($changes);
+        $this->db->where('id', $genre_id);
+
+        return $this->db->update('genre');
     }
 
     public function delete_school($id=NULL) {
@@ -322,11 +448,26 @@ class Database_model extends CI_Model {
         return $this->db->delete('book_keyword');
     }
 
-    public function get_user() {
-        $this->load->helper('url');
-        $query = $this->db->get_where('account', array('email'=>$this->input->post("email"), 'pass'=>$this->input->post("password")));
-        return $query->row_array();
+    public function delete_author($author_id) {
+        $this->db->where('id', $author_id);
+        return $this->db->delete('author');
     }
+
+    public function delete_author_from_book($id) {
+        $this->db->where('id', $id);
+        return $this->db->delete('book_author');
+    }
+
+    public function delete_genre($genre_id) {
+        $this->db->where('id', $genre_id);
+        return $this->db->delete('genre');
+    }
+
+    public function delete_genre_from_book($id) {
+        $this->db->where('id', $id);
+        return $this->db->delete('book_genre');
+    }
+
 
     public function search($author, $keywords, $language, $year) {
         $this->db->select('book.*');

@@ -48,7 +48,6 @@ class JSON extends CI_Controller {
 
     public function keywords() {
         $keywords = $this->database_model->get_keywords();
-
         echo json_encode($keywords);
     }
 

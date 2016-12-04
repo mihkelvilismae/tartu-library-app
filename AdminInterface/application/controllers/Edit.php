@@ -108,19 +108,46 @@ class Edit extends CI_Controller {
         $data['form_action'] = 'Muuda/Raamat/'.$book_id;
         $school = $this->database_model->get_book($book_id);
 
+
+        $book_authors = $this->database_model->get_authors($book_id);
+        $authors = '<ul>';
+        foreach ($book_authors as $author) {
+            $a = $this->database_model->get_author($author['author_id']);
+            $authors.='<li>'.$a['firstname'].' '.$a['lastname'].' <span class="remove-book"><a href="'.base_url('Kustuta/RaamatultAutor/'.$author['id']).'">Kustuta</a></span></li>';
+        }
+        $authors .= '</ul>';
+        $authors .= '<a href="'.base_url("Lisa/Autor/".$book_id).'">Lisa autor</a>';
+
+        $keywords = '<ul>';
+        foreach ($this->database_model->get_keywords($book_id) as $keyword) {
+            $g = $this->database_model->get_keyword($keyword['keyword_id']);
+            $keywords.='<li>'.$g['name'].' <span class="remove-book"><a href="'.base_url('Kustuta/RaamatultMärksõna/'.$keyword['id']).'">Kustuta</a></span></li>';
+        }
+        $keywords .= '</ul>';
+        $keywords .= '<a href="'.base_url("Lisa/Märksõna/".$book_id).'">Lisa märksõna</a>';
+        
+        $genres = '<ul>';
+        foreach ($this->database_model->get_genres($book_id) as $genre) {
+            $g = $this->database_model->get_genre($genre['genre_id']);
+            $genres.='<li>'.$g['name'].' <span class="remove-book"><a href="'.base_url('Kustuta/RaamatultZanr/'.$genre['id']).'">Kustuta</a></span></li>';
+        }
+        $genres .= '</ul>';
+        $genres .= '<a href="'.base_url("Lisa/Zanr/".$book_id).'">Lisa zanr</a>';
+
         $this->form_validation->set_message('unique_book_title', 'The book title must be unique.');
         $this->form_validation->set_rules('title', 'title', 'callback_unique_book_title['.$book_id.']|required');
         $this->form_validation->set_rules('lang', 'language', 'required');
-        $this->form_validation->set_rules('author', 'author', 'required');
         $this->form_validation->set_rules('year', 'year', 'numeric|required');
 
         $table_rows = array();
 
         array_push($table_rows, array('', ''));
         array_push($table_rows, array(form_label('Raamatu nimi', 'title'), form_input('title', $school['title'])));
-        array_push($table_rows, array(form_label('Autor', 'author'), form_input('author', $school['author'])));
+        array_push($table_rows, array(form_label('Autorid'), $authors));
         array_push($table_rows, array(form_label('Keel', 'lang'), form_input('lang', $school['lang'])));
         array_push($table_rows, array(form_label('Aasta', 'year'), form_input('year', $school['year'])));
+        array_push($table_rows, array(form_label('Märksõnad'), $keywords));
+        array_push($table_rows, array(form_label('Zanrid'), $genres));
         array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
 
         $template = array(
@@ -234,6 +261,74 @@ class Edit extends CI_Controller {
         }
     }
 
+    public function edit_author($author_id) {
+        $data['active'] = 'Autor';
+        $data['title'] = 'Autori muutmine';
+        $data['form_action'] = 'Muuda/Autor/'.$author_id;
+        $author = $this->database_model->get_author($author_id);
+
+        $this->form_validation->set_rules('firstname', 'firstname', 'required');
+        $this->form_validation->set_rules('lastname', 'lastname', 'required');
+
+        $table_rows = array();
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Eesnimi', 'firstname'), form_input('firstname', $author['firstname'])));
+        array_push($table_rows, array(form_label('Perenimi', 'lastname'), form_input('lastname', $author['lastname'])));
+        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Autorid').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->edit_author($author_id);
+            redirect(base_url('Autorid'));
+        }
+    }
+
+    public function edit_genre($genre_id) {
+        $data['active'] = 'Zanrid';
+        $data['title'] = 'Zanri muutmine';
+        $data['form_action'] = 'Muuda/Zanr/'.$genre_id;
+        $school = $this->database_model->get_genre($genre_id);
+
+        $this->form_validation->set_message('unique_genre_name', 'The genre name must be unique.');
+        $this->form_validation->set_rules('name', 'Name', 'callback_unique_genre_name['.$genre_id.']|required');
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Märksõna', 'name'), form_input('name', $school['name'])));
+        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Zanrid').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->edit_genre($genre_id);
+            redirect(base_url('Zanrid'));
+        }
+    }
+
+
     public function unique_school_name($school_name, $school_id) {
         $schools = $this->database_model->get_schools();
         foreach ($schools as $school) {
@@ -280,6 +375,19 @@ class Edit extends CI_Controller {
                 continue;
             }
             if ($keyword['name'] === $keyword_name) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+    public function unique_genre_name($genre_name, $genre_id) {
+        $genres = $this->database_model->get_genres();
+        foreach ($genres as $genre) {
+            if ($genre['id'] == $genre_id) {
+                continue;
+            }
+            if ($genre['name'] === $genre_name) {
                 return FALSE;
             }
         }
