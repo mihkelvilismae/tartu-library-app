@@ -106,6 +106,7 @@ class View extends CI_Controller {
                 array(
                     $book['title'],
                     $book['author'],
+                    $book['lang'],
                     $book['year'],
                     $keywords,
                     $change_delete
@@ -118,7 +119,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Raamatu pealkiri","Autor","Aasta", "Märksõnad",'<a href="'.base_url('Lisa/Raamat').'\">Lisa</a>');
+        $this->table->set_heading("Raamatu pealkiri","Autor", "Keel","Aasta", "Märksõnad",'<a href="'.base_url('Lisa/Raamat').'\">Lisa</a>');
 
         $data['table'] = $this->table->generate($table_rows);
 

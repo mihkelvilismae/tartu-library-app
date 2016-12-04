@@ -110,6 +110,7 @@ class Edit extends CI_Controller {
 
         $this->form_validation->set_message('unique_book_title', 'The book title must be unique.');
         $this->form_validation->set_rules('title', 'title', 'callback_unique_book_title['.$book_id.']|required');
+        $this->form_validation->set_rules('lang', 'language', 'required');
         $this->form_validation->set_rules('author', 'author', 'required');
         $this->form_validation->set_rules('year', 'year', 'numeric|required');
 
@@ -118,6 +119,7 @@ class Edit extends CI_Controller {
         array_push($table_rows, array('', ''));
         array_push($table_rows, array(form_label('Raamatu nimi', 'title'), form_input('title', $school['title'])));
         array_push($table_rows, array(form_label('Autor', 'author'), form_input('author', $school['author'])));
+        array_push($table_rows, array(form_label('Keel', 'lang'), form_input('lang', $school['lang'])));
         array_push($table_rows, array(form_label('Aasta', 'year'), form_input('year', $school['year'])));
         array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
 

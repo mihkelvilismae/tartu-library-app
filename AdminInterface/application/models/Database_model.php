@@ -130,6 +130,7 @@ class Database_model extends CI_Model {
         $data = array(
             'title' => $this->input->post('title'),
             'author' => $this->input->post('author'),
+            'lang' => $this->input->post('lang'),
             'year' => $this->input->post('year')
         );
 
@@ -223,6 +224,7 @@ class Database_model extends CI_Model {
         $changes = array(
             'title' => $this->input->post('title'),
             'author' => $this->input->post('author'),
+            'lang' => $this->input->post('lang'),
             'year' => $this->input->post('year')
         );
 
