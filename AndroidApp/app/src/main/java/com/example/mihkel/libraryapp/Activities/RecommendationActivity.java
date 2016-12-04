@@ -213,7 +213,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
                 authorAutoCompleteTextView.setText("");
                 addChoiceToSelected(author, R.id.TAG_AUTHOR);
-                toast(author.toString());
+//                toast(author.toString());
                 drawSelectedAuthors();
             }
         });
@@ -254,7 +254,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
                 bookAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_BOOK);
-                toast(book.toString());
+//                toast(book.toString());
                 drawSelectedBooks();
             }
         });
@@ -352,7 +352,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
                 keywordAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_KEYWORD);
-                toast(book.toString());
+//                toast(book.toString());
                 drawSelectedKeywords();
             }
         });
@@ -577,7 +577,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void toast(String text) {
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     public void fetchDataFromServer() {

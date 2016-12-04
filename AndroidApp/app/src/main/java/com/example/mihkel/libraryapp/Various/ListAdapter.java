@@ -42,7 +42,7 @@ public class ListAdapter extends ArrayAdapter<Item> {
 
             if (tt1 != null) {
 //                tt1.setText("i");
-                tt1.setText(Integer.toString(p.getId()));
+//                tt1.setText(Integer.toString(p.getId()));
             }
 
             if (tt2 != null) {

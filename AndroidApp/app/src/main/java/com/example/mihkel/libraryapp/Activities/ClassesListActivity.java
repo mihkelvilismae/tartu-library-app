@@ -58,9 +58,9 @@ public class ClassesListActivity extends Activity implements ParseStringCallBack
                 Clazz itemValue = (Clazz) listView.getItemAtPosition(position);
 
                 // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(getApplicationContext(),
+//                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
+//                        .show();
                 AppManagerSingleton.selectedClassId = itemValue.getId();
 
                 if (true || !DatabaseManagerSingleton.getInstance().hasBooksListInClass(AppManagerSingleton.selectedClassId))

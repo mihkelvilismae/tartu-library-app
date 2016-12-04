@@ -49,9 +49,9 @@ public class SchoolsListActivity extends Activity implements ParseStringCallBack
                 School itemValue = (School) listView.getItemAtPosition(position);
 
                 // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
+//                Toast.makeText(getApplicationContext(),
+//                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
+//                        .show();
                 AppManagerSingleton.selectedSchoolId = itemValue.getId();
 
                 if (true || !DatabaseManagerSingleton.getInstance().hasClassesInSchool(AppManagerSingleton.selectedSchoolId))

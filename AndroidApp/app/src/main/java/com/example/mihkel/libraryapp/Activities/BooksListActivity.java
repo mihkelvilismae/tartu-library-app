@@ -58,7 +58,7 @@ public class BooksListActivity extends Activity implements ParseStringCallBackLi
                 Book itemValue = (Book) listView.getItemAtPosition(position);
 
                 // Show Alert
-                Toast.makeText(getApplicationContext(),"Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG).show();
                 AppManagerSingleton.selectedBookId = itemValue.getId();
 //                    Intent calendarStartIntent = new Intent(this, BooksListActivity.class);
 //                    startActivity(calendarStartIntent);

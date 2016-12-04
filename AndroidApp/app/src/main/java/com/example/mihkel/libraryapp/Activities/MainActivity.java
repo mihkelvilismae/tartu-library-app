@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 
 
     public void onClick(View v) {
-        toast("start");
+//        toast("start");
         switch (v.getId()) {
             case R.id.startMandatoryReading:
                 startMandatoryReading();
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
     public void startMandatoryReadingActivity() {
         Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
         startActivity(calendarStartIntent);
-        toast("startMandatoryReadingActivity");
+//        toast("startMandatoryReadingActivity");
     }
 
     public void toast(String text) {
