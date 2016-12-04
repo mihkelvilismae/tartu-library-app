@@ -1,5 +1,6 @@
 package com.example.mihkel.libraryapp.Activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.R;
+import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
 import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 
@@ -215,6 +218,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 addChoiceToSelected(author, R.id.TAG_AUTHOR);
 //                toast(author.toString());
                 drawSelectedAuthors();
+                hideKeyboard();
             }
         });
         authorAutoCompleteTextView.setAdapter(authorAdapter);
@@ -256,6 +260,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 addChoiceToSelected(book, R.id.TAG_BOOK);
 //                toast(book.toString());
                 drawSelectedBooks();
+                hideKeyboard();
             }
         });
         bookAutoCompleteTextView.setAdapter(bookAdapter);
@@ -293,10 +298,17 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 addChoiceToSelected(book, R.id.TAG_GENRE);
                 toast(book.toString());
                 drawSelectedGenres();
+                hideKeyboard();
             }
         });
+
         genreAutoCompleteTextView.setAdapter(genreAdapter);
         genreAutoCompleteTextView.setThreshold(0);
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
     public void drawSelectedGenres() {
@@ -354,6 +366,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 addChoiceToSelected(book, R.id.TAG_KEYWORD);
 //                toast(book.toString());
                 drawSelectedKeywords();
+                hideKeyboard();
             }
         });
         keywordAutoCompleteTextView.setAdapter(keywordAdapter);
@@ -507,7 +520,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void showYearField() {
-       yearLayout.setVisibility(View.VISIBLE);
+        yearLayout.setVisibility(View.VISIBLE);
 
     }
 
