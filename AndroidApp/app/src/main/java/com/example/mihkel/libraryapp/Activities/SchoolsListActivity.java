@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
 import com.example.mihkel.libraryapp.Various.DatabaseLayerImpl;
@@ -27,7 +26,7 @@ public class SchoolsListActivity extends Activity implements ParseStringCallBack
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mandatory_list);
+        setContentView(R.layout.activity_school_list);
 
         DatabaseLayerImpl databaseLayer = new DatabaseLayerImpl();
 
