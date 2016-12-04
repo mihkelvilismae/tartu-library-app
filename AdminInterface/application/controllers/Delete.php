@@ -50,4 +50,10 @@ class Delete extends CI_Controller {
         $this->database_model->delete_user($user_id);
         redirect(base_url("Kasutajad"));
     }
+
+    public function delete_keyword($keyword_id)
+    {
+        $this->database_model->delete_keyword($keyword_id);
+        redirect(base_url("Märksõnad"));
+    }
 }

@@ -57,6 +57,7 @@ $route['Kustuta/Nimekiri/(:num)'] = 'Delete/delete_list/$1';
 $route['Kustuta/Nimekirjast/(:num)'] = 'Delete/delete_from_list/$1';
 $route['Kustuta/Kasutaja/(:num)'] = 'Delete/delete_user/$1';
 $route['Kustuta/Raamat/(:num)'] = 'Delete/delete_book/$1';
+$route['Kustuta/M%C3%A4rks%C3%B5na/(:num)'] = 'Delete/delete_keyword/$1';
 
 $route['Koolid'] = 'View/view_schools';
 $route['Raamatud'] = 'View/view_books';
@@ -65,11 +66,13 @@ $route['Nimekiri'] = 'View/view_reading_list';
 $route['Klassid/(:num)'] = 'View/view_classes/$1';
 $route['Klassid'] = 'View/view_classes';
 $route['Kasutajad'] = 'View/view_users';
+$route['M%C3%A4rks%C3%B5nad'] = 'View/view_keywords';
 
 $route['Muuda/Kool/(:num)'] = 'Edit/edit_school/$1';
 $route['Muuda/Klass/(:num)'] = 'Edit/edit_class/$1';
 $route['Muuda/Nimekiri/(:num)'] = 'Edit/edit_reading_list/$1';
 $route['Muuda/Raamat/(:num)'] = 'Edit/edit_book/$1';
+$route['Muuda/M%C3%A4rks%C3%B5na/(:num)'] = 'Edit/edit_keyword/$1';
 
 $route['Lisa/Kool'] = 'Add/add_school';
 $route['Lisa/Raamat'] = 'Add/add_book';
@@ -78,6 +81,7 @@ $route['Lisa/Nimekiri'] = 'Add/add_book_to_list';
 $route['Lisa/Klass/(:num)'] = 'Add/add_class/$1';
 $route['Lisa/Klass'] = 'Add/add_class';
 $route['Lisa/Kasutaja'] = 'Add/add_user';
+$route['Lisa/M%C3%A4rks%C3%B5na'] = 'Add/add_keyword';
 
 $route['json/Koolid'] = 'JSON/schools';
 $route['json/Klassid/(:num)'] = 'JSON/classes/$1';

@@ -232,4 +232,39 @@ class View extends CI_Controller {
         $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
+
+    public function view_keywords()
+    {
+        $data['active'] = 'Märksõnad';
+        $schools = $this->database_model->get_keywords();
+        $data['title'] = 'Märksõnad';
+        $table_rows = array();
+
+        for ($i = 0; $i < count($schools); $i++) {
+            $school = $schools[$i];
+            $change_delete = '<a href="'.base_url("Muuda/Märksõna/".$school['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Märksõna/'.$school["id"]).'">Kustuta</a>';
+
+            array_push(
+                $table_rows,
+                array(
+                    $school['name'],
+                    $change_delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Märksõna",'<a href="'.base_url('Lisa/Märksõna').'\">Lisa</a>');
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
 }

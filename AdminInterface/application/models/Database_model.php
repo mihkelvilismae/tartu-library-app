@@ -75,6 +75,16 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_keywords() {
+        $query = $this->db->get('keyword');
+        return $query->result_array();
+    }
+
+    public function get_keyword($keyword_id) {
+        $query = $this->db->get_where('keyword', array('id'=>$keyword_id));
+        return $query->row_array();
+    }
+
     public function add_school() {
         $this->load->helper('url');
 
@@ -141,6 +151,16 @@ class Database_model extends CI_Model {
         return $this->db->insert('account', $data);
     }
 
+    public function add_keyword() {
+        $this->load->helper('url');
+
+        $data = array(
+            'name' => $this->input->post('name')
+        );
+
+        return $this->db->insert('keyword', $data);
+    }
+
     public function edit_school($id) {
         $this->load->helper('url');
 
@@ -198,6 +218,19 @@ class Database_model extends CI_Model {
         return $this->db->update('reading_list');
     }
 
+    public function edit_keyword($keyword_id) {
+        $this->load->helper('url');
+
+        $changes = array(
+            'name' => $this->input->post('name')
+        );
+
+        $this->db->set($changes);
+        $this->db->where('id', $keyword_id);
+
+        return $this->db->update('keyword');
+    }
+
     public function delete_school($id=NULL) {
         $this->load->helper('url');
         if (!$id) {
@@ -248,6 +281,11 @@ class Database_model extends CI_Model {
     public function delete_user($user_id) {
         $this->db->where('id', $user_id);
         return $this->db->delete('account');
+    }
+
+    public function delete_keyword($keyword_id) {
+        $this->db->where('id', $keyword_id);
+        return $this->db->delete('keyword');
     }
 
     public function get_user() {

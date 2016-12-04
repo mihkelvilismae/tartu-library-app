@@ -253,6 +253,39 @@ class Add extends CI_Controller {
         }
     }
 
+    public function add_keyword()
+    {
+        $data['active'] = 'Märksõnad';
+        $data['title'] = 'Märksõna lisamine';
+        $data['form_action'] = base_url('Lisa/Märksõna');
+
+        $this->form_validation->set_rules('name', 'Name', 'is_unique[keyword.name]|required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Märksõna', 'name'), form_input('name', $this->input->post('name'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Märksõnad').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_keyword();
+            redirect(base_url("Märksõnad"));
+        }
+    }
+
     public function class_name_check($class_name, $school_id) {
         $classes = $this->database_model->get_classes($school_id);
         foreach ($classes as $class) {

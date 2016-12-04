@@ -197,6 +197,42 @@ class Edit extends CI_Controller {
         }
     }
 
+    public function edit_keyword($keyword_id) {
+        $data['active'] = 'Märksõnad';
+        $data['title'] = 'Märksõna muutmine';
+        $data['form_action'] = 'Muuda/Märksõna/'.$keyword_id;
+        $school = $this->database_model->get_keyword($keyword_id);
+
+        $this->form_validation->set_rules('name', 'Name', 'is_unique[keyword.name]|required');
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Märksõna', 'name'), form_input('name', $school['name'])));
+        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Märksõnad').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->edit_keyword($keyword_id);
+            redirect(base_url('Märksõnad'));
+        }
+    }
+
+    public function is_unique($school_name, $school_id) {
+
+    }
+
     public function class_name_check($class_name, $school_id) {
         $classes = $this->database_model->get_classes($school_id);
         foreach ($classes as $class) {
