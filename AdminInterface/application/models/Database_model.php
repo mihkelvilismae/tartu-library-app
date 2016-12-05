@@ -482,8 +482,8 @@ class Database_model extends CI_Model {
         }
         if (!empty($keywords)) {
             $this->db->where_in("keyword.name", $keywords);
-            $this->db->group_by("book.id, book.title");
-            $this->db->having('COUNT(DISTINCT keyword.id) = ', count($keywords));
+            //$this->db->group_by("book.id, book.title");
+            //$this->db->having('COUNT(DISTINCT keyword.id) = ', count($keywords));
         }
         if (!empty($authors)) {
             $this->db->where_in('author.lastname', $authors, 'after');
@@ -499,6 +499,7 @@ class Database_model extends CI_Model {
                 $this->db->where('book.year <=', $year[1]);
             }
         }
+        $this->db->distinct();
         $query = $this->db->get();
         return $query->result_array();
     }
