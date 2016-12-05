@@ -133,7 +133,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
         hideAll();
 
-        showToLevel(0);
+        showToLevel(visibleLevel);
 
     }
 
@@ -536,6 +536,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 //            showPreviouslyLikedField();
         if (level >= 4)
             showKeyWordsField();
+
+        if (level<4) {
+            nextButton.setText("EDASI");
+        } else {
+            nextButton.setText("TULEMUS");
+        }
     }
 
     public void showAgeField() {
