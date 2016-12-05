@@ -8,11 +8,39 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
         android:paddingTop="10sp"
-        android:orientation="vertical"
         android:weightSum="1">
+
+        <include
+            layout="@layout/field_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <include
+            layout="@layout/field_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <include
+            layout="@layout/field_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/field_genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            layout="@layout/field_keywords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <include
             layout="@layout/field_age"
@@ -29,37 +57,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <include
-            layout="@layout/field_language"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/field_year"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/field_author"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <include
-            layout="@layout/field_genre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <include
             layout="@layout/field_books"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/field_keywords"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
 
 
         <!--<include-->

@@ -22,6 +22,7 @@ import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.R;
 import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
+import com.example.mihkel.libraryapp.Various.Selection;
 import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 
@@ -435,11 +436,11 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 if (isStartYear)
-                    ((Button) findViewById(R.id.startYearButton)).setText("Alates " + String.valueOf(nopicker.getValue()));
+                    setStartYear(nopicker.getValue());
                 else if (isEndYear)
-                    ((Button) findViewById(R.id.endYearButton)).setText("Kuni " + String.valueOf(nopicker.getValue()));
+                    setEndYear(nopicker.getValue());
                 else if (isAge)
-                    ((Button) findViewById(R.id.ageButton)).setText("Vanus: " + String.valueOf(nopicker.getValue()));
+                    setAge(nopicker.getValue());
                 d.dismiss();
             }
         });
@@ -450,14 +451,45 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             }
         });
         d.show();
+    }
 
+    public void setAge(Integer age) {
+        ((Button) findViewById(R.id.ageButton)).setText("Vanus: " + String.valueOf(age));
+    }
+
+    public void setStartYear(int startYear) {
+        ((Button) findViewById(R.id.startYearButton)).setText("Alates " + String.valueOf(startYear));
+    }
+
+    public void setEndYear(Integer endYear) {
+        ((Button) findViewById(R.id.endYearButton)).setText("Kuni: " + String.valueOf(endYear));
+    }
+
+    public void setSex() {
 
     }
+
+    public void setLikesToRead() {
+
+    }
+
+    public void setLanguage() {
+
+    }
+
+
+    
+
+
     // YEAR/AGE end
     //----------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------
     // DRAWING FIELDS start:
 
+
+    public void showSelection(Selection selection) {
+
+    }
 
     private void showPreviousField() {
         visibleLevel--;
@@ -486,23 +518,23 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void showToLevel(int level) {
+//        if (level >= 0)
+//            showAgeField();
+//        if (level >= 1)
+//            showSexField();
+//        if (level >= 2)
+//            showLikesReadingField();
         if (level >= 0)
-            showAgeField();
-        if (level >= 1)
-            showSexField();
-        if (level >= 2)
-            showLikesReadingField();
-        if (level >= 3)
             showLanguageField();
-        if (level >= 4)
-            showAuthorField();
-        if (level >= 5)
-            showGenreField();
-        if (level >= 6)
+        if (level >= 1)
             showYearField();
-        if (level >= 7)
-            showPreviouslyLikedField();
-        if (level >= 8)
+        if (level >= 2)
+            showAuthorField();
+        if (level >= 3)
+            showGenreField();
+//        if (level >= 7)
+//            showPreviouslyLikedField();
+        if (level >= 4)
             showKeyWordsField();
     }
 
