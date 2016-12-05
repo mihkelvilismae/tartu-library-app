@@ -92,7 +92,7 @@ class JSON extends CI_Controller {
 
     public function search() {
         $author = $this->input->get('autor');
-        $keyword = $this->input->get('märksõnad');
+        $keyword = $this->input->get('märksõna');
         $language = $this->input->get('keel');
 
         $year = array();
@@ -105,8 +105,14 @@ class JSON extends CI_Controller {
             }
         }
 
-        $keywords = array();
+        $authors = array();
+        if (!($author == '')) {
+            foreach (explode(',', $author) as $a) {
+                array_push($authors, $a);
+            }
+        }
 
+        $keywords = array();
         if (!($keyword == '')) {
             foreach (explode(',', $keyword) as $kwd) {
                 array_push($keywords, $kwd);
@@ -114,13 +120,12 @@ class JSON extends CI_Controller {
         }
 
         $languages = array();
-
         if (!($language == '')) {
             foreach (explode(',', $language) as $l) {
                 array_push($languages, $l);
             }
         }
 
-        echo json_encode($this->database_model->search($author, $keywords, $languages, $year));
+        echo json_encode($this->database_model->search($authors, $keywords, $languages, $year));
     }
 }

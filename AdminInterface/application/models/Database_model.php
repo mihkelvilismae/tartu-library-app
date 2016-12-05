@@ -469,18 +469,24 @@ class Database_model extends CI_Model {
     }
 
 
-    public function search($author, $keywords, $languages, $year) {
+    public function search($authors, $keywords, $languages, $year) {
         $this->db->select('book.*');
         $this->db->from('book');
         if (!empty($keywords)) {
             $this->db->join('book_keyword', 'book.id = book_keyword.book_id', 'inner');
             $this->db->join('keyword', 'book_keyword.keyword_id = keyword.id', 'inner');
+        }
+        if (!empty($authors)) {
+            $this->db->join('book_author', 'book.id = book_author.book_id', 'inner');
+            $this->db->join('author', 'book_author.author_id = author.id', 'inner');
+        }
+        if (!empty($keywords)) {
             $this->db->where_in("keyword.name", $keywords);
             $this->db->group_by("book.id, book.title");
             $this->db->having('COUNT(DISTINCT keyword.id) = ', count($keywords));
         }
-        if (!($author == '')) {
-            $this->db->like('book.author', $author);
+        if (!empty($authors)) {
+            $this->db->where_in('author.lastname', $authors, 'after');
         }
         if (!empty($languages)) {
             $this->db->where_in('book.lang', $languages);
