@@ -32,6 +32,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 //    private static final int TAG_AUTHOR = 2;
 //    private static final int TAKE_PICTURE = 1;
 
+//    private static final int YEAR_TYPE_AGE = 1;
+//    private static final int YEAR_TYPE_YEAR = 2;
+
 
     public Integer visibleLevel = 0;
     public Integer activeLevel = 0;
@@ -96,8 +99,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
 
-        previousButton = (Button) findViewById(R.id.previousButton);
-        previousButton.setOnClickListener(this);
+//        previousButton = (Button) findViewById(R.id.previousButton);
+//        previousButton.setOnClickListener(this);
 
         sexButtonF = (Button) findViewById(R.id.sexButtonF);
         sexButtonF.setOnClickListener(this);
@@ -396,10 +399,20 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         final Boolean isStartYear = (v.getId() == R.id.startYearButton);
         final Boolean isEndYear = (v.getId() == R.id.endYearButton);
         final Boolean isAge = (v.getId() == R.id.ageButton);
+        final Dialog d = new Dialog(this);
+        String title;
 
 //        final Boolean isStartYearDialog = (v.getId() == R.id.startYearButton);
-        final Dialog d = new Dialog(this);
-        d.setTitle("Vali aasta");
+        if (isStartYear) {
+            title = "Vali aasta:";
+        } else if (isEndYear) {
+            title = "Vali aasta:";
+        } else //if (isAge)
+        {
+            title = "Vali vanus";
+        }
+
+        d.setTitle(title);
         d.setContentView(R.layout.dialog_year);
         Button set = (Button) d.findViewById(R.id.yearDialogSet);
         Button cancel = (Button) d.findViewById(R.id.yearDialogCancel);
@@ -542,9 +555,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.nextButton:
                 showNextField();
                 break;
-            case R.id.previousButton:
-                showPreviousField();
-                break;
+//            case R.id.previousButton:
+//                showPreviousField();
+//                break;
             case R.id.removeButton:
                 removeItem(v);
                 break;

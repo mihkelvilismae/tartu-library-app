@@ -4,14 +4,14 @@
     android:orientation="horizontal">
 
 
-    <Button
-        android:id="@+id/previousButton"
-        android:layout_width="183dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/sexButtonF"
-        android:text="Tagasi" />
+    <!--<Button-->
+        <!--android:id="@+id/previousButton"-->
+        <!--android:layout_width="183dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignTop="@+id/sexButtonF"-->
+        <!--android:text="Tagasi" />-->
 
     <Button
         android:id="@+id/nextButton"
@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/previousButton"
         android:text="Edasi" />
+        <!--android:layout_alignTop="@+id/previousButton"-->
 </RelativeLayout>
