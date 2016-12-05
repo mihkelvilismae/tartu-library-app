@@ -5,13 +5,13 @@
 
 
     <!--<Button-->
-        <!--android:id="@+id/previousButton"-->
-        <!--android:layout_width="183dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignTop="@+id/sexButtonF"-->
-        <!--android:text="Tagasi" />-->
+    <!--android:id="@+id/previousButton"-->
+    <!--android:layout_width="183dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_alignTop="@+id/sexButtonF"-->
+    <!--android:text="Tagasi" />-->
 
     <Button
         android:id="@+id/nextButton"
@@ -20,5 +20,14 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="Edasi" />
-        <!--android:layout_alignTop="@+id/previousButton"-->
+
+    <Button
+        android:id="@+id/resultButton"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:text="Tulemus" />
+    <!--android:layout_alignTop="@+id/previousButton"-->
 </RelativeLayout>

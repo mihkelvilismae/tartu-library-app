@@ -23,36 +23,36 @@ import java.util.regex.Pattern;
 public class URLCreator {
 
     public String createResultURL(Selection selection) {
-        String resultUrl = "";
-        if (selection.getLanguages().size() > 0) {
+        String resultUrl = createURLStart();
+        if (selection.getLanguages() != null & selection.getLanguages().size() > 0) {
             resultUrl = resultUrl + implodeLanguage(",", selection.getLanguages());
         }
 
-        if (selection.getKeywords().size() > 0) {
+        if (selection.getKeywords() != null & selection.getKeywords().size() > 0) {
             resultUrl = "&" + resultUrl + implodeKeyword(",", selection.getKeywords());
         }
 
-        if (selection.getGenres().size() > 0) {
+        if (selection.getGenres() != null & selection.getGenres().size() > 0) {
             resultUrl = "&" + resultUrl + implodeGenre(",", selection.getGenres());
         }
 
-        if (selection.getAuthors().size() > 0) {
+        if (selection.getAuthors() != null & selection.getAuthors().size() > 0) {
             resultUrl = "&" + resultUrl + implodeAuthor(",", selection.getAuthors());
         }
 
         return resultUrl;
     }
 
-    public String createKeywordsAutoCompleteURL(String selection) {
-        return createURLStart() + "Autorid/" + selection;
+    public String createKeywordsAutoCompleteURL(String characters) {
+        return createURLStart() + "Autorid/" + characters;
     }
 
-    public String createGenreAutoCompleteURL(String selection) {
-        return createURLStart() + "Zanrid/" + selection;
+    public String createGenreAutoCompleteURL(String characters) {
+        return createURLStart() + "Zanrid/" + characters;
     }
 
-    public String createAuthorAutoCompleteURL(String selection) {
-        return createURLStart() + "Märksõnad/" + selection;
+    public String createAuthorAutoCompleteURL(String characters) {
+        return createURLStart() + "Märksõnad/" + characters;
     }
 
     public String createURLStart() {

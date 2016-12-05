@@ -17,10 +17,10 @@ public class Selection {
 //    String sex;
 //    boolean likesToRead;
 
-    HashMap<Integer, Author> authors;
-    HashMap<Integer, Language> languages;
-    HashMap<Integer, Keyword> keywords;
-    HashMap<Integer, Genre> genres;
+    HashMap<Integer, Author> authors = new HashMap<>();
+    HashMap<Integer, Language> languages = new HashMap<>();
+    HashMap<Integer, Keyword> keywords = new HashMap<>();
+    HashMap<Integer, Genre> genres = new HashMap<>();
     Integer yearFrom;
     Integer yearTo;
 
@@ -95,4 +95,22 @@ public class Selection {
             getLanguages().put(language.getId(), language);
         }
     }
+
+    public void removeAuthor(Author author) {
+        getAuthors().remove(author);
+    }
+
+    public void removeGenre(Genre genre) {
+       getGenres().remove(genre);
+    }
+
+    public void removeKeyword(Keyword keyword) {
+       getKeywords().remove(keyword);
+    }
+
+    public void removeLanguage(Language language) {
+       getLanguages().remove(language);
+    }
+
+
 }

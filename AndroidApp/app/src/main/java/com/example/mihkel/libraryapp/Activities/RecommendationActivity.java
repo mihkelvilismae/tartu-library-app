@@ -25,6 +25,7 @@ import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
 import com.example.mihkel.libraryapp.Various.Selection;
 import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
+import com.example.mihkel.libraryapp.Various.URLCreator;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private LinearLayout yearLayout;
 
     private Button nextButton;
+    private Button resultButton;
     private Button previousButton;
 
     private ArrayList<Item> selectedAuthors = new ArrayList<>();
@@ -101,6 +103,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(this);
+
+        resultButton = (Button) findViewById(R.id.resultButton);
+        resultButton.setOnClickListener(this);
 
 //        previousButton = (Button) findViewById(R.id.previousButton);
 //        previousButton.setOnClickListener(this);
@@ -557,9 +562,11 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             showKeyWordsField();
 
         if (level<4) {
-            nextButton.setText("EDASI");
+            nextButton.setVisibility(View.VISIBLE);
+            resultButton.setVisibility(View.GONE);
         } else {
-            nextButton.setText("TULEMUS");
+            resultButton.setVisibility(View.VISIBLE);
+            nextButton.setVisibility(View.GONE);
         }
     }
 
@@ -612,6 +619,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.nextButton:
                 showNextField();
                 break;
+            case R.id.resultButton:
+                showResults();
+                break;
 //            case R.id.previousButton:
 //                showPreviousField();
 //                break;
@@ -646,6 +656,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private void showResults() {
+        URLCreator urlCreator = new URLCreator();
+        String url = urlCreator.createResultURL(selection);
+        toast(url);
+    }
+
     public void startResultActivity() {
 //        Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
 //        startActivity(calendarStartIntent);
@@ -660,7 +676,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void toast(String text) {
-//        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     public void fetchDataFromServer() {
