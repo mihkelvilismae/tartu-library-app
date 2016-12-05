@@ -1,7 +1,9 @@
 package com.example.mihkel.libraryapp.Various;
 
 import com.example.mihkel.libraryapp.Item.Author;
-import com.example.mihkel.libraryapp.Item.Book;
+import com.example.mihkel.libraryapp.Item.Genre;
+import com.example.mihkel.libraryapp.Item.Keyword;
+import com.example.mihkel.libraryapp.Item.Language;
 
 import java.util.HashMap;
 
@@ -11,12 +13,14 @@ import java.util.HashMap;
 
 public class Selection {
 //    HashMap<Integer, Book> books;
-    HashMap<Integer, Author> author;
-    HashMap<Integer, String> languages;
-    HashMap<Integer, String> keywords;
 //    Integer age;
 //    String sex;
 //    boolean likesToRead;
+
+    HashMap<Integer, Author> authors;
+    HashMap<Integer, Language> languages;
+    HashMap<Integer, Keyword> keywords;
+    HashMap<Integer, Genre> genres;
     Integer yearFrom;
     Integer yearTo;
 
@@ -24,27 +28,27 @@ public class Selection {
         return super.toString();
     }
 
-    public HashMap<Integer, Author> getAuthor() {
-        return author;
+    public HashMap<Integer, Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(HashMap<Integer, Author> author) {
-        this.author = author;
+    public void setAuthors(HashMap<Integer, Author> authors) {
+        this.authors = authors;
     }
 
-    public HashMap<Integer, String> getLanguages() {
+    public HashMap<Integer, Language> getLanguages() {
         return languages;
     }
 
-    public void setLanguages(HashMap<Integer, String> languages) {
+    public void setLanguages(HashMap<Integer, Language> languages) {
         this.languages = languages;
     }
 
-    public HashMap<Integer, String> getKeywords() {
+    public HashMap<Integer, Keyword> getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(HashMap<Integer, String> keywords) {
+    public void setKeywords(HashMap<Integer, Keyword> keywords) {
         this.keywords = keywords;
     }
 
@@ -62,5 +66,33 @@ public class Selection {
 
     public void setYearTo(Integer yearTo) {
         this.yearTo = yearTo;
+    }
+
+    public HashMap<Integer, Genre> getGenres() {
+        return genres;
+    }
+
+    public void addAuthor(Author author) {
+        if (!getAuthors().containsValue(author)) {
+            getAuthors().put(author.getId(), author);
+        }
+    }
+
+    public void addGenre(Genre genre) {
+        if (!getGenres().containsValue(genre)) {
+            getGenres().put(genre.getId(), genre);
+        }
+    }
+
+    public void addKeyword(Keyword keyword) {
+        if (!getKeywords().containsValue(keyword)) {
+            getKeywords().put(keyword.getId(), keyword);
+        }
+    }
+
+    public void addLanguage(Language language) {
+        if (!getLanguages().containsValue(language)) {
+            getLanguages().put(language.getId(), language);
+        }
     }
 }
