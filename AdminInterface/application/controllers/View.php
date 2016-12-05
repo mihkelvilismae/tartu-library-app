@@ -62,7 +62,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Klassi nimi", "Kooli nimi",'<a href="'.base_url('Lisa/Klass').'\">Lisa</a>');
+        $this->table->set_heading("Klassi nimi", "Kooli nimi",'<a href="'.base_url('Lisa/Klass').'">Lisa</a>');
 
         $classes = $this->database_model->get_classes();
         for ($i = 0; $i < count($classes); $i++) {
@@ -98,17 +98,29 @@ class View extends CI_Controller {
             $book = $books[$i];
             $change_delete = '<a href="'.base_url("Muuda/Raamat/".$book['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Raamat/'.$book["id"]).'">Kustuta</a>';
 
-            $book_keywords = $this->database_model->get_keywords($book['id']);
-            $keywords = '<a href="'.base_url("Raamat/".$book['id']).'">'.count($book_keywords)." märksõna</a>";
-
+            $book_authors = $this->database_model->get_authors($book['id']);
+            $authors = '<ul>';
+            foreach ($book_authors as $author) {
+                $a = $this->database_model->get_author($author['author_id']);
+                $authors.='<li>'.$a['firstname'].' '.$a['lastname'].'</li>';
+            }
+            $authors .= '</ul>';
+            
+            $book_genres = $this->database_model->get_genres($book['id']);
+            $genres = '<ul>';
+            foreach ($book_genres as $genre) {
+                $a = $this->database_model->get_genre($genre['genre_id']);
+                $genres.='<li>'.$a['name'].'</li>';
+            }
+            $genres .= '</ul>';
             array_push(
                 $table_rows,
                 array(
                     $book['title'],
-                    $book['author'],
+                    $authors,
                     $book['lang'],
                     $book['year'],
-                    $keywords,
+                    $genres,
                     $change_delete
                 )
             );
@@ -119,44 +131,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Raamatu pealkiri","Autor", "Keel","Aasta", "Märksõnad",'<a href="'.base_url('Lisa/Raamat').'\">Lisa</a>');
-
-        $data['table'] = $this->table->generate($table_rows);
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('view/view_table');
-        $this->load->view('templates/footer');
-    }
-
-    public function view_book($book_id)
-    {
-        $this->load->helper('form');
-        $data['active'] = 'Raamatud';
-        $data['title'] = 'Raamatud';
-
-        $book = $this->database_model->get_book($book_id);
-        $keywords = '<ul>';
-        foreach ($this->database_model->get_keywords($book_id) as $keyword) {
-            $kw = $this->database_model->get_keyword($keyword['keyword_id']);
-            $keywords.='<li>'.$kw['name'].' <span class="remove-book"><a href="'.base_url('Kustuta/Raamatult/'.$keyword['id']).'">Kustuta</a></span></li>';
-        }
-        $keywords .= '</ul>';
-
-        $keywords .= '<a href="'.base_url("Lisa/Märksõna/".$book_id).'">Lisa märksõna</a>';
-
-        $table_rows = array();
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-        $this->table->set_heading("","");
-
-        array_push($table_rows, array("Raamat", $book['title']));
-        array_push($table_rows, array("Märksõnad", $keywords));
-        array_push($table_rows, array("tagasi", form_button('', 'Tagasi', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
+        $this->table->set_heading("Raamatu pealkiri","Autorid", "Keel", "Aasta", "Zanrid",'<a href="'.base_url('Lisa/Raamat').'">Lisa</a>');
 
         $data['table'] = $this->table->generate($table_rows);
 
@@ -179,7 +154,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Klassi nimi", "Kooli nimi", "Raamatud", '<a href="'.base_url('Lisa/Nimekiri').'\">Lisa</a>');
+        $this->table->set_heading("Klassi nimi", "Kooli nimi", "Raamatud", '<a href="'.base_url('Lisa/Nimekiri').'">Lisa</a>');
 
         $list_rows = $this->database_model->get_list();
         for ($i = 0; $i < count($classes); $i++) {
@@ -265,7 +240,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Eesnimi","Perenimi","E-Mail","Telefon", "Admin",'<a href="'.base_url('Lisa/Kasutaja').'\">Lisa</a>');
+        $this->table->set_heading("Eesnimi","Perenimi","E-Mail","Telefon", "Admin",'<a href="'.base_url('Lisa/Kasutaja').'">Lisa</a>');
 
         $data['table'] = $this->table->generate($table_rows);
 
@@ -275,8 +250,7 @@ class View extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function view_keywords()
-    {
+    public function view_keywords() {
         $data['active'] = 'Märksõnad';
         $schools = $this->database_model->get_keywords();
         $data['title'] = 'Märksõnad';
@@ -300,7 +274,72 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Märksõna",'<a href="'.base_url('Lisa/Märksõna').'\">Lisa</a>');
+        $this->table->set_heading("Märksõna",'<a href="'.base_url('Lisa/Märksõna').'">Lisa</a>');
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_authors() {
+        $data['active'] = 'Autorid';
+        $authors = $this->database_model->get_authors();
+        $data['title'] = 'Autorid';
+        $table_rows = array();
+
+        foreach ($authors as $author) {
+            $change_delete = '<a href="'.base_url("Muuda/Autor/".$author['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Autor/'.$author["id"]).'">Kustuta</a>';
+            array_push(
+                $table_rows,
+                array(
+                    $author['firstname'],
+                    $author['lastname'],
+                    $change_delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Eesnimi", "Perenimi",'<a href="'.base_url('Lisa/Autor').'">Lisa</a>');
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_genres() {
+        $data['active'] = 'Zanrid';
+        $genres = $this->database_model->get_genres();
+        $data['title'] = 'Zanrid';
+        $table_rows = array();
+
+        foreach ($genres as $genre) {
+            $change_delete = '<a href="'.base_url("Muuda/Zanr/".$genre['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Zanr/'.$genre["id"]).'">Kustuta</a>';
+            array_push(
+                $table_rows,
+                array(
+                    $genre['name'],
+                    $change_delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Nimi",'<a href="'.base_url('Lisa/Zanr').'">Lisa</a>');
 
         $data['table'] = $this->table->generate($table_rows);
 

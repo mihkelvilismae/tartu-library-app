@@ -65,6 +65,40 @@ class Delete extends CI_Controller {
     {
         $book_id = $this->database_model->get_book_keyword_entry($id)['book_id'];
         $this->database_model->delete_keyword_from_book($id);
-        redirect(base_url("Raamat/".$book_id));
+        redirect(base_url("Muuda/Raamat/".$book_id));
+    }
+
+    public function delete_author($author_id)
+    {
+        $book_keyword_entries = $this->database_model->get_authors(NULL, $author_id);
+        foreach ($book_keyword_entries as $entry) {
+            $this->database_model->delete_author_from_book($entry['id']);
+        }
+        $this->database_model->delete_author($author_id);
+        redirect(base_url("Autorid"));
+    }
+
+    public function delete_author_from_book($id)
+    {
+        $book_id = $this->database_model->get_book_author_entry($id)['book_id'];
+        $this->database_model->delete_author_from_book($id);
+        redirect(base_url("Muuda/Raamat/".$book_id));
+    }
+
+    public function delete_genre($genre_id)
+    {
+        $book_genre_entries = $this->database_model->get_genres(NULL, $genre_id);
+        foreach ($book_genre_entries as $entry) {
+            $this->database_model->delete_genre_from_book($entry['id']);
+        }
+        $this->database_model->delete_genre($genre_id);
+        redirect(base_url("Zanrid"));
+    }
+
+    public function delete_genre_from_book($id)
+    {
+        $book_id = $this->database_model->get_book_genre_entry($id)['book_id'];
+        $this->database_model->delete_genre_from_book($id);
+        redirect(base_url("Muuda/Raamat/".$book_id));
     }
 }

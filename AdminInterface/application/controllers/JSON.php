@@ -47,15 +47,54 @@ class JSON extends CI_Controller {
     }
 
     public function keywords() {
-        $keywords = $this->database_model->get_keywords();
+        $start = strtolower($this->input->get('sõna'));
+        $keywords = array();
+        foreach ($this->database_model->get_keywords() as $keyword) {
+            if (substr(strtolower($keyword['name']), 0, strlen($start)) === $start) {
+                if (!in_array($keyword['name'], $keywords)) {
+                    array_push($keywords, $keyword['name']);
+                }
+            }
+        }
+        sort($keywords);
+        echo json_encode($keywords, JSON_FORCE_OBJECT);
+    }
 
-        echo json_encode($keywords);
+    public function authors() {
+        $start = strtolower($this->input->get('sõna'));
+        $authors = array();
+        $last_names = array();
+        foreach ($this->database_model->get_authors() as $author) {
+            if (substr(strtolower($author['lastname']), 0, strlen($start)) === $start) {
+                if (!in_array($author, $authors)) {
+                    array_push($authors, $author['firstname'].' '.$author['lastname']);
+                    array_push($last_names, $author['lastname']);
+                }
+            }
+        }
+        array_multisort($last_names, SORT_STRING, $authors);
+        echo json_encode($authors, JSON_FORCE_OBJECT);
+    }
+
+    public function genres() {
+        $start = strtolower($this->input->get('sõna'));
+        $genres = array();
+        foreach ($this->database_model->get_genres() as $genre) {
+            if (substr(strtolower($genre['name']), 0, strlen($start)) === $start) {
+                if (!in_array($genre['name'], $genres)) {
+                    array_push($genres, $genre['name']);
+                }
+            }
+        }
+        sort($genres);
+        echo json_encode($genres, JSON_FORCE_OBJECT);
     }
 
     public function search() {
         $author = $this->input->get('autor');
-        $keyword = $this->input->get('zanr');
+        $keyword = $this->input->get('märksõna');
         $language = $this->input->get('keel');
+        $genre = $this->input->get('zanr');
 
         $year = array();
         if (!($this->input->get('aasta') == '')) {
@@ -67,14 +106,34 @@ class JSON extends CI_Controller {
             }
         }
 
-        $keywords = array();
+        $authors = array();
+        if (!($author == '')) {
+            foreach (explode(',', $author) as $a) {
+                array_push($authors, $a);
+            }
+        }
 
+        $keywords = array();
         if (!($keyword == '')) {
             foreach (explode(',', $keyword) as $kwd) {
                 array_push($keywords, $kwd);
             }
         }
 
-        echo json_encode($this->database_model->search($author, $keywords, $language, $year));
+        $languages = array();
+        if (!($language == '')) {
+            foreach (explode(',', $language) as $l) {
+                array_push($languages, $l);
+            }
+        }
+
+        $genres = array();
+        if (!($genre == '')) {
+            foreach (explode(',', $genre) as $g) {
+                array_push($genres, $g);
+            }
+        }
+
+        echo json_encode($this->database_model->search($authors, $keywords, $languages, $year, $genres));
     }
 }

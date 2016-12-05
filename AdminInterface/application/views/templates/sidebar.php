@@ -29,6 +29,12 @@
                 <td><a href="<?=base_url("Märksõnad")?>" <?php if (isset($active) && $active==="Märksõnad") {echo "class=\"active-class\"";} ?>>Märksõnad</a></td>
             </tr>
             <tr>
+                <td><a href="<?=base_url("Autorid")?>" <?php if (isset($active) && $active==="Autorid") {echo "class=\"active-class\"";} ?>>Autorid</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?=base_url("Zanrid")?>" <?php if (isset($active) && $active==="Zanrid") {echo "class=\"active-class\"";} ?>>Zanrid</a></td>
+            </tr>
+            <tr>
                 <td><a href="<?=base_url("Login/logout")?>">Logi välja</a></td>
             </tr>
                 </table>
