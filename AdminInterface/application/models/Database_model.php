@@ -469,7 +469,7 @@ class Database_model extends CI_Model {
     }
 
 
-    public function search($authors, $keywords, $languages, $year) {
+    public function search($authors, $keywords, $languages, $year, $genres) {
         $this->db->select('book.*');
         $this->db->from('book');
         if (!empty($keywords)) {
@@ -480,6 +480,10 @@ class Database_model extends CI_Model {
             $this->db->join('book_author', 'book.id = book_author.book_id', 'inner');
             $this->db->join('author', 'book_author.author_id = author.id', 'inner');
         }
+        if (!empty($genres)) {
+            $this->db->join('book_genre', 'book.id = book_genre.book_id', 'inner');
+            $this->db->join('genre', 'book_genre.genre_id = genre.id', 'inner');
+        }
         if (!empty($keywords)) {
             $this->db->where_in("keyword.name", $keywords);
             //$this->db->group_by("book.id, book.title");
@@ -487,6 +491,9 @@ class Database_model extends CI_Model {
         }
         if (!empty($authors)) {
             $this->db->where_in('author.lastname', $authors, 'after');
+        }
+        if (!empty($genres)) {
+            $this->db->where_in('genre.name', $genres);
         }
         if (!empty($languages)) {
             $this->db->where_in('book.lang', $languages);
