@@ -10,13 +10,13 @@ import java.util.HashMap;
  */
 
 public class Selection {
-    HashMap<Integer, Book> books;
+//    HashMap<Integer, Book> books;
     HashMap<Integer, Author> author;
     HashMap<Integer, String> languages;
     HashMap<Integer, String> keywords;
-    Integer age;
-    String sex;
-    boolean likesToRead;
+//    Integer age;
+//    String sex;
+//    boolean likesToRead;
     Integer yearFrom;
     Integer yearTo;
 
@@ -24,6 +24,43 @@ public class Selection {
         return super.toString();
     }
 
+    public HashMap<Integer, Author> getAuthor() {
+        return author;
+    }
 
+    public void setAuthor(HashMap<Integer, Author> author) {
+        this.author = author;
+    }
 
+    public HashMap<Integer, String> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(HashMap<Integer, String> languages) {
+        this.languages = languages;
+    }
+
+    public HashMap<Integer, String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(HashMap<Integer, String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public Integer getYearFrom() {
+        return yearFrom;
+    }
+
+    public void setYearFrom(Integer yearFrom) {
+        this.yearFrom = yearFrom;
+    }
+
+    public Integer getYearTo() {
+        return yearTo;
+    }
+
+    public void setYearTo(Integer yearTo) {
+        this.yearTo = yearTo;
+    }
 }

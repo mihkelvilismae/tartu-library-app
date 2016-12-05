@@ -82,6 +82,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private Button endYearButton;
 //    private GridView ageGridView;
 
+    Selection selection = new Selection();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -427,7 +429,22 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             year = 15;
             nopicker.setMaxValue(99);
             nopicker.setMinValue(5);
+        } else if (isStartYear) {
+            if (selection.getYearTo() != null) {
+                nopicker.setMaxValue(selection.getYearTo());
+            }
+            if (selection.getYearFrom() != null) {
+                year = selection.getYearFrom();
+            }
+        } else if (isEndYear) {
+            if (selection.getYearTo() != null) {
+                year = selection.getYearTo();
+            }
+            if (selection.getYearFrom() != null) {
+                nopicker.setMinValue(selection.getYearFrom());
+            }
         }
+
         nopicker.setWrapSelectorWheel(false);
         nopicker.setValue(year);
         nopicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
@@ -459,10 +476,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     public void setStartYear(int startYear) {
         ((Button) findViewById(R.id.startYearButton)).setText("Alates " + String.valueOf(startYear));
+        selection.setYearFrom(startYear);
     }
 
     public void setEndYear(Integer endYear) {
-        ((Button) findViewById(R.id.endYearButton)).setText("Kuni: " + String.valueOf(endYear));
+        ((Button) findViewById(R.id.endYearButton)).setText("Kuni " + String.valueOf(endYear));
+        selection.setYearTo(endYear);
     }
 
     public void setSex() {
