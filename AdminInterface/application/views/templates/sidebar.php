@@ -1,6 +1,6 @@
 <div id="sidebar">
     <span>
-        <table class="responstable">
+        <table class="responstable sidebar-table">
             <?php
             if ($_SESSION['is_admin'] == 1) {
                 echo '<tr>';
@@ -21,6 +21,12 @@
             </tr>
             <tr>
                 <td><a href="<?=base_url("Nimekiri")?>" <?php if (isset($active) && $active==="Nimekiri") {echo "class=\"active-class\"";} ?>>Raamatunimekirjad</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?=base_url("Raamatud")?>" <?php if (isset($active) && $active==="Raamatud") {echo "class=\"active-class\"";} ?>>Raamatud</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?=base_url("Märksõnad")?>" <?php if (isset($active) && $active==="Märksõnad") {echo "class=\"active-class\"";} ?>>Märksõnad</a></td>
             </tr>
             <tr>
                 <td><a href="<?=base_url("Login/logout")?>">Logi välja</a></td>

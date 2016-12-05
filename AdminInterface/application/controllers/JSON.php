@@ -40,9 +40,41 @@ class JSON extends CI_Controller {
 
         for ($i = 0; $i < count($items); $i++) {
             $item = $items[$i];
-            $arr[$item['id']] = $this->database_model->get_book_by_id($item['book_id'])['title'];
+            $arr[$item['id']] = $this->database_model->get_book($item['book_id'])['title'];
         }
 
         echo json_encode($arr);
+    }
+
+    public function keywords() {
+        $keywords = $this->database_model->get_keywords();
+
+        echo json_encode($keywords);
+    }
+
+    public function search() {
+        $author = $this->input->get('autor');
+        $keyword = $this->input->get('zanr');
+        $language = $this->input->get('keel');
+
+        $year = array();
+        if (!($this->input->get('aasta') == '')) {
+            foreach (explode(',', $this->input->get('aasta')) as $y) {
+                array_push($year, $y);
+                if (count($year) == 2) {
+                    break;
+                }
+            }
+        }
+
+        $keywords = array();
+
+        if (!($keyword == '')) {
+            foreach (explode(',', $keyword) as $kwd) {
+                array_push($keywords, $kwd);
+            }
+        }
+
+        echo json_encode($this->database_model->search($author, $keywords, $language, $year));
     }
 }

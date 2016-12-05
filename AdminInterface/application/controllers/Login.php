@@ -44,27 +44,29 @@ class Login extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             if ($this->input->post("password") == "admin") {
-
                 $_SESSION['email'] = "admin@gmail.com";
                 $_SESSION['is_admin'] = 1;
                 $_SESSION['logged_in'] = TRUE;
-                redirect(base_url("Koolid"));
             } else if ($this->input->post("password") == "parool") {
                 $_SESSION['email'] = "tava@gmail.com";
                 $_SESSION['is_admin'] = 0;
                 $_SESSION['logged_in'] = TRUE;
-                redirect(base_url("Koolid"));
+            } else {
+                $user = $this->database_model->get_user($this->input->post("username"), $this->input->post("password"));
+                if (!isset($user['email'])) {
+                    redirect(base_url());
+                }
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['is_admin'] = $user['is_admin'];
+                $_SESSION['logged_in'] = TRUE;
             }
-
-            $user = $this->database_model->get_user($this->input->post("username"), $this->input->post("password"));
-            if (!isset($user['email'])) {
-                redirect(base_url());
+            if (isset($_SESSION['REFERER'])) {
+                $target = $_SESSION['REFERER'];
+                unset($_SESSION['REFERER']);
+                redirect($target);
+            } else {
+                redirect(base_url('Koolid'));
             }
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['is_admin'] = $user['is_admin'];
-            $_SESSION['logged_in'] = TRUE;
-
-            redirect(base_url('Koolid'));
         }
     }
 

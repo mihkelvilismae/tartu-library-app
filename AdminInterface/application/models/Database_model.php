@@ -21,8 +21,8 @@ class Database_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function get_book_by_id($id) {
-        $query = $this->db->get_where('book', array('id'=>$id));
+    public function get_book($book_id) {
+        $query = $this->db->get_where('book', array('id'=>$book_id));
         return $query->row_array();
     }
 
@@ -75,6 +75,32 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_keywords($book_id=NULL, $keyword_id=NULL) {
+        if ($book_id||$keyword_id) {
+            $where = array();
+            if ($book_id) {
+                $where['book_id'] = $book_id;
+            }
+            if ($keyword_id) {
+                $where['keyword_id'] = $keyword_id;
+            }
+            $query = $this->db->get_where('book_keyword', $where);
+        } else {
+            $query = $this->db->get('keyword');
+        }
+        return $query->result_array();
+    }
+
+    public function get_keyword($keyword_id) {
+        $query = $this->db->get_where('keyword', array('id'=>$keyword_id));
+        return $query->row_array();
+    }
+
+    public function get_book_keyword_entry($id) {
+        $query = $this->db->get_where('book_keyword', array('id'=>$id));
+        return $query->row_array();
+    }
+
     public function add_school() {
         $this->load->helper('url');
 
@@ -104,6 +130,7 @@ class Database_model extends CI_Model {
         $data = array(
             'title' => $this->input->post('title'),
             'author' => $this->input->post('author'),
+            'lang' => $this->input->post('lang'),
             'year' => $this->input->post('year')
         );
 
@@ -141,6 +168,27 @@ class Database_model extends CI_Model {
         return $this->db->insert('account', $data);
     }
 
+    public function add_keyword() {
+        $this->load->helper('url');
+
+        $data = array(
+            'name' => $this->input->post('name')
+        );
+
+        return $this->db->insert('keyword', $data);
+    }
+
+    public function add_keyword_to_book($book_id) {
+        $this->load->helper('url');
+
+        $data = array(
+            'book_id' => $book_id,
+            'keyword_id' => $this->input->post('keyword_id')
+        );
+
+        return $this->db->insert('book_keyword', $data);
+    }
+
     public function edit_school($id) {
         $this->load->helper('url');
 
@@ -176,6 +224,7 @@ class Database_model extends CI_Model {
         $changes = array(
             'title' => $this->input->post('title'),
             'author' => $this->input->post('author'),
+            'lang' => $this->input->post('lang'),
             'year' => $this->input->post('year')
         );
 
@@ -196,6 +245,19 @@ class Database_model extends CI_Model {
         $this->db->where('class_id', $class_id);
 
         return $this->db->update('reading_list');
+    }
+
+    public function edit_keyword($keyword_id) {
+        $this->load->helper('url');
+
+        $changes = array(
+            'name' => $this->input->post('name')
+        );
+
+        $this->db->set($changes);
+        $this->db->where('id', $keyword_id);
+
+        return $this->db->update('keyword');
     }
 
     public function delete_school($id=NULL) {
@@ -234,16 +296,14 @@ class Database_model extends CI_Model {
         return $this->db->delete('reading_list');
     }
 
-    public function delete_book($id=NULL) {
-        $this->load->helper('url');
-        if (!$id) {
-            $id = $this->input->post('item_id');
-        }
-        $reading_list = $this->get_reading_list_from_book($id);
-        foreach ($reading_list as $e) {
-            $this->delete_reading_list($e['id']);
-        }
-        $this->db->where('id', $id);
+    public function delete_book_from_reading_lists($book_id) {
+        $this->db->where('book_id', $book_id);
+        return $this->db->delete('reading_list');
+    }
+
+    public function delete_book($book_id) {
+        $this->delete_book_from_reading_lists($book_id);
+        $this->db->where('id', $book_id);
         return $this->db->delete('book');
     }
 
@@ -252,9 +312,47 @@ class Database_model extends CI_Model {
         return $this->db->delete('account');
     }
 
+    public function delete_keyword($keyword_id) {
+        $this->db->where('id', $keyword_id);
+        return $this->db->delete('keyword');
+    }
+
+    public function delete_keyword_from_book($id) {
+        $this->db->where('id', $id);
+        return $this->db->delete('book_keyword');
+    }
+
     public function get_user() {
         $this->load->helper('url');
         $query = $this->db->get_where('account', array('email'=>$this->input->post("email"), 'pass'=>$this->input->post("password")));
         return $query->row_array();
+    }
+
+    public function search($author, $keywords, $language, $year) {
+        $this->db->select('book.*');
+        $this->db->from('book');
+        if (!empty($keywords)) {
+            $this->db->join('book_keyword', 'book.id = book_keyword.book_id', 'inner');
+            $this->db->join('keyword', 'book_keyword.keyword_id = keyword.id', 'inner');
+            $this->db->where_in("keyword.name", $keywords);
+            $this->db->group_by("book.id, book.title");
+            $this->db->having('COUNT(DISTINCT keyword.id) = ', count($keywords));
+        }
+        if (!($author == '')) {
+            $this->db->like('book.author', $author);
+        }
+        if (!($language == '')) {
+            $this->db->where('book.lang', $language);
+        }
+        if (!empty($year)) {
+            if (count($year) == 1) {
+                $this->db->where('book.year', $year[0]);
+            } else {
+                $this->db->where('book.year >=', $year[0]);
+                $this->db->where('book.year <=', $year[1]);
+            }
+        }
+        $query = $this->db->get();
+        return $query->result_array();
     }
 }
