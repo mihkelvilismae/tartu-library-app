@@ -92,7 +92,7 @@ class JSON extends CI_Controller {
 
     public function search() {
         $author = $this->input->get('autor');
-        $keyword = $this->input->get('zanr');
+        $keyword = $this->input->get('märksõnad');
         $language = $this->input->get('keel');
 
         $year = array();
