@@ -469,7 +469,7 @@ class Database_model extends CI_Model {
     }
 
 
-    public function search($author, $keywords, $language, $year) {
+    public function search($author, $keywords, $languages, $year) {
         $this->db->select('book.*');
         $this->db->from('book');
         if (!empty($keywords)) {
@@ -482,8 +482,8 @@ class Database_model extends CI_Model {
         if (!($author == '')) {
             $this->db->like('book.author', $author);
         }
-        if (!($language == '')) {
-            $this->db->where('book.lang', $language);
+        if (!empty($languages)) {
+            $this->db->where_in('book.lang', $languages);
         }
         if (!empty($year)) {
             if (count($year) == 1) {

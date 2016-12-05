@@ -113,6 +113,14 @@ class JSON extends CI_Controller {
             }
         }
 
-        echo json_encode($this->database_model->search($author, $keywords, $language, $year));
+        $languages = array();
+
+        if (!($language == '')) {
+            foreach (explode(',', $language) as $l) {
+                array_push($languages, $l);
+            }
+        }
+
+        echo json_encode($this->database_model->search($author, $keywords, $languages, $year));
     }
 }
