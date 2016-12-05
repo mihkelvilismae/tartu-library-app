@@ -134,6 +134,27 @@ class JSON extends CI_Controller {
             }
         }
 
-        echo json_encode($this->database_model->search($authors, $keywords, $languages, $year, $genres));
+        $books = $this->database_model->search($authors, $keywords, $languages, $year, $genres);
+        $i = 0;
+        foreach ($books as $book) {
+            $books[$i]["authors"] = array();
+            foreach ($this->database_model->get_authors($book['id']) as $a) {
+                $author = $this->database_model->get_author($a['author_id']);
+                array_push($books[$i]["authors"], $author["firstname"].' '.$author['lastname']);
+            }
+            $books[$i]["genres"] = array();
+            foreach ($this->database_model->get_genres($book['id']) as $g) {
+                $genre = $this->database_model->get_genre($g['genre_id']);
+                array_push($books[$i]["genres"], $genre["name"]);
+            }
+            $books[$i]["keywords"] = array();
+            foreach ($this->database_model->get_keywords($book['id']) as $k) {
+                $keyword = $this->database_model->get_keyword($k['keyword_id']);
+                array_push($books[$i]["keywords"], $keyword["name"]);
+            }
+            $i++;
+        }
+
+        echo json_encode($books);
     }
 }
