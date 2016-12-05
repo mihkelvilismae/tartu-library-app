@@ -57,7 +57,7 @@ class JSON extends CI_Controller {
             }
         }
         sort($keywords);
-        echo json_encode($keywords);
+        echo json_encode($keywords, JSON_FORCE_OBJECT);
     }
 
     public function authors() {
@@ -73,7 +73,7 @@ class JSON extends CI_Controller {
             }
         }
         array_multisort($last_names, SORT_STRING, $authors);
-        echo json_encode($authors);
+        echo json_encode($authors, JSON_FORCE_OBJECT);
     }
 
     public function genres() {
@@ -87,7 +87,7 @@ class JSON extends CI_Controller {
             }
         }
         sort($genres);
-        echo json_encode($genres);
+        echo json_encode($genres, JSON_FORCE_OBJECT);
     }
 
     public function search() {
