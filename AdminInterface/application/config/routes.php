@@ -105,6 +105,7 @@ $route['json/Otsing'] = 'JSON/search';
 $route['json/M%C3%A4rks%C3%B5nad'] = 'JSON/keywords';
 $route['json/Autorid'] = 'JSON/authors';
 $route['json/Zanrid'] = 'JSON/genres';
+$route['json/Raamat'] = 'JSON/book';
 
 $route['default_controller'] = 'Login/login';
 $route['404_override'] = '';

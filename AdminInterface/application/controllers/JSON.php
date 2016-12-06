@@ -90,6 +90,28 @@ class JSON extends CI_Controller {
         echo json_encode($genres, JSON_FORCE_OBJECT);
     }
 
+    public function book() {
+        $id = strtolower($this->input->get('id'));
+        $book = $this->database_model->get_book($id);
+
+        $book["authors"] = array();
+        foreach ($this->database_model->get_authors($book['id']) as $a) {
+            $author = $this->database_model->get_author($a['author_id']);
+            array_push($book["authors"], $author["firstname"].' '.$author['lastname']);
+        }
+        $book["genres"] = array();
+        foreach ($this->database_model->get_genres($book['id']) as $g) {
+            $genre = $this->database_model->get_genre($g['genre_id']);
+            array_push($book["genres"], $genre["name"]);
+        }
+        $book["keywords"] = array();
+        foreach ($this->database_model->get_keywords($book['id']) as $k) {
+            $keyword = $this->database_model->get_keyword($k['keyword_id']);
+            array_push($book["keywords"], $keyword["name"]);
+        }
+        echo json_encode($book);
+    }
+
     public function search() {
         $author = $this->input->get('autor');
         $keyword = $this->input->get('märksõna');
