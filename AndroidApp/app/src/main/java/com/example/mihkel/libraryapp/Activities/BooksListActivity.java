@@ -79,13 +79,12 @@ public class BooksListActivity extends Activity implements ParseStringCallBackLi
     }
 
     public void fetchDataFromServer(int schoolId) {
-        JsonTask jsonTask = new JsonTask(BooksListActivity.this).setListener(this);
+        JsonTask jsonTask = new JsonTask(BooksListActivity.this, null).setListener(this);
         jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Klassid/" + schoolId);
     }
 
-
     @Override
-    public void callback(String jsonString) {
+    public void callback(String jsonString, Integer type) {
         DatabaseManagerSingleton.getInstance().setClassesInSchoolJson(AppManagerSingleton.selectedSchoolId, jsonString);
         startResultBookViewActivity();
 

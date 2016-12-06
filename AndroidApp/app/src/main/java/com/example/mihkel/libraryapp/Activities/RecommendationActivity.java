@@ -25,14 +25,17 @@ import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.Item.Keyword;
 import com.example.mihkel.libraryapp.R;
 import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
+import com.example.mihkel.libraryapp.Various.JsonTask;
 import com.example.mihkel.libraryapp.Various.Selection;
 import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
+import com.example.mihkel.libraryapp.Various.TextWatcherImpl;
 import com.example.mihkel.libraryapp.Various.URLCreator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener {
+public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener, AutoCompleteCallback {
 //    private static final int OBJECT = 1;
 //    private static final int TAG_AUTHOR = 2;
 //    private static final int TAKE_PICTURE = 1;
@@ -231,16 +234,27 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_AUTHOR), R.id.TAG_AUTHOR);
 
         authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
+        TextWatcherImpl textWatcher = new TextWatcherImpl();
+        authorAutoCompleteTextView.addTextChangedListener(textWatcher);
+        textWatcher.setAutoCompleteCallback(this);
+
         authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownViewItem, int position, long id) {
                 Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
-//                Author xxx = (Author) dropdownViewItem.getTag(R.id.TAG_OBJECT);
-                authorAutoCompleteTextView.setText("");
-                addChoiceToSelected(author, R.id.TAG_AUTHOR);
+
+                try {
+                    Author xxx = (Author) dropdownViewItem.getTag(R.id.TAG_OBJECT);
+                    authorAutoCompleteTextView.setText("");
+                    addChoiceToSelected(author, R.id.TAG_AUTHOR);
 //                toast(author.toString());
-                drawSelectedAuthors();
-                hideKeyboard();
+                    drawSelectedAuthors();
+                    hideKeyboard();
+                } catch (Exception e) {
+                    toast("FAAAAAAAAILED");
+                }
+
+
             }
         });
         authorAutoCompleteTextView.setAdapter(authorAdapter);
@@ -513,9 +527,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
 
-    
-
-
     // YEAR/AGE end
     //----------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------
@@ -572,7 +583,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         if (level >= 4)
             showKeyWordsField();
 
-        if (level<4) {
+        if (level < 4) {
             nextButton.setVisibility(View.VISIBLE);
             resultButton.setVisibility(View.GONE);
         } else {
@@ -690,16 +701,20 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public void fetchDataFromServer() {
-//        JsonTask jsonTask = new JsonTask(RecommendationActivity.this).setListener(this);
-//        jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Koolid");
+    public void fetchDataFromServer(String characters, Integer type) {
+        URLCreator urlCreator = new URLCreator();
+        JsonTask jsonTask = new JsonTask(RecommendationActivity.this, type).setListener(this);
+        String url = "";
+        if (type == JsonTask.TASK_TYPE_AUTHOR_AUTOCOMPLETE) //author
+            url = urlCreator.createAuthorAutoCompleteURL(characters);
+        if (type == JsonTask.TASK_TYPE_GENRE_AUTOCOMPLETE) //genre
+            url = urlCreator.createGenreAutoCompleteURL(characters);
+        if (type == JsonTask.TASK_TYPE_KEYWORD_AUTOCOMPLETE) //keywords
+            url = urlCreator.createKeywordsAutoCompleteURL(characters);
+        toast(url);
+        jsonTask.execute(url);
     }
 
-    @Override
-    public void callback(String jsonString) {
-//        DatabaseManagerSingleton.getInstance().setSchoolListResult(jsonString);
-//        startMandatoryReadingActivity();
-    }
 
     //-----------------------------------------------------------------------------------------------------------------------
     // DEFAULT start:
@@ -728,4 +743,59 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
 
+
+
+    @Override
+    public void authorAutoCompleteCallback() {
+        toast("authorAutoCompleteCallback");
+        //võta väärtus väljalt
+        fetchDataFromServer("a", JsonTask.TASK_TYPE_AUTHOR_AUTOCOMPLETE);
+    }
+
+    @Override
+    public void genreAutoCompleteCallback() {
+        toast("genreAutoCompleteCallback");
+        fetchDataFromServer("a", JsonTask.TASK_TYPE_GENRE_AUTOCOMPLETE);
+    }
+
+    @Override
+    public void keywordAutoCompleteCallback() {
+        toast("keywordAutoCompleteCallback");
+        fetchDataFromServer("a", JsonTask.TASK_TYPE_KEYWORD_AUTOCOMPLETE);
+    }
+
+    @Override
+    public void callback(String jsonString, Integer type) {
+        toast("jsonString type: "+type);
+        String xxx = "";
+        // jsonstring -> array(id=>element)
+        HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseJsonToMap(jsonString);
+        toast(jsonString);
+        switch (type) {
+            case 0:
+                authorCallback(resultMap);
+                break;
+            case 1:
+                genreCallback(resultMap);
+                break;
+            case 2:
+                keywordCallback(resultMap);
+                break;
+        }
+
+//        DatabaseManagerSingleton.getInstance().setSchoolListResult(jsonString);
+//        startMandatoryReadingActivity();
+    }
+
+    public void authorCallback(HashMap<Integer, String> string) {
+
+    }
+
+    public void genreCallback(HashMap<Integer, String> string) {
+
+    }
+
+    public void keywordCallback(HashMap<Integer, String> string) {
+
+    }
 }

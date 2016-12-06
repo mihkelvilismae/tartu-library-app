@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
     }
 
     @Override
-    public void callback(String jsonString) {
+    public void callback(String jsonString, Integer type) {
         DatabaseManagerSingleton.getInstance().setSchoolListResult(jsonString);
         startMandatoryReadingActivity();
     }

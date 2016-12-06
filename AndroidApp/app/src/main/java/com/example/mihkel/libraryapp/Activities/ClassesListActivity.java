@@ -83,7 +83,7 @@ public class ClassesListActivity extends Activity implements ParseStringCallBack
     }
 
     @Override
-    public void callback(String jsonString) {
+    public void callback(String jsonString, Integer type) {
         DatabaseManagerSingleton.getInstance().setBooksListInClassJson(AppManagerSingleton.selectedClassId, jsonString);
         startNextActivity();
     }

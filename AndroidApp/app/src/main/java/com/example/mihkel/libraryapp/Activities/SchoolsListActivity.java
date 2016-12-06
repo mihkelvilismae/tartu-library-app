@@ -73,7 +73,7 @@ public class SchoolsListActivity extends Activity implements ParseStringCallBack
     }
 
     @Override
-    public void callback(String jsonString) {
+    public void callback(String jsonString, Integer type) {
         DatabaseManagerSingleton.getInstance().setClassesInSchoolJson(AppManagerSingleton.selectedSchoolId, jsonString);
         startNextActivity();
     }

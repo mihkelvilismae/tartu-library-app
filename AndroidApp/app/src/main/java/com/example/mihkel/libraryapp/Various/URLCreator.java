@@ -13,8 +13,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
-import java.util.regex.Pattern;
 
 /**
  * Created by mihkel on 5.12.2016.
@@ -44,19 +42,19 @@ public class URLCreator {
     }
 
     public String createKeywordsAutoCompleteURL(String characters) {
-        return createURLStart() + "Autorid/" + characters;
+        return createURLStart() + "Autorid?" + characters;
     }
 
     public String createGenreAutoCompleteURL(String characters) {
-        return createURLStart() + "Zanrid/" + characters;
+        return createURLStart() + "Zanrid?" + characters;
     }
 
     public String createAuthorAutoCompleteURL(String characters) {
-        return createURLStart() + "Märksõnad/" + characters;
+        return createURLStart() + "Märksõnad?" + characters;
     }
 
     public String createURLStart() {
-        return "admin-mihkelvilismae.rhcloud.com/AdminInterface/json/";
+        return "http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/";
     }
 
     //--------------------------------------------------------------------------------------------------

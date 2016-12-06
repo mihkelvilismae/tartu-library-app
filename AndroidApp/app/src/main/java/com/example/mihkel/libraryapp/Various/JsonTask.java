@@ -17,10 +17,20 @@ import java.net.URL;
 
 public class JsonTask extends AsyncTask<String, String, String> {
 
+    public static final Integer TASK_TYPE_AUTHOR_AUTOCOMPLETE = 0;
+    public static final Integer TASK_TYPE_GENRE_AUTOCOMPLETE = 1;
+    public static final Integer TASK_TYPE_KEYWORD_AUTOCOMPLETE = 2;
+
     ParseStringCallBackListener mListener;
     Context context;
     ProgressDialog pd;
+    Integer mType;
 
+
+    public JsonTask(Context context, Integer type) {
+        this.context = context;
+        mType = type;
+    }
 
     public JsonTask(Context context) {
         this.context = context;
@@ -95,11 +105,17 @@ public class JsonTask extends AsyncTask<String, String, String> {
         if (pd.isShowing()) {
             pd.dismiss();
         }
-        if (mListener != null)
-            mListener.callback(result);
+        if (mListener != null) {
+            if (mType == null)
+                mListener.callback(result, null);
+            else
+                mListener.callback(result, mType);
+
+
 
 //            /txtJson.setText(result);
 
+        }
     }
 
 
