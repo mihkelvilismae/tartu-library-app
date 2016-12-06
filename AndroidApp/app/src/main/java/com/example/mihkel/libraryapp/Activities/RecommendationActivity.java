@@ -19,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
+import com.example.mihkel.libraryapp.Item.Author;
+import com.example.mihkel.libraryapp.Item.Genre;
 import com.example.mihkel.libraryapp.Item.Item;
+import com.example.mihkel.libraryapp.Item.Keyword;
 import com.example.mihkel.libraryapp.R;
 import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
 import com.example.mihkel.libraryapp.Various.Selection;
@@ -155,6 +158,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.TAG_AUTHOR:
                 selectedAuthors.remove(choiceItem);
                 authorAdapter.add(choiceItem);
+                selection.getAuthors().remove(choiceItem);
                 break;
             case R.id.TAG_BOOK:
                 selectedBooks.remove(choiceItem);
@@ -163,10 +167,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.TAG_GENRE:
                 selectedGenres.remove(choiceItem);
                 genreAdapter.add(choiceItem);
+                selection.getGenres().remove(choiceItem);
                 break;
             case R.id.TAG_KEYWORD:
                 selectedKeywords.remove(choiceItem);
                 keywordAdapter.add(choiceItem);
+                selection.getKeywords().remove(choiceItem);
                 break;
         }
     }
@@ -176,18 +182,22 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.TAG_AUTHOR:
                 selectedAuthors.add(choiceItem);
                 authorAdapter.remove(choiceItem);
+//                selection.addAuthor((Author) choiceItem);
                 break;
             case R.id.TAG_BOOK:
                 selectedBooks.add(choiceItem);
                 bookAdapter.remove(choiceItem);
+//                selection.addAuthor((Author) choiceItem);
                 break;
             case R.id.TAG_GENRE:
                 selectedGenres.add(choiceItem);
                 genreAdapter.remove(choiceItem);
+//                selection.addGenre((Genre) choiceItem);
                 break;
             case R.id.TAG_KEYWORD:
                 selectedKeywords.add(choiceItem);
                 keywordAdapter.remove(choiceItem);
+//                selection.addKeyword((Keyword) choiceItem);
                 break;
         }
     }
@@ -225,6 +235,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownViewItem, int position, long id) {
                 Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
+//                Author xxx = (Author) dropdownViewItem.getTag(R.id.TAG_OBJECT);
                 authorAutoCompleteTextView.setText("");
                 addChoiceToSelected(author, R.id.TAG_AUTHOR);
 //                toast(author.toString());
