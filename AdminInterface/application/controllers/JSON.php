@@ -40,7 +40,25 @@ class JSON extends CI_Controller {
 
         for ($i = 0; $i < count($items); $i++) {
             $item = $items[$i];
-            $arr[$item['id']] = $this->database_model->get_book($item['book_id'])['title'];
+            $book = $this->database_model->get_book($item['book_id']);
+
+            $book["authors"] = array();
+            foreach ($this->database_model->get_authors($book['id']) as $a) {
+                $author = $this->database_model->get_author($a['author_id']);
+                array_push($book["authors"], $author["firstname"].' '.$author['lastname']);
+            }
+            $book["genres"] = array();
+            foreach ($this->database_model->get_genres($book['id']) as $g) {
+                $genre = $this->database_model->get_genre($g['genre_id']);
+                array_push($book["genres"], $genre["name"]);
+            }
+            $book["keywords"] = array();
+            foreach ($this->database_model->get_keywords($book['id']) as $k) {
+                $keyword = $this->database_model->get_keyword($k['keyword_id']);
+                array_push($book["keywords"], $keyword["name"]);
+            }
+            array_push($arr, $book);
+            //$arr[$item['id']] = $this->database_model->get_book($item['book_id'])['title'];
         }
 
         echo json_encode($arr);
