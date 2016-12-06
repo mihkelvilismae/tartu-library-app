@@ -73,11 +73,11 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_keywords() as $keyword) {
             if (substr(strtolower($keyword['name']), 0, strlen($start)) === $start) {
                 if (!in_array($keyword['name'], $keywords)) {
-                    array_push($keywords, $keyword['name']);
+                    $keywords[$keyword['id']] = $keyword['name'];
                 }
             }
         }
-        sort($keywords);
+        asort($keywords);
         echo json_encode($keywords, JSON_FORCE_OBJECT);
     }
 
@@ -88,13 +88,15 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_authors() as $author) {
             if (substr(strtolower($author['lastname']), 0, strlen($start)) === $start) {
                 if (!in_array($author, $authors)) {
-                    array_push($authors, $author['firstname'].' '.$author['lastname']);
+                    $authors[$author['id']] = $author['firstname'].' '.$author['lastname'];
                     array_push($last_names, $author['lastname']);
                 }
             }
         }
-        array_multisort($last_names, SORT_STRING, $authors);
-        echo json_encode($authors, JSON_FORCE_OBJECT);
+        $keys = array_keys($authors);
+        array_multisort($last_names, SORT_STRING, $authors, $keys);
+        $arr = array_combine($keys, $authors);
+        echo json_encode($arr);
     }
 
     public function genres() {
@@ -103,12 +105,12 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_genres() as $genre) {
             if (substr(strtolower($genre['name']), 0, strlen($start)) === $start) {
                 if (!in_array($genre['name'], $genres)) {
-                    array_push($genres, $genre['name']);
+                    $genres[$genre['id']] = $genre['name'];
                 }
             }
         }
-        sort($genres);
-        echo json_encode($genres, JSON_FORCE_OBJECT);
+        asort($genres);
+        echo json_encode($genres);
     }
 
     public function book() {
