@@ -34,6 +34,7 @@ import com.example.mihkel.libraryapp.Various.URLCreator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener, AutoCompleteCallback {
 //    private static final int OBJECT = 1;
@@ -91,6 +92,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 //    private GridView ageGridView;
 
     Selection selection = new Selection();
+    public ArrayList<Item> authorsAdapterList = new ArrayList<Item>();
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,12 +234,14 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // AUTHOR start:
 
     public void handleAuthorAutocomplete() {
-        authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_AUTHOR), R.id.TAG_AUTHOR);
+        authorAdapter = new TextAutocompleteListAdapter(this, 11111111, authorsAdapterList, R.id.TAG_AUTHOR);
 
         authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
         TextWatcherImpl textWatcher = new TextWatcherImpl();
         authorAutoCompleteTextView.addTextChangedListener(textWatcher);
         textWatcher.setAutoCompleteCallback(this);
+
+//        authorAdapter.notifyDataSetChanged();
 
         authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -244,7 +249,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
 
                 try {
-                    Author xxx = (Author) dropdownViewItem.getTag(R.id.TAG_OBJECT);
+                    Item xxx = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
                     authorAutoCompleteTextView.setText("");
                     addChoiceToSelected(author, R.id.TAG_AUTHOR);
 //                toast(author.toString());
@@ -743,43 +748,41 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
 
-
-
     @Override
-    public void authorAutoCompleteCallback() {
+    public void authorAutoCompleteCallback(String inputCharacters) {
         toast("authorAutoCompleteCallback");
-        //võta väärtus väljalt
-        fetchDataFromServer("a", JsonTask.TASK_TYPE_AUTHOR_AUTOCOMPLETE);
+        toast("chaaaaaaaar:" + inputCharacters);
+        fetchDataFromServer(inputCharacters, JsonTask.TASK_TYPE_AUTHOR_AUTOCOMPLETE);
     }
 
     @Override
-    public void genreAutoCompleteCallback() {
+    public void genreAutoCompleteCallback(String inputCharacters) {
         toast("genreAutoCompleteCallback");
-        fetchDataFromServer("a", JsonTask.TASK_TYPE_GENRE_AUTOCOMPLETE);
+        fetchDataFromServer(inputCharacters, JsonTask.TASK_TYPE_GENRE_AUTOCOMPLETE);
     }
 
     @Override
-    public void keywordAutoCompleteCallback() {
+    public void keywordAutoCompleteCallback(String inputCharacters) {
         toast("keywordAutoCompleteCallback");
-        fetchDataFromServer("a", JsonTask.TASK_TYPE_KEYWORD_AUTOCOMPLETE);
+        fetchDataFromServer(inputCharacters, JsonTask.TASK_TYPE_KEYWORD_AUTOCOMPLETE);
     }
 
     @Override
     public void callback(String jsonString, Integer type) {
-        toast("jsonString type: "+type);
-        String xxx = "";
-        // jsonstring -> array(id=>element)
+        toast("jsonString type: " + type);
         HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseJsonToMap(jsonString);
-        toast(jsonString);
+        List<Item> items = DatabaseManagerSingleton.getInstance().hashMapToList(resultMap);
+        toast(jsonString + "kokku:");
+        toast(String.valueOf(items.size()));
         switch (type) {
             case 0:
-                authorCallback(resultMap);
+                authorCallback(items);
                 break;
             case 1:
-                genreCallback(resultMap);
+                genreCallback(items);
                 break;
             case 2:
-                keywordCallback(resultMap);
+                keywordCallback(items);
                 break;
         }
 
@@ -787,15 +790,27 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 //        startMandatoryReadingActivity();
     }
 
-    public void authorCallback(HashMap<Integer, String> string) {
-
+    public void authorCallback(List<Item> itemList) {
+        authorsAdapterList.clear();
+        authorsAdapterList.addAll(itemList);
+//        authorAdapter.addAll(itemList);
+        authorAdapter.notifyDataSetChanged();
+//        this.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//            }
+//        });
     }
 
-    public void genreCallback(HashMap<Integer, String> string) {
-
+    public void genreCallback(List<Item> itemList) {
+        genreAdapter.clear();
+        genreAdapter.addAll(itemList);
+        genreAdapter.notifyDataSetChanged();
     }
 
-    public void keywordCallback(HashMap<Integer, String> string) {
-
+    public void keywordCallback(List<Item> itemList) {
+        keywordAdapter.clear();
+        keywordAdapter.addAll(itemList);
+        keywordAdapter.notifyDataSetChanged();
     }
 }

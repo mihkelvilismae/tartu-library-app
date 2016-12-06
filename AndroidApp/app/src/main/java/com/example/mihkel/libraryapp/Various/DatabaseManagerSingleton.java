@@ -131,6 +131,18 @@ public class DatabaseManagerSingleton {
         return map;
     }
 
+    public List<Item> hashMapToList(HashMap<Integer, String> authorMap) {
+        ArrayList<Item> authorList = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : authorMap.entrySet()) {
+            Integer id = entry.getKey();
+            Item author = new Item();
+            author.setId(id);
+            author.setName(entry.getValue());
+            authorList.add(author);
+        }
+        return authorList;
+    }
+
     public HashMap<Integer, School> parseJsonToSchoolMap(String jsonString) {
         HashMap<Integer, String> map = new Gson().fromJson(jsonString, new TypeToken<HashMap<Integer, String>>() {
         }.getType());

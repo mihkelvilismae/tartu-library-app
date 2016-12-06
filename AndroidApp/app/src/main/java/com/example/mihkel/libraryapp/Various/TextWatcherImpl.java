@@ -23,14 +23,14 @@ public class TextWatcherImpl implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        System.out.println("xxxxxx");
-
+        System.out.println("onTextChanged");
+        autoCompleteCallback.authorAutoCompleteCallback(String.valueOf(s));
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        System.out.println("xxxxxx");
-        autoCompleteCallback.authorAutoCompleteCallback();
+//        System.out.println("xxxxxx");
+
 
     }
 }
