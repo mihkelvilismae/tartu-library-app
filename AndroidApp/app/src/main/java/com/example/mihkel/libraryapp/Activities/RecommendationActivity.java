@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.mihkel.libraryapp.Various.JsonTask.TASK_TYPE_RESULTS;
+
 public class RecommendationActivity extends AppCompatActivity implements View.OnClickListener, ParseStringCallBackListener, AutoCompleteCallback {
 //    private static final int OBJECT = 1;
 //    private static final int TAG_AUTHOR = 2;
@@ -334,7 +336,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
                 genreAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_GENRE);
-                toast(book.toString());
+//                toast(book.toString());
                 drawSelectedGenres();
                 hideKeyboard();
             }
@@ -683,20 +685,16 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private void showResults() {
         URLCreator urlCreator = new URLCreator();
         String url = urlCreator.createResultURL(selection);
-        toast(url);
+//        toast(url);
+        fetchDataFromServer("x", TASK_TYPE_RESULTS);
     }
 
-    public void startResultActivity() {
+    public void startResultActivity(List<Item> results) {
+        DatabaseManagerSingleton.getInstance().setResults(results);
         Intent calendarStartIntent = new Intent(this, RecommendationResultList.class);
         startActivity(calendarStartIntent);
     }
 
-    public void startResult() {
-//        if (true || !DatabaseManagerSingleton.getInstance().hasSchoolsList())
-//            fetchDataFromServer();
-//        else
-//            startMandatoryReadingActivity();
-    }
 
     public void toast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
@@ -712,9 +710,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             url = urlCreator.createGenreAutoCompleteURL(characters);
         if (type == JsonTask.TASK_TYPE_KEYWORD_AUTOCOMPLETE) //keywords
             url = urlCreator.createKeywordsAutoCompleteURL(characters);
-        if (type == JsonTask.TASK_TYPE_RESULTS) //keywords
+        if (type == TASK_TYPE_RESULTS) //keywords
             url = urlCreator.createResultURL(selection);
-        toast(url);
+//        toast(url);
         jsonTask.execute(url);
     }
 
@@ -782,11 +780,19 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case 2:
                 keywordCallback(items);
                 break;
+            case 3:
+                startResultActivity(items);
+                break;
         }
 
 //        DatabaseManagerSingleton.getInstance().setSchoolListResult(jsonString);
 //        startMandatoryReadingActivity();
     }
+
+//    private void showResultCallback(List<Item> items) {
+//        System.out.println("as");
+//         paned itemid kuskile mällu
+//    }
 
     public void authorCallback(List<Item> itemList) {
         authorsAdapterList.clear();

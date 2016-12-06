@@ -30,6 +30,12 @@
         <activity
             android:name=".Activities.RecommendationActivity"
             android:label="RecommendationActivity" />
+        <activity
+            android:name=".Activities.RecommendationResultList"
+            android:label="RecommendationResultList" />
+        <!--<activity-->
+            <!--android:name=".Activities."-->
+            <!--android:label="RecommendationActivity" />-->
         <!-- <activity -->
         <!-- android:name=".Activities.RecommendationActivity" -->
         <!-- android:label="RecommendationActivity"></activity> -->

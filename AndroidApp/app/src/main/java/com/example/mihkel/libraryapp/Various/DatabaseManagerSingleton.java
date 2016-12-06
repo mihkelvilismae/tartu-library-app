@@ -19,6 +19,16 @@ public class DatabaseManagerSingleton {
     public static final Integer CLASSES_DATA_KEY = 2;
     public static final Integer READING_LIST_DATA_KEY = 3;
 
+    public List<Item> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Item> results) {
+        this.results = results;
+    }
+
+    public List<Item> results;
+
     private static DatabaseManagerSingleton _instance;
 //    private static HashMap<Integer, HashMap<Integer, String>> data = new HashMap<Integer, HashMap<Integer, String>>();
 
