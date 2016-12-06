@@ -1,6 +1,5 @@
 package com.example.mihkel.libraryapp.Various;
 
-import com.example.mihkel.libraryapp.Item.Author;
 import com.example.mihkel.libraryapp.Item.Book;
 import com.example.mihkel.libraryapp.Item.Clazz;
 import com.example.mihkel.libraryapp.Item.Item;
@@ -52,8 +51,8 @@ public class DatabaseManagerSingleton {
     }
 
     public void addBook(Book book) {
-        if (!hasBook(book.getId()))
-            booksData.put(book.getId(), book);
+//        if (!hasBook(book.getId()))
+        booksData.put(book.getId(), book);
     }
 
 
@@ -125,8 +124,14 @@ public class DatabaseManagerSingleton {
     //
 
 
-    public HashMap<Integer, String> parseJsonToMap(String jsonString) {
+    public HashMap<Integer, String> parseIntegerKeyJsonToMap(String jsonString) {
         HashMap<Integer, String> map = new Gson().fromJson(jsonString, new TypeToken<HashMap<Integer, String>>() {
+        }.getType());
+        return map;
+    }
+
+    public HashMap<String, String> parseStringKeyJsonToMap(String jsonString) {
+        HashMap<String, String> map = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, String>>() {
         }.getType());
         return map;
     }
@@ -228,4 +233,18 @@ public class DatabaseManagerSingleton {
     }
 
 
+    public void setBookInfo(Integer bookId, String jsonString) {
+        Book book = new Book();
+        HashMap<String, String> bookInfoMap = parseStringKeyJsonToMap(jsonString);
+        book.setId(Integer.parseInt(bookInfoMap.get("id")));
+        book.setName(bookInfoMap.get("title"));
+        book.setAuthors(bookInfoMap.get("authors"));
+        book.setGenres(bookInfoMap.get("genres"));
+        book.setKeywords(bookInfoMap.get("keywords"));
+        book.setLanguages(bookInfoMap.get("lang"));
+        book.setYear(Integer.valueOf(bookInfoMap.get("year")));
+
+        addBook(book);
+
+    }
 }

@@ -39,11 +39,11 @@ public class BookViewActivity extends AppCompatActivity {
     public void fillFields() {
         Book selectedBook = DatabaseManagerSingleton.getInstance().getBook(AppManagerSingleton.selectedBookId);
         bookHeading.setText(selectedBook.getName());
-        bookAuthor.setText("autoher");
-        bookYear.setText("1999");
-        bookPages.setText("123");
-        bookGenre.setText("ulme");
-        bookKeyword.setText("lapsed, jee");
-        bookLocation.setText("asukoht");
+        bookAuthor.setText(selectedBook.getAuthors());
+        bookYear.setText(String.valueOf(selectedBook.getYear()));
+//        bookPages.setText("123");
+        bookGenre.setText(selectedBook.getGenres());
+        bookKeyword.setText(selectedBook.getKeywords());
+//        bookLocation.setText("asukoht");
     }
 }

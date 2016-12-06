@@ -20,12 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
-import com.example.mihkel.libraryapp.Item.Author;
-import com.example.mihkel.libraryapp.Item.Genre;
 import com.example.mihkel.libraryapp.Item.Item;
-import com.example.mihkel.libraryapp.Item.Keyword;
 import com.example.mihkel.libraryapp.R;
-import com.example.mihkel.libraryapp.Various.AppManagerSingleton;
 import com.example.mihkel.libraryapp.Various.JsonTask;
 import com.example.mihkel.libraryapp.Various.Selection;
 import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
@@ -772,7 +768,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     @Override
     public void callback(String jsonString, Integer type) {
         toast("jsonString type: " + type);
-        HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseJsonToMap(jsonString);
+        HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
         List<Item> items = DatabaseManagerSingleton.getInstance().hashMapToList(resultMap);
         toast(jsonString + "kokku:");
         toast(String.valueOf(items.size()));
