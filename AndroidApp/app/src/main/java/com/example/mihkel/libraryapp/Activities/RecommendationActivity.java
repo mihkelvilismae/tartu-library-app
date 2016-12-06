@@ -2,6 +2,7 @@ package com.example.mihkel.libraryapp.Activities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -690,9 +691,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void startResultActivity() {
-//        Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
-//        startActivity(calendarStartIntent);
-//        toast("startRecommendationActivity");
+        Intent calendarStartIntent = new Intent(this, RecommendationResultList.class);
+        startActivity(calendarStartIntent);
     }
 
     public void startResult() {
@@ -716,6 +716,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             url = urlCreator.createGenreAutoCompleteURL(characters);
         if (type == JsonTask.TASK_TYPE_KEYWORD_AUTOCOMPLETE) //keywords
             url = urlCreator.createKeywordsAutoCompleteURL(characters);
+        if (type == JsonTask.TASK_TYPE_RESULTS) //keywords
+            url = urlCreator.createResultURL(selection);
         toast(url);
         jsonTask.execute(url);
     }

@@ -38,7 +38,8 @@ public class URLCreator {
             resultUrl = "&" + resultUrl + implodeAuthor(",", selection.getAuthors());
         }
 
-        return resultUrl;
+        return createURLStart() + "Otsing";
+//        return resultUrl;
     }
 
     public String createKeywordsAutoCompleteURL(String characters) {

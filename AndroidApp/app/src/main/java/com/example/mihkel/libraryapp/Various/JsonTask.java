@@ -20,6 +20,7 @@ public class JsonTask extends AsyncTask<String, String, String> {
     public static final Integer TASK_TYPE_AUTHOR_AUTOCOMPLETE = 0;
     public static final Integer TASK_TYPE_GENRE_AUTOCOMPLETE = 1;
     public static final Integer TASK_TYPE_KEYWORD_AUTOCOMPLETE = 2;
+    public static final Integer TASK_TYPE_RESULTS = 3;
 
     ParseStringCallBackListener mListener;
     Context context;
