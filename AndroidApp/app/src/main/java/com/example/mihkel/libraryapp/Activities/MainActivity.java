@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
         HashMap<Integer, Item> genreHashMap = DatabaseManagerSingleton.getInstance().stringHashMapToItemHashMap(genreData);
         //save
         DatabaseManagerSingleton.setGenreData(genreHashMap);
-//        List<Item> xxx = DatabaseManagerSingleton.getInstance().hashMapToItemList(genreData);
+//        List<Item> xxx = DatabaseManagerSingleton.getInstance().stringHashMapToItemList(genreData);
 //        DatabaseManagerSingleton.getInstance().setGenreData(genreData);
     }
 

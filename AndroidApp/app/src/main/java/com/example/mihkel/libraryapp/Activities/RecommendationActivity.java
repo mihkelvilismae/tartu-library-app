@@ -26,7 +26,6 @@ import com.example.mihkel.libraryapp.Various.JsonTask;
 import com.example.mihkel.libraryapp.Various.Selection;
 import com.example.mihkel.libraryapp.Various.TextAutocompleteListAdapter;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
-import com.example.mihkel.libraryapp.Various.TextWatcherImpl;
 import com.example.mihkel.libraryapp.Various.URLCreator;
 
 import java.util.ArrayList;
@@ -71,13 +70,13 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     private ArrayList<Item> selectedGenres = new ArrayList<>();
     private ArrayList<Item> genres;
 
-    private TextAutocompleteListAdapter authorAdapter;
     private TextAutocompleteListAdapter genreAdapter;
+    private TextAutocompleteListAdapter authorAdapter;
     private TextAutocompleteListAdapter keywordAdapter;
     private TextAutocompleteListAdapter bookAdapter;
 
-    AutoCompleteTextView authorAutoCompleteTextView;
     AutoCompleteTextView genreAutoCompleteTextView;
+    AutoCompleteTextView authorAutoCompleteTextView;
     AutoCompleteTextView keywordAutoCompleteTextView;
     AutoCompleteTextView bookAutoCompleteTextView;
 
@@ -171,7 +170,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.TAG_GENRE:
                 selectedGenres.remove(choiceItem);
-                genreAdapter.add(choiceItem);
+                authorAdapter.add(choiceItem);
                 selection.getGenres().remove(choiceItem);
                 break;
             case R.id.TAG_KEYWORD:
@@ -196,7 +195,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.TAG_GENRE:
                 selectedGenres.add(choiceItem);
-                genreAdapter.remove(choiceItem);
+                authorAdapter.remove(choiceItem);
 //                selection.addGenre((Genre) choiceItem);
                 break;
             case R.id.TAG_KEYWORD:
@@ -233,36 +232,53 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // AUTHOR start:
 
     public void handleAuthorAutocomplete() {
-        authorAdapter = new TextAutocompleteListAdapter(this, 11111111, authorsAdapterList, R.id.TAG_AUTHOR);
+
+         authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.itemHashMapToItemList(DatabaseManagerSingleton.getAuthorsData()), R.id.TAG_AUTHOR);
 
         authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
-        TextWatcherImpl textWatcher = new TextWatcherImpl();
-        authorAutoCompleteTextView.addTextChangedListener(textWatcher);
-        textWatcher.setAutoCompleteCallback(this);
-
-//        authorAdapter.notifyDataSetChanged();
-
         authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View dropdownViewItem, int position, long id) {
-                Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
-
-                try {
-                    Item xxx = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
-                    authorAutoCompleteTextView.setText("");
-                    addChoiceToSelected(author, R.id.TAG_AUTHOR);
-//                toast(author.toString());
-                    drawSelectedAuthors();
-                    hideKeyboard();
-                } catch (Exception e) {
-                    toast("FAAAAAAAAILED");
-                }
-
-
+            public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
+                Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
+                authorAutoCompleteTextView.setText("");
+                addChoiceToSelected(book, R.id.TAG_AUTHOR);
+//                toast(book.toString());
+                drawSelectedAuthors();
+                hideKeyboard();
             }
         });
+
         authorAutoCompleteTextView.setAdapter(authorAdapter);
         authorAutoCompleteTextView.setThreshold(0);
+//
+//        authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
+//        TextWatcherImpl textWatcher = new TextWatcherImpl();
+//        authorAutoCompleteTextView.addTextChangedListener(textWatcher);
+//        textWatcher.setAutoCompleteCallback(this);
+//
+////        authorAdapter.notifyDataSetChanged();
+//
+//        authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View dropdownViewItem, int position, long id) {
+//                Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
+//
+//                try {
+//                    Item xxx = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
+//                    authorAutoCompleteTextView.setText("");
+//                    addChoiceToSelected(author, R.id.TAG_AUTHOR);
+////                toast(author.toString());
+//                    drawSelectedAuthors();
+//                    hideKeyboard();
+//                } catch (Exception e) {
+//                    toast("FAAAAAAAAILED");
+//                }
+//
+//
+//            }
+//        });
+//        authorAutoCompleteTextView.setAdapter(authorAdapter);
+//        authorAutoCompleteTextView.setThreshold(0);
     }
 
     public void drawSelectedAuthors() {
@@ -327,14 +343,14 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // GENRES start:
 
     public void handleGenreAutocomplete() {
-        genreAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_GENRE), R.id.TAG_GENRE);
+        authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.itemHashMapToItemList(DatabaseManagerSingleton.getGenreData()), R.id.TAG_GENRE);
 
-        genreAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editGenre);
-        genreAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editGenre);
+        authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
-                genreAutoCompleteTextView.setText("");
+                authorAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_GENRE);
 //                toast(book.toString());
                 drawSelectedGenres();
@@ -342,8 +358,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             }
         });
 
-        genreAutoCompleteTextView.setAdapter(genreAdapter);
-        genreAutoCompleteTextView.setThreshold(0);
+        authorAutoCompleteTextView.setAdapter(authorAdapter);
+        authorAutoCompleteTextView.setThreshold(0);
     }
 
     public void hideKeyboard() {
@@ -395,7 +411,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     // KEYWORDS start:
 
     public void handleKeywordsAutocomplete() {
-        keywordAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.getInstance().getGenericList(R.id.TAG_KEYWORD), R.id.TAG_KEYWORD);
+        keywordAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.itemHashMapToItemList(DatabaseManagerSingleton.getKeywordsData()), R.id.TAG_KEYWORD);
 
         keywordAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editKeyword);
         keywordAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -767,7 +783,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     public void callback(String jsonString, Integer type) {
         toast("jsonString type: " + type);
         HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
-        List<Item> items = DatabaseManagerSingleton.getInstance().hashMapToItemList(resultMap);
+        List<Item> items = DatabaseManagerSingleton.getInstance().stringHashMapToItemList(resultMap);
         toast(jsonString + "kokku:");
         toast(String.valueOf(items.size()));
         switch (type) {
@@ -807,9 +823,9 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     }
 
     public void genreCallback(List<Item> itemList) {
-        genreAdapter.clear();
-        genreAdapter.addAll(itemList);
-        genreAdapter.notifyDataSetChanged();
+        authorAdapter.clear();
+        authorAdapter.addAll(itemList);
+        authorAdapter.notifyDataSetChanged();
     }
 
     public void keywordCallback(List<Item> itemList) {

@@ -175,7 +175,7 @@ public class DatabaseManagerSingleton {
         return map;
     }
 
-    public List<Item> hashMapToItemList(HashMap<Integer, String> authorMap) {
+    public static List<Item> stringHashMapToItemList(HashMap<Integer, String> authorMap) {
         ArrayList<Item> authorList = new ArrayList<>();
         for (Map.Entry<Integer, String> entry : authorMap.entrySet()) {
             Integer id = entry.getKey();
@@ -183,6 +183,19 @@ public class DatabaseManagerSingleton {
             item.setId(id);
             item.setName(entry.getValue());
             authorList.add(item);
+        }
+        return authorList;
+    }
+
+    public static List<Item> itemHashMapToItemList(HashMap<Integer, Item> authorMap) {
+        ArrayList<Item> authorList = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : authorMap.entrySet()) {
+//            Integer id = entry.getKey();
+//            entry.ge
+//            Item item = new Item();
+//            item.setId(id);
+//            item.setName(entry.get());
+            authorList.add(entry.getValue());
         }
         return authorList;
     }
