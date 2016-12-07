@@ -234,7 +234,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     public void handleAuthorAutocomplete() {
 
-         authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.itemHashMapToItemList(DatabaseManagerSingleton.getAuthorsData()), R.id.TAG_AUTHOR);
+        authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.itemHashMapToItemList(DatabaseManagerSingleton.getAuthorsData()), R.id.TAG_AUTHOR);
 
         authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
         authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -444,8 +444,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPicker1);
 
         int year = 2016;
-        nopicker.setMaxValue(year + 50);
-        nopicker.setMinValue(year - 50);
+        nopicker.setMaxValue(year);
+        nopicker.setMinValue(year - 200);
 
         if (isAge) {
             year = 15;
@@ -681,7 +681,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         selection.setEstonian(((CheckBox) findViewById(R.id.languageCheckboxEE)).isChecked());
         selection.setRussian(((CheckBox) findViewById(R.id.languageCheckboxRU)).isChecked());
         String url = urlCreator.createResultURL(selection);
-//        toast(url);
         fetchDataFromServer("x", TASK_TYPE_RESULTS);
     }
 
@@ -762,9 +761,10 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     @Override
     public void callback(String jsonString, Integer type) {
-//        toast("jsonString type: " + type);
-//        HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
-//        List<Item> items = DatabaseManagerSingleton.getInstance().stringHashMapToItemList(resultMap);
+        toast("jsonString type: " + type);
+        HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
+        List<Item> items = DatabaseManagerSingleton.getInstance().stringHashMapToItemList(resultMap);
+        startResultActivity(items);
 //        toast(jsonString + "kokku:");
 //        toast(String.valueOf(items.size()));
 //        switch (type) {
