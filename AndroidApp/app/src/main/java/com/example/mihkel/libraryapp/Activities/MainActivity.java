@@ -3,11 +3,16 @@ package com.example.mihkel.libraryapp.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
+import com.example.mihkel.libraryapp.Item.Book;
 import com.example.mihkel.libraryapp.R;
+import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 import com.example.mihkel.libraryapp.Various.JsonTask;
 import com.example.mihkel.libraryapp.Various.URLCreator;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements ParseStringCallBackListener {
 
@@ -17,9 +22,6 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
     boolean isAuthorsDownloaded;
     boolean isKeywordsDownloaded;
     boolean isGenresDownloaded;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,23 +59,43 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
     }
 
     @Override
-    public void callback(String string, Integer type) {
+    public void callback(String JSONString, Integer type) {
         if (type == TYPE_AUTHORS) {
             isAuthorsDownloaded = true;
-//            saveAuthorsFromJSON();
+            saveAuthorsFromJSON(JSONString);
             downloadKeywords();
+            toast(JSONString);
         }
         if (type == TYPE_KEYWORDS) {
             isKeywordsDownloaded = true;
-//            saveKeywordsFromJSON();
+            saveKeywordsFromJSON(JSONString);
             downloadGenres();
+            toast(JSONString);
         }
         if (type == TYPE_GENRES) {
-//            saveGenresFromJSON = true;
             isGenresDownloaded = true;
+            saveGenresFromJSON(JSONString);
+            toast(JSONString);
             startNextActivity();
         }
 
+    }
+
+    private void saveGenresFromJSON(String JSONString) {
+        //convert
+        HashMap<Integer, Book> authorsData = ;
+        //save
+//        DatabaseManagerSingleton.getInstance().setGenreData(authorsData);
+    }
+
+    private void saveKeywordsFromJSON(String JSONString) {
+        HashMap<Integer, Book> authorsData;
+//        DatabaseManagerSingleton.getInstance().setKeywordsData(authorsData);
+    }
+
+    private void saveAuthorsFromJSON(String JSONString) {
+        HashMap<Integer, Book> authorsData;
+//        DatabaseManagerSingleton.getInstance().setAuthorsData(authorsData);
     }
 
     //ecamples
@@ -89,5 +111,9 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
     public void startNextActivity() {
         Intent calendarStartIntent = new Intent(this, ModeSelectionScreen.class);
         startActivity(calendarStartIntent);
+    }
+
+    public void toast(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 }

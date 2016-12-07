@@ -37,6 +37,12 @@ public class DatabaseManagerSingleton {
     private static HashMap<Integer, HashMap<Integer, Book>> booksByClassesData = new HashMap<>();
     private static HashMap<Integer, Book> booksData = new HashMap<>();
 
+    private static HashMap<Integer, Book> authorsData = new HashMap<>();
+    private static HashMap<Integer, Book> genreData = new HashMap<>();
+    private static HashMap<Integer, Book> keywordsData = new HashMap<>();
+
+
+
     private DatabaseManagerSingleton() {
 
     }
@@ -86,6 +92,29 @@ public class DatabaseManagerSingleton {
         setBooksListInClass(classId, parseJsonToBookMap(jsonString));
     }
 
+    public static HashMap<Integer, Book> getAuthorsData() {
+        return authorsData;
+    }
+
+    public static void setAuthorsData(HashMap<Integer, Book> authorsData) {
+        DatabaseManagerSingleton.authorsData = authorsData;
+    }
+
+    public static HashMap<Integer, Book> getGenreData() {
+        return genreData;
+    }
+
+    public static void setGenreData(HashMap<Integer, Book> genreData) {
+        DatabaseManagerSingleton.genreData = genreData;
+    }
+
+    public static HashMap<Integer, Book> getKeywordsData() {
+        return keywordsData;
+    }
+
+    public static void setKeywordsData(HashMap<Integer, Book> keywordsData) {
+        DatabaseManagerSingleton.keywordsData = keywordsData;
+    }
 
     // SETTERS end
     //----------------------------------------------------------------------------------------------------
