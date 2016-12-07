@@ -317,12 +317,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     public void handleGenreAutocomplete() {
         authorAdapter = new TextAutocompleteListAdapter(this, 11111111, DatabaseManagerSingleton.itemHashMapToItemList(DatabaseManagerSingleton.getGenreData()), R.id.TAG_GENRE);
 
-        authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editGenre);
-        authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        genreAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editGenre);
+        genreAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dropdownView, int position, long id) {
                 Item book = (Item) dropdownView.getTag(R.id.TAG_OBJECT);
-                authorAutoCompleteTextView.setText("");
+                genreAutoCompleteTextView.setText("");
                 addChoiceToSelected(book, R.id.TAG_GENRE);
 //                toast(book.toString());
                 drawSelectedGenres();
@@ -330,8 +330,8 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             }
         });
 
-        authorAutoCompleteTextView.setAdapter(authorAdapter);
-        authorAutoCompleteTextView.setThreshold(0);
+        genreAutoCompleteTextView.setAdapter(authorAdapter);
+        genreAutoCompleteTextView.setThreshold(0);
     }
 
     public void hideKeyboard() {
@@ -707,8 +707,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             url = urlCreator.createKeywordsAutoCompleteURL(characters);
         if (type == TASK_TYPE_RESULTS) //keywords
             url = urlCreator.createResultURL(selection);
-//        toast(url);
-        toast(url);
         jsonTask.execute(url);
     }
 
@@ -761,7 +759,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     @Override
     public void callback(String jsonString, Integer type) {
-        toast("jsonString type: " + type);
+//        toast("jsonString type: " + type);
         HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
         List<Item> items = DatabaseManagerSingleton.getInstance().stringHashMapToItemList(resultMap);
         startResultActivity(items);
