@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
+import com.example.mihkel.libraryapp.Item.Author;
 import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.R;
 import com.example.mihkel.libraryapp.Various.JsonTask;
@@ -186,7 +187,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.TAG_AUTHOR:
                 selectedAuthors.add(choiceItem);
                 authorAdapter.remove(choiceItem);
-//                selection.addAuthor((Author) choiceItem);
+                selection.addAuthor(choiceItem);
                 break;
             case R.id.TAG_BOOK:
                 selectedBooks.add(choiceItem);
@@ -196,12 +197,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.TAG_GENRE:
                 selectedGenres.add(choiceItem);
                 authorAdapter.remove(choiceItem);
-//                selection.addGenre((Genre) choiceItem);
+                selection.addGenre(choiceItem);
                 break;
             case R.id.TAG_KEYWORD:
                 selectedKeywords.add(choiceItem);
                 keywordAdapter.remove(choiceItem);
-//                selection.addKeyword((Keyword) choiceItem);
+                selection.addKeyword(choiceItem);
                 break;
         }
     }
@@ -250,35 +251,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
         authorAutoCompleteTextView.setAdapter(authorAdapter);
         authorAutoCompleteTextView.setThreshold(0);
-//
-//        authorAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.editAuthor);
-//        TextWatcherImpl textWatcher = new TextWatcherImpl();
-//        authorAutoCompleteTextView.addTextChangedListener(textWatcher);
-//        textWatcher.setAutoCompleteCallback(this);
-//
-////        authorAdapter.notifyDataSetChanged();
-//
-//        authorAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View dropdownViewItem, int position, long id) {
-//                Item author = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
-//
-//                try {
-//                    Item xxx = (Item) dropdownViewItem.getTag(R.id.TAG_OBJECT);
-//                    authorAutoCompleteTextView.setText("");
-//                    addChoiceToSelected(author, R.id.TAG_AUTHOR);
-////                toast(author.toString());
-//                    drawSelectedAuthors();
-//                    hideKeyboard();
-//                } catch (Exception e) {
-//                    toast("FAAAAAAAAILED");
-//                }
-//
-//
-//            }
-//        });
-//        authorAutoCompleteTextView.setAdapter(authorAdapter);
-//        authorAutoCompleteTextView.setThreshold(0);
     }
 
     public void drawSelectedAuthors() {

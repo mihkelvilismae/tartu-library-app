@@ -2,6 +2,7 @@ package com.example.mihkel.libraryapp.Various;
 
 import com.example.mihkel.libraryapp.Item.Author;
 import com.example.mihkel.libraryapp.Item.Genre;
+import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.Item.Keyword;
 import com.example.mihkel.libraryapp.Item.Language;
 
@@ -17,10 +18,10 @@ public class Selection {
 //    String sex;
 //    boolean likesToRead;
 
-    HashMap<Integer, Author> authors = new HashMap<>();
-    HashMap<Integer, Language> languages = new HashMap<>();
-    HashMap<Integer, Keyword> keywords = new HashMap<>();
-    HashMap<Integer, Genre> genres = new HashMap<>();
+    HashMap<Integer, Item> authors = new HashMap<>();
+    HashMap<Integer, Item> languages = new HashMap<>();
+    HashMap<Integer, Item> keywords = new HashMap<>();
+    HashMap<Integer, Item> genres = new HashMap<>();
     Integer yearFrom;
     Integer yearTo;
 
@@ -28,27 +29,27 @@ public class Selection {
         return super.toString();
     }
 
-    public HashMap<Integer, Author> getAuthors() {
+    public HashMap<Integer, Item> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(HashMap<Integer, Author> authors) {
+    public void setAuthors(HashMap<Integer, Item> authors) {
         this.authors = authors;
     }
 
-    public HashMap<Integer, Language> getLanguages() {
+    public HashMap<Integer, Item> getLanguages() {
         return languages;
     }
 
-    public void setLanguages(HashMap<Integer, Language> languages) {
+    public void setLanguages(HashMap<Integer, Item> languages) {
         this.languages = languages;
     }
 
-    public HashMap<Integer, Keyword> getKeywords() {
+    public HashMap<Integer, Item> getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(HashMap<Integer, Keyword> keywords) {
+    public void setKeywords(HashMap<Integer, Item> keywords) {
         this.keywords = keywords;
     }
 
@@ -68,39 +69,39 @@ public class Selection {
         this.yearTo = yearTo;
     }
 
-    public HashMap<Integer, Genre> getGenres() {
+    public HashMap<Integer, Item> getGenres() {
         return genres;
     }
 
-    public void addAuthor(Author author) {
+    public void addAuthor(Item author) {
         if (!getAuthors().containsValue(author)) {
             getAuthors().put(author.getId(), author);
         }
     }
 
-    public void addGenre(Genre genre) {
+    public void addGenre(Item genre) {
         if (!getGenres().containsValue(genre)) {
             getGenres().put(genre.getId(), genre);
         }
     }
 
-    public void addKeyword(Keyword keyword) {
+    public void addKeyword(Item keyword) {
         if (!getKeywords().containsValue(keyword)) {
             getKeywords().put(keyword.getId(), keyword);
         }
     }
 
-    public void addLanguage(Language language) {
+    public void addLanguage(Item language) {
         if (!getLanguages().containsValue(language)) {
             getLanguages().put(language.getId(), language);
         }
     }
 
-    public void removeAuthor(Author author) {
+    public void removeAuthor(Item author) {
         getAuthors().remove(author);
     }
 
-    public void removeGenre(Genre genre) {
+    public void removeGenre(Item genre) {
        getGenres().remove(genre);
     }
 
@@ -108,7 +109,7 @@ public class Selection {
        getKeywords().remove(keyword);
     }
 
-    public void removeLanguage(Language language) {
+    public void removeLanguage(Item language) {
        getLanguages().remove(language);
     }
 

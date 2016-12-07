@@ -1,6 +1,7 @@
 package com.example.mihkel.libraryapp.Various;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.mihkel.libraryapp.Item.Author;
 import com.example.mihkel.libraryapp.Item.Genre;
@@ -40,23 +41,31 @@ public class URLCreator {
     public String createResultURL(Selection selection) {
         String resultUrl = createURLStart();
         if (selection.getLanguages() != null & selection.getLanguages().size() > 0) {
-            resultUrl = resultUrl + implodeLanguage(",", selection.getLanguages());
+            resultUrl = resultUrl + implodeItem(",", selection.getLanguages());
         }
 
         if (selection.getKeywords() != null & selection.getKeywords().size() > 0) {
-            resultUrl = "&" + resultUrl + implodeKeyword(",", selection.getKeywords());
+            resultUrl = "&" + resultUrl + implodeItem(",", selection.getKeywords());
         }
 
         if (selection.getGenres() != null & selection.getGenres().size() > 0) {
-            resultUrl = "&" + resultUrl + implodeGenre(",", selection.getGenres());
+            resultUrl = "&" + resultUrl + implodeItem(",", selection.getGenres());
         }
 
         if (selection.getAuthors() != null & selection.getAuthors().size() > 0) {
-            resultUrl = "&" + resultUrl + implodeAuthor(",", selection.getAuthors());
+            resultUrl = "&" + resultUrl + implodeItem(",", selection.getAuthors());
         }
 
-        return createURLStart() + "Otsing";
-//        return resultUrl;
+//        return createURLStart() + "Otsing";
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        Log.d("uuuuuuuuuuuuurl", resultUrl);
+        return resultUrl;
     }
 
     public String createKeywordsAutoCompleteURL(String characters) {
@@ -77,6 +86,15 @@ public class URLCreator {
 
     //--------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------
+    public static String implodeItem(String separator, HashMap<Integer, Item> objectHashMap) {
+        List<String> list = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : objectHashMap.entrySet()) {
+//            System.out.println(entry.getKey() + "/" + entry.getValue());
+            list.add(entry.getValue().getName());
+        }
+        String joined = TextUtils.join(", ", list);
+        return joined;
+    }
 
     public static String implodeLanguage(String separator, HashMap<Integer, Language> objectHashMap) {
         List<String> list = new ArrayList<>();
