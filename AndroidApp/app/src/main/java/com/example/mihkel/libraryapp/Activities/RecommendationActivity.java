@@ -767,7 +767,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
     public void callback(String jsonString, Integer type) {
         toast("jsonString type: " + type);
         HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
-        List<Item> items = DatabaseManagerSingleton.getInstance().hashMapToList(resultMap);
+        List<Item> items = DatabaseManagerSingleton.getInstance().hashMapToItemList(resultMap);
         toast(jsonString + "kokku:");
         toast(String.valueOf(items.size()));
         switch (type) {

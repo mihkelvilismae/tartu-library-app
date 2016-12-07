@@ -37,9 +37,9 @@ public class DatabaseManagerSingleton {
     private static HashMap<Integer, HashMap<Integer, Book>> booksByClassesData = new HashMap<>();
     private static HashMap<Integer, Book> booksData = new HashMap<>();
 
-    private static HashMap<Integer, Book> authorsData = new HashMap<>();
-    private static HashMap<Integer, Book> genreData = new HashMap<>();
-    private static HashMap<Integer, Book> keywordsData = new HashMap<>();
+    private static HashMap<Integer, Item> authorsData = new HashMap<>();
+    private static HashMap<Integer, Item> genreData = new HashMap<>();
+    private static HashMap<Integer, Item> keywordsData = new HashMap<>();
 
 
 
@@ -92,27 +92,27 @@ public class DatabaseManagerSingleton {
         setBooksListInClass(classId, parseJsonToBookMap(jsonString));
     }
 
-    public static HashMap<Integer, Book> getAuthorsData() {
+    public static HashMap<Integer, Item> getAuthorsData() {
         return authorsData;
     }
 
-    public static void setAuthorsData(HashMap<Integer, Book> authorsData) {
+    public static void setAuthorsData(HashMap<Integer, Item> authorsData) {
         DatabaseManagerSingleton.authorsData = authorsData;
     }
 
-    public static HashMap<Integer, Book> getGenreData() {
+    public static HashMap<Integer, Item> getGenreData() {
         return genreData;
     }
 
-    public static void setGenreData(HashMap<Integer, Book> genreData) {
+    public static void setGenreData(HashMap<Integer, Item> genreData) {
         DatabaseManagerSingleton.genreData = genreData;
     }
 
-    public static HashMap<Integer, Book> getKeywordsData() {
+    public static HashMap<Integer, Item> getKeywordsData() {
         return keywordsData;
     }
 
-    public static void setKeywordsData(HashMap<Integer, Book> keywordsData) {
+    public static void setKeywordsData(HashMap<Integer, Item> keywordsData) {
         DatabaseManagerSingleton.keywordsData = keywordsData;
     }
 
@@ -175,16 +175,28 @@ public class DatabaseManagerSingleton {
         return map;
     }
 
-    public List<Item> hashMapToList(HashMap<Integer, String> authorMap) {
+    public List<Item> hashMapToItemList(HashMap<Integer, String> authorMap) {
         ArrayList<Item> authorList = new ArrayList<>();
         for (Map.Entry<Integer, String> entry : authorMap.entrySet()) {
             Integer id = entry.getKey();
-            Item author = new Item();
-            author.setId(id);
-            author.setName(entry.getValue());
-            authorList.add(author);
+            Item item = new Item();
+            item.setId(id);
+            item.setName(entry.getValue());
+            authorList.add(item);
         }
         return authorList;
+    }
+
+    public HashMap<Integer, Item> stringHashMapToItemHashMap(HashMap<Integer, String> stringHashmap) {
+        HashMap<Integer, Item> itemHashmap = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : stringHashmap.entrySet()) {
+            Integer id = entry.getKey();
+            Item item = new Item();
+            item.setId(id);
+            item.setName(entry.getValue());
+            itemHashmap.put(id, item);
+        }
+        return itemHashmap;
     }
 
     public HashMap<Integer, School> parseJsonToSchoolMap(String jsonString) {

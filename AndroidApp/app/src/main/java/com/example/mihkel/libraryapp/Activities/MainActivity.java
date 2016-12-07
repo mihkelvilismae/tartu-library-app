@@ -7,12 +7,14 @@ import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
 import com.example.mihkel.libraryapp.Item.Book;
+import com.example.mihkel.libraryapp.Item.Item;
 import com.example.mihkel.libraryapp.R;
 import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 import com.example.mihkel.libraryapp.Various.JsonTask;
 import com.example.mihkel.libraryapp.Various.URLCreator;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ParseStringCallBackListener {
 
@@ -83,18 +85,28 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 
     private void saveGenresFromJSON(String JSONString) {
         //convert
-        HashMap<Integer, Book> authorsData = ;
+        HashMap<Integer, String> genreData = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(JSONString);
+        HashMap<Integer, Item> genreHashMap = DatabaseManagerSingleton.getInstance().stringHashMapToItemHashMap(genreData);
         //save
-//        DatabaseManagerSingleton.getInstance().setGenreData(authorsData);
+        DatabaseManagerSingleton.setGenreData(genreHashMap);
+//        List<Item> xxx = DatabaseManagerSingleton.getInstance().hashMapToItemList(genreData);
+//        DatabaseManagerSingleton.getInstance().setGenreData(genreData);
     }
 
     private void saveKeywordsFromJSON(String JSONString) {
-        HashMap<Integer, Book> authorsData;
-//        DatabaseManagerSingleton.getInstance().setKeywordsData(authorsData);
+        //convert
+        HashMap<Integer, String> keywordsData = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(JSONString);
+        HashMap<Integer, Item> keywordsHashMap = DatabaseManagerSingleton.getInstance().stringHashMapToItemHashMap(keywordsData);
+        //save
+        DatabaseManagerSingleton.setKeywordsData(keywordsHashMap);
     }
 
     private void saveAuthorsFromJSON(String JSONString) {
-        HashMap<Integer, Book> authorsData;
+        //convert
+        HashMap<Integer, String> authorsData = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(JSONString);
+        HashMap<Integer, Item> authorsHashMap = DatabaseManagerSingleton.getInstance().stringHashMapToItemHashMap(authorsData);
+        //save
+        DatabaseManagerSingleton.setAuthorsData(authorsHashMap);
 //        DatabaseManagerSingleton.getInstance().setAuthorsData(authorsData);
     }
 
