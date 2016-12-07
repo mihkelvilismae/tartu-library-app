@@ -753,25 +753,25 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     @Override
     public void callback(String jsonString, Integer type) {
-        toast("jsonString type: " + type);
-        HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
-        List<Item> items = DatabaseManagerSingleton.getInstance().stringHashMapToItemList(resultMap);
-        toast(jsonString + "kokku:");
-        toast(String.valueOf(items.size()));
-        switch (type) {
-            case 0:
-                authorCallback(items);
-                break;
-            case 1:
-                genreCallback(items);
-                break;
-            case 2:
-                keywordCallback(items);
-                break;
-            case 3:
-                startResultActivity(items);
-                break;
-        }
+//        toast("jsonString type: " + type);
+//        HashMap<Integer, String> resultMap = DatabaseManagerSingleton.getInstance().parseIntegerKeyJsonToMap(jsonString);
+//        List<Item> items = DatabaseManagerSingleton.getInstance().stringHashMapToItemList(resultMap);
+//        toast(jsonString + "kokku:");
+//        toast(String.valueOf(items.size()));
+//        switch (type) {
+//            case 0:
+//                authorCallback(items);
+//                break;
+//            case 1:
+//                genreCallback(items);
+//                break;
+//            case 2:
+//                keywordCallback(items);
+//                break;
+//            case 3:
+//                startResultActivity(items);
+//                break;
+//        }
 
 //        DatabaseManagerSingleton.getInstance().setSchoolListResult(jsonString);
 //        startMandatoryReadingActivity();

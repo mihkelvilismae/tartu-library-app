@@ -39,21 +39,23 @@ public class URLCreator {
     }
 
     public String createResultURL(Selection selection) {
-        String resultUrl = createURLStart();
-        if (selection.getLanguages() != null & selection.getLanguages().size() > 0) {
-            resultUrl = resultUrl + implodeItem(",", selection.getLanguages());
-        }
+        String resultUrl = createURLStart() + "Otsing?";
+//        if (selection.getLanguages() != null & selection.getLanguages().size() > 0) {
+//            resultUrl = resultUrl + implodeItem(",", selection.getLanguages());
+//        }
 
         if (selection.getKeywords() != null & selection.getKeywords().size() > 0) {
-            resultUrl = "&" + resultUrl + implodeItem(",", selection.getKeywords());
+            resultUrl = resultUrl.concat("&märksõna=" + implodeItem(",", selection.getKeywords()));
         }
 
         if (selection.getGenres() != null & selection.getGenres().size() > 0) {
-            resultUrl = "&" + resultUrl + implodeItem(",", selection.getGenres());
+//            resultUrl = resultUrl + implodeItem(",", selection.getGenres());
+            resultUrl = resultUrl.concat("&zanr=" + implodeItem(",", selection.getGenres()));
         }
 
         if (selection.getAuthors() != null & selection.getAuthors().size() > 0) {
-            resultUrl = "&" + resultUrl + implodeItem(",", selection.getAuthors());
+            resultUrl = resultUrl.concat("&autor=" + implodeItemAuthor(",", selection.getAuthors()));
+//            resultUrl = resultUrl + implodeItem(",", selection.getAuthors());
         }
 
 //        return createURLStart() + "Otsing";
@@ -91,6 +93,17 @@ public class URLCreator {
         for (Map.Entry<Integer, Item> entry : objectHashMap.entrySet()) {
 //            System.out.println(entry.getKey() + "/" + entry.getValue());
             list.add(entry.getValue().getName());
+        }
+        String joined = TextUtils.join(", ", list);
+        return joined;
+    }
+
+    public static String implodeItemAuthor(String separator, HashMap<Integer, Item> objectHashMap) {
+        List<String> list = new ArrayList<>();
+        for (Map.Entry<Integer, Item> entry : objectHashMap.entrySet()) {
+//            System.out.println(entry.getKey() + "/" + entry.getValue());
+            String[] exploded=entry.getValue().getName().split(" ");
+            list.add(exploded[1]);
         }
         String joined = TextUtils.join(", ", list);
         return joined;
