@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_book_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.mihkel.libraryapp.Activities.BookViewActivity">
+
+    <TextView
+        android:text="Raamatu pealkiri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookHeading"
+        android:layout_alignParentTop="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Autor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookHeading"
+        android:layout_marginTop="12dp"
+        android:id="@+id/bookAuthor"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/bookLocation"
+        android:layout_alignEnd="@+id/bookLocation" />
+
+    <TextView
+        android:text="Aasta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookAuthor"
+        android:layout_alignLeft="@+id/bookAuthor"
+        android:layout_alignStart="@+id/bookAuthor"
+        android:layout_marginTop="10dp"
+        android:id="@+id/bookYear"
+        android:layout_alignRight="@+id/bookLocation"
+        android:layout_alignEnd="@+id/bookLocation" />
+
+    <TextView
+        android:visibility="gone"
+        android:text="Lehekülgi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookLocation"
+        android:layout_marginTop="12dp"
+        android:id="@+id/bookPages"
+        android:layout_alignRight="@+id/bookKeyword"
+        android:layout_alignEnd="@+id/bookKeyword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Zanr1, zanr2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:id="@+id/bookGenre"
+        android:layout_below="@+id/bookPages"
+        android:layout_alignLeft="@+id/bookPages"
+        android:layout_alignStart="@+id/bookPages"
+        android:layout_alignRight="@+id/bookPages"
+        />
+
+    <TextView
+        android:text="Märksõna1, Märksõna2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookGenre"
+        android:layout_marginTop="12dp"
+        android:id="@+id/bookKeyword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:visibility="gone"
+        android:text="Asukoht"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:id="@+id/bookLocation"
+        android:layout_below="@+id/bookYear"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+</RelativeLayout>
