@@ -58,6 +58,14 @@ public class URLCreator {
 //            resultUrl = resultUrl + implodeItem(",", selection.getAuthors());
         }
 
+        int yearFrom = 0;
+        int yearTo= 9999;
+        if (selection.getYearFrom() != null)
+            yearFrom = selection.getYearFrom();
+        if (selection.getYearTo() != null)
+            yearTo = selection.getYearTo();
+        resultUrl = resultUrl.concat("&aasta="+yearFrom+","+yearTo);
+
 //        return createURLStart() + "Otsing";
         Log.d("uuuuuuuuuuuuurl", resultUrl);
         Log.d("uuuuuuuuuuuuurl", resultUrl);
