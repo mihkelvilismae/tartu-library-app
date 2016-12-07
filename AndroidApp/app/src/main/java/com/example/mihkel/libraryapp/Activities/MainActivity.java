@@ -66,18 +66,18 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
             isAuthorsDownloaded = true;
             saveAuthorsFromJSON(JSONString);
             downloadKeywords();
-            toast(JSONString);
+//            toast(JSONString);
         }
         if (type == TYPE_KEYWORDS) {
             isKeywordsDownloaded = true;
             saveKeywordsFromJSON(JSONString);
             downloadGenres();
-            toast(JSONString);
+//            toast(JSONString);
         }
         if (type == TYPE_GENRES) {
             isGenresDownloaded = true;
             saveGenresFromJSON(JSONString);
-            toast(JSONString);
+//            toast(JSONString);
             startNextActivity();
         }
 

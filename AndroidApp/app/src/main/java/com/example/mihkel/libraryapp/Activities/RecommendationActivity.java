@@ -92,7 +92,6 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     Selection selection = new Selection();
     public ArrayList<Item> authorsAdapterList = new ArrayList<Item>();
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +162,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.TAG_AUTHOR:
                 selectedAuthors.remove(choiceItem);
                 authorAdapter.add(choiceItem);
-                selection.getAuthors().remove(choiceItem);
+                selection.getAuthors().remove(choiceItem.getId());
                 break;
             case R.id.TAG_BOOK:
                 selectedBooks.remove(choiceItem);
@@ -172,12 +171,12 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.TAG_GENRE:
                 selectedGenres.remove(choiceItem);
                 authorAdapter.add(choiceItem);
-                selection.getGenres().remove(choiceItem);
+                selection.getGenres().remove(choiceItem.getId());
                 break;
             case R.id.TAG_KEYWORD:
                 selectedKeywords.remove(choiceItem);
                 keywordAdapter.add(choiceItem);
-                selection.getKeywords().remove(choiceItem);
+                selection.getKeywords().remove(choiceItem.getId());
                 break;
         }
     }
@@ -701,6 +700,7 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         if (type == TASK_TYPE_RESULTS) //keywords
             url = urlCreator.createResultURL(selection);
 //        toast(url);
+        toast(url);
         jsonTask.execute(url);
     }
 
@@ -734,20 +734,20 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
 
     @Override
     public void authorAutoCompleteCallback(String inputCharacters) {
-        toast("authorAutoCompleteCallback");
-        toast("chaaaaaaaar:" + inputCharacters);
+//        toast("authorAutoCompleteCallback");
+//        toast("chaaaaaaaar:" + inputCharacters);
         fetchDataFromServer(inputCharacters, JsonTask.TASK_TYPE_AUTHOR_AUTOCOMPLETE);
     }
 
     @Override
     public void genreAutoCompleteCallback(String inputCharacters) {
-        toast("genreAutoCompleteCallback");
+//        toast("genreAutoCompleteCallback");
         fetchDataFromServer(inputCharacters, JsonTask.TASK_TYPE_GENRE_AUTOCOMPLETE);
     }
 
     @Override
     public void keywordAutoCompleteCallback(String inputCharacters) {
-        toast("keywordAutoCompleteCallback");
+//        toast("keywordAutoCompleteCallback");
         fetchDataFromServer(inputCharacters, JsonTask.TASK_TYPE_KEYWORD_AUTOCOMPLETE);
     }
 
