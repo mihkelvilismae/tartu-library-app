@@ -66,6 +66,14 @@ public class URLCreator {
             yearTo = selection.getYearTo();
         resultUrl = resultUrl.concat("&aasta="+yearFrom+","+yearTo);
 
+        resultUrl = resultUrl.concat("&keel=");
+        if (selection.isEnglish())
+            resultUrl = resultUrl.concat("inglise,");
+        if (selection.isEstonian())
+            resultUrl = resultUrl.concat("eesti,");
+        if (selection.isRussian())
+            resultUrl = resultUrl.concat("vene,");
+
 //        return createURLStart() + "Otsing";
         Log.d("uuuuuuuuuuuuurl", resultUrl);
         Log.d("uuuuuuuuuuuuurl", resultUrl);

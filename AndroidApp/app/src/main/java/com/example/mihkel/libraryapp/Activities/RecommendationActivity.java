@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -666,11 +667,19 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
             case R.id.ageButton:
                 showYearDialog(v);
                 break;
+//            case R.id.languageCheckboxEE:
+//                toast("ajaeeeeeeeeeeeeeeeeeeeeeee");
+//                toast("ajaeeeeeeeeeeeeeeeeeeeeeee");
+//                toast("ajaeeeeeeeeeeeeeeeeeeeeeee");
+//                break;
         }
     }
 
     private void showResults() {
         URLCreator urlCreator = new URLCreator();
+        selection.setEnglish(((CheckBox) findViewById(R.id.languageCheckboxEN)).isChecked());
+        selection.setEstonian(((CheckBox) findViewById(R.id.languageCheckboxEE)).isChecked());
+        selection.setRussian(((CheckBox) findViewById(R.id.languageCheckboxRU)).isChecked());
         String url = urlCreator.createResultURL(selection);
 //        toast(url);
         fetchDataFromServer("x", TASK_TYPE_RESULTS);

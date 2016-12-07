@@ -22,6 +22,34 @@ public class Selection {
     HashMap<Integer, Item> languages = new HashMap<>();
     HashMap<Integer, Item> keywords = new HashMap<>();
     HashMap<Integer, Item> genres = new HashMap<>();
+    boolean isEnglish = false;
+
+    public boolean isEnglish() {
+        return isEnglish;
+    }
+
+    public void setEnglish(boolean english) {
+        isEnglish = english;
+    }
+
+    public boolean isEstonian() {
+        return isEstonian;
+    }
+
+    public void setEstonian(boolean estonian) {
+        isEstonian = estonian;
+    }
+
+    public boolean isRussian() {
+        return isRussian;
+    }
+
+    public void setRussian(boolean russian) {
+        isRussian = russian;
+    }
+
+    boolean isEstonian = false;
+    boolean isRussian = false;
     Integer yearFrom;
     Integer yearTo;
 
