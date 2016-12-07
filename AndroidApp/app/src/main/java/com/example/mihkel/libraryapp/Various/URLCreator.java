@@ -20,6 +20,23 @@ import java.util.Map;
 
 public class URLCreator {
 
+
+    public static final int URL_TYPE_AUTHORS = 0;
+    public static final int URL_TYPE_KEYWORDS = 1;
+    public static final int URL_TYPE_GENRES = 2;
+
+    public static String getURL(Integer urlType) {
+        switch (urlType) {
+            case URL_TYPE_KEYWORDS:
+                return "http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Märksõnad";
+            case URL_TYPE_AUTHORS:
+                return "http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Autorid";
+            case URL_TYPE_GENRES:
+                return "http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Zanrid";
+        }
+        return "";
+    }
+
     public String createResultURL(Selection selection) {
         String resultUrl = createURLStart();
         if (selection.getLanguages() != null & selection.getLanguages().size() > 0) {
