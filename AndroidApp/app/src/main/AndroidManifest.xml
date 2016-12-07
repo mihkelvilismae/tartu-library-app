@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Activities.ModeSelectionScreen"
+            android:label="SchoolsListActivity" />
+        <activity
             android:name=".Activities.SchoolsListActivity"
             android:label="SchoolsListActivity" />
         <activity

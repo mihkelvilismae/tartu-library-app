@@ -3,96 +3,91 @@ package com.example.mihkel.libraryapp.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.example.mihkel.libraryapp.Various.DatabaseManagerSingleton;
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
-import com.example.mihkel.libraryapp.Various.JsonTask;
 import com.example.mihkel.libraryapp.R;
+import com.example.mihkel.libraryapp.Various.JsonTask;
+import com.example.mihkel.libraryapp.Various.URLCreator;
 
 public class MainActivity extends AppCompatActivity implements ParseStringCallBackListener {
 
+    private static final Integer TYPE_AUTHORS = 0;
+    private static final Integer TYPE_KEYWORDS = 1;
+    private static final Integer TYPE_GENRES = 2;
+    boolean isAuthorsDownloaded;
+    boolean isKeywordsDownloaded;
+    boolean isGenresDownloaded;
 
-    public void onClick(View v) {
-//        toast("start");
-        switch (v.getId()) {
-            case R.id.startMandatoryReading:
-                startMandatoryReading();
-                break;
-            case R.id.startRecommendation:
-                startRecommendationActivity();
-                break;
-        }
 
-    }
 
-    public void startRecommendationActivity() {
-        Intent calendarStartIntent = new Intent(this, RecommendationActivity.class);
-        startActivity(calendarStartIntent);
-//        toast("startRecommendationActivity");
-    }
 
-    public void startMandatoryReading() {
-        if (true || !DatabaseManagerSingleton.getInstance().hasSchoolsList())
-            fetchDataFromServer();
-        else
-            startMandatoryReadingActivity();
-    }
-
-    public void startMandatoryReadingActivity() {
-        Intent calendarStartIntent = new Intent(this, SchoolsListActivity.class);
-        startActivity(calendarStartIntent);
-//        toast("startMandatoryReadingActivity");
-    }
-
-    public void toast(String text) {
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    public void fetchDataFromServer() {
-        JsonTask jsonTask = new JsonTask(MainActivity.this).setListener(this);
-        jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Koolid");
-    }
-
-    @Override
-    public void callback(String jsonString, Integer type) {
-        DatabaseManagerSingleton.getInstance().setSchoolListResult(jsonString);
-        startMandatoryReadingActivity();
-    }
-
-    //-----------------------------------------------------------------------------------------------------------------------
-    // DEFAULT start:
-    //-----------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_loading_screen);
+
+        startLoadingScreen();
+        startDownloadSequence();
+    }
+
+    private void startDownloadSequence() {
+        downloadAuthors();
+    }
+
+    public void startLoadingScreen() {
+        //show notification
+        //download data (authors, keywords, genres)
+        // set data
+        //open next activity
+    }
+
+    public void downloadAuthors() {
+        JsonTask jsonTask = new JsonTask(MainActivity.this, TYPE_AUTHORS).setListener(this);
+        jsonTask.execute(URLCreator.getURL(URLCreator.URL_TYPE_AUTHORS));
+    }
+
+    public void downloadKeywords() {
+        JsonTask jsonTask = new JsonTask(MainActivity.this, TYPE_KEYWORDS).setListener(this);
+        jsonTask.execute(URLCreator.getURL(URLCreator.URL_TYPE_KEYWORDS));
+    }
+
+    public void downloadGenres() {
+        JsonTask jsonTask = new JsonTask(MainActivity.this, TYPE_GENRES).setListener(this);
+        jsonTask.execute(URLCreator.getURL(URLCreator.URL_TYPE_GENRES));
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void callback(String string, Integer type) {
+        if (type == TYPE_AUTHORS) {
+            isAuthorsDownloaded = true;
+//            saveAuthorsFromJSON();
+            downloadKeywords();
+        }
+        if (type == TYPE_KEYWORDS) {
+            isKeywordsDownloaded = true;
+//            saveKeywordsFromJSON();
+            downloadGenres();
+        }
+        if (type == TYPE_GENRES) {
+//            saveGenresFromJSON = true;
+            isGenresDownloaded = true;
+            startNextActivity();
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
+    //ecamples
+    //ecamples
+    //ecamples
+    //ecamples
 
+//    public void fetchDataFromServer() {
+//        JsonTask jsonTask = new JsonTask(ClassesListActivity.this).setListener(this);
+//        jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Nimekiri/"+ AppManagerSingleton.selectedClassId);
+//    }
+
+    public void startNextActivity() {
+        Intent calendarStartIntent = new Intent(this, ModeSelectionScreen.class);
+        startActivity(calendarStartIntent);
+    }
 }
