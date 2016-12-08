@@ -429,6 +429,15 @@ class Database_model extends CI_Model {
 
     public function delete_book($book_id) {
         $this->delete_book_from_reading_lists($book_id);
+        foreach ($this->get_authors($book_id) as $entry) {
+            $this->delete_author_from_book($entry['id']);
+        }
+        foreach ($this->get_keywords($book_id) as $entry) {
+            $this->delete_keyword_from_book($entry['id']);
+        }
+        foreach ($this->get_genres($book_id) as $entry) {
+            $this->delete_genre_from_book($entry['id']);
+        }
         $this->db->where('id', $book_id);
         return $this->db->delete('book');
     }
