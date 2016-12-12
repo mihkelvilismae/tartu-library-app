@@ -40,7 +40,28 @@ class JSON extends CI_Controller {
 
         for ($i = 0; $i < count($items); $i++) {
             $item = $items[$i];
-            $arr[$item['id']] = $this->database_model->get_book($item['book_id'])['title'];
+            $book = $this->database_model->get_book($item['book_id']);
+
+//            $authors = array();
+//            foreach ($this->database_model->get_authors($book['id']) as $a) {
+//                $author = $this->database_model->get_author($a['author_id']);
+//                array_push($authors, $author["firstname"].' '.$author['lastname']);
+//            }
+//            $book["authors"] = implode(", ", $authors);
+//            $genres = array();
+//            foreach ($this->database_model->get_genres($book['id']) as $g) {
+//                $genre = $this->database_model->get_genre($g['genre_id']);
+//                array_push($genres, $genre["name"]);
+//            }
+//            $book["genres"] = implode(", ", $genres);
+//            $keywords = array();
+//            foreach ($this->database_model->get_keywords($book['id']) as $k) {
+//                $keyword = $this->database_model->get_keyword($k['keyword_id']);
+//                array_push($keywords, $keyword["name"]);
+//            }
+//            $book["keywords"] = implode(", ", $keywords);
+//            array_push($arr, $book);
+            $arr[$item['book_id']] = $this->database_model->get_book($item['book_id'])['title'];
         }
 
         echo json_encode($arr);
@@ -52,11 +73,11 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_keywords() as $keyword) {
             if (substr(strtolower($keyword['name']), 0, strlen($start)) === $start) {
                 if (!in_array($keyword['name'], $keywords)) {
-                    array_push($keywords, $keyword['name']);
+                    $keywords[$keyword['id']] = $keyword['name'];
                 }
             }
         }
-        sort($keywords);
+        asort($keywords);
         echo json_encode($keywords, JSON_FORCE_OBJECT);
     }
 
@@ -67,13 +88,15 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_authors() as $author) {
             if (substr(strtolower($author['lastname']), 0, strlen($start)) === $start) {
                 if (!in_array($author, $authors)) {
-                    array_push($authors, $author['firstname'].' '.$author['lastname']);
+                    $authors[$author['id']] = $author['firstname'].' '.$author['lastname'];
                     array_push($last_names, $author['lastname']);
                 }
             }
         }
-        array_multisort($last_names, SORT_STRING, $authors);
-        echo json_encode($authors, JSON_FORCE_OBJECT);
+        $keys = array_keys($authors);
+        array_multisort($last_names, SORT_STRING, $authors, $keys);
+        $arr = array_combine($keys, $authors);
+        echo json_encode($arr);
     }
 
     public function genres() {
@@ -82,12 +105,39 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_genres() as $genre) {
             if (substr(strtolower($genre['name']), 0, strlen($start)) === $start) {
                 if (!in_array($genre['name'], $genres)) {
-                    array_push($genres, $genre['name']);
+                    $genres[$genre['id']] = $genre['name'];
                 }
             }
         }
-        sort($genres);
-        echo json_encode($genres, JSON_FORCE_OBJECT);
+        asort($genres);
+        echo json_encode($genres);
+    }
+
+    public function book() {
+        $id = strtolower($this->input->get('id'));
+        $book = $this->database_model->get_book($id);
+
+        $authors = array();
+        foreach ($this->database_model->get_authors($book['id']) as $a) {
+            $author = $this->database_model->get_author($a['author_id']);
+            array_push($authors, $author["firstname"].' '.$author['lastname']);
+        }
+        $book["authors"] = implode(", ", $authors);
+        $genres = array();
+        foreach ($this->database_model->get_genres($book['id']) as $g) {
+            $genre = $this->database_model->get_genre($g['genre_id']);
+            array_push($genres, $genre["name"]);
+        }
+        $book["genres"] = implode(", ", $genres);
+        $keywords = array();
+        foreach ($this->database_model->get_keywords($book['id']) as $k) {
+            $keyword = $this->database_model->get_keyword($k['keyword_id']);
+            array_push($keywords, $keyword["name"]);
+        }
+        $book["keywords"] = implode(", ", $keywords);
+
+
+        echo json_encode($book);
     }
 
     public function search() {
@@ -134,6 +184,51 @@ class JSON extends CI_Controller {
             }
         }
 
-        echo json_encode($this->database_model->search($authors, $keywords, $languages, $year, $genres));
+        $books = $this->database_model->search($authors, $keywords, $languages, $year, $genres);
+//        $i = 0;
+//        foreach ($books as $book) {
+//            $authors = array();
+//            foreach ($this->database_model->get_authors($book['id']) as $a) {
+//                $author = $this->database_model->get_author($a['author_id']);
+//                array_push($authors, $author["firstname"].' '.$author['lastname']);
+//            }
+//            $books[$i]["authors"] = implode(", ", $authors);
+//            $genres = array();
+//            foreach ($this->database_model->get_genres($book['id']) as $g) {
+//                $genre = $this->database_model->get_genre($g['genre_id']);
+//                array_push($genres, $genre["name"]);
+//            }
+//            $books[$i]["genres"] = implode(", ", $genres);
+//            $keywords = array();
+//            foreach ($this->database_model->get_keywords($book['id']) as $k) {
+//                $keyword = $this->database_model->get_keyword($k['keyword_id']);
+//                array_push($keywords, $keyword["name"]);
+//            }
+//            $books[$i]["keywords"] = implode(", ", $keywords);
+//
+////            $books[$i]["authors"] = array();
+////            foreach ($this->database_model->get_authors($book['id']) as $a) {
+////                $author = $this->database_model->get_author($a['author_id']);
+////                array_push($books[$i]["authors"], $author["firstname"].' '.$author['lastname']);
+////            }
+////            $books[$i]["genres"] = array();
+////            foreach ($this->database_model->get_genres($book['id']) as $g) {
+////                $genre = $this->database_model->get_genre($g['genre_id']);
+////                array_push($books[$i]["genres"], $genre["name"]);
+////            }
+////            $books[$i]["keywords"] = array();
+////            foreach ($this->database_model->get_keywords($book['id']) as $k) {
+////                $keyword = $this->database_model->get_keyword($k['keyword_id']);
+////                array_push($books[$i]["keywords"], $keyword["name"]);
+////            }
+//            $i++;
+//        }
+
+        $arr = array();
+        foreach ($books as $book) {
+            $arr[$book['id']] = $book['title'];
+        }
+
+        echo json_encode($arr);
     }
 }
