@@ -1,21 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mihkel.libraryapp" >
+    package="com.example.mihkel.libraryapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".Activities.MainActivity"
+            android:label="MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.ModeSelectionScreen"
+            android:label="SchoolsListActivity" />
+        <activity
+            android:name=".Activities.SchoolsListActivity"
+            android:label="SchoolsListActivity" />
+        <activity
+            android:name=".Activities.ClassesListActivity"
+            android:label="ClassesListActivity" />
+        <activity
+            android:name=".Activities.BooksListActivity"
+            android:label="BooksListActivity" />
+        <activity
+            android:name=".Activities.RecommendationActivity"
+            android:label="RecommendationActivity" />
+        <activity
+            android:name=".Activities.RecommendationResultList"
+            android:label="RecommendationResultList" />
+        <!--<activity-->
+            <!--android:name=".Activities."-->
+            <!--android:label="RecommendationActivity" />-->
+        <!-- <activity -->
+        <!-- android:name=".Activities.RecommendationActivity" -->
+        <!-- android:label="RecommendationActivity"></activity> -->
+        <activity android:name=".Activities.BookViewActivity"></activity>
     </application>
 
 </manifest>

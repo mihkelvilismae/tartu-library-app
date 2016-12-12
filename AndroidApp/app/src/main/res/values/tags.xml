@@ -1,0 +1,14 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+      <item name="TAG_OBJECT" type="id"/>
+      <item name="TAG_TYPE" type="id"/>
+
+      <item name="TAG_AUTHOR" type="id"/>
+      <item name="TAG_BOOK" type="id"/>
+      <item name="TAG_KEYWORD" type="id"/>
+      <item name="TAG_GENRE" type="id"/>
+
+      <item name="TOGGLE_LIKES" type="id"/>
+      <item name="TOGGLE_SEX" type="id"/>
+
+
+</resources>

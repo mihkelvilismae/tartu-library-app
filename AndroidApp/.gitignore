@@ -6,3 +6,9 @@
 /build
 /captures
 .idea
+/.idea/*
+app/libs/
+app/src/main/res/drawable/
+app/app.iml
+app.iml
+/app/app.iml

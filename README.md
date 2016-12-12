@@ -1,6 +1,6 @@
 # tartu-library-app
 
-## Release notes v0.9
+## Release notes v1.0
 
-* Administreerimiskeskkond https://admin-mihkelvilismae.rhcloud.com/AdminInterface/
-* natukene veel...
+* Administreerimiskeskkond http://admin-mihkelvilismae.rhcloud.com/AdminInterface/Koolid
+* Üldjoontes töötab,  mõningad väiksed bugid esinevad
