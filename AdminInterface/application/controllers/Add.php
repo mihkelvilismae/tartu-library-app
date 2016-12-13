@@ -16,6 +16,13 @@ class Add extends CI_Controller {
         }
     }
 
+    public function set_messages() {
+        $this->form_validation->set_message('required', '%s väli on kohustuslik.');
+        $this->form_validation->set_message('is_unique', '%s väli peab olema unikaalne.');
+        $this->form_validation->set_message('valid_email', '%s väli peab olema emaili kujuga.');
+        $this->form_validation->set_message('numeric', '%s väli peab olema numbriline.');
+    }
+
     public function add_user() {
         if ($_SESSION['is_admin'] != 1) {
             redirect(base_url('Koolid'));
@@ -23,11 +30,13 @@ class Add extends CI_Controller {
         $data['active'] = 'Kasutajad';
         $data['title'] = 'Kasutaja lisamine';
 
-        $this->form_validation->set_rules('firstname', 'Firstname', 'required');
-        $this->form_validation->set_rules('lastname', 'Lastname', 'required');
-        $this->form_validation->set_rules('email', 'E-Mail', 'is_unique[account.email]|valid_email|required');
-        $this->form_validation->set_rules('password', 'Password', 'required');
-        $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
+        $this->set_messages();
+
+        $this->form_validation->set_rules('firstname', 'Eesnime', 'required');
+        $this->form_validation->set_rules('lastname', 'Perenime', 'required');
+        $this->form_validation->set_rules('email', 'E-Maili', 'is_unique[account.email]|valid_email|required');
+        $this->form_validation->set_rules('password', 'Parooli', 'required');
+        $this->form_validation->set_rules('phone', 'Tefefoni', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
@@ -44,9 +53,11 @@ class Add extends CI_Controller {
         $data['active'] = 'Koolid';
         $data['title'] = 'Kooli lisamine';
 
-        $this->form_validation->set_rules('name', 'Name', 'is_unique[school.name]|required');
-        $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
-        $this->form_validation->set_rules('email', 'E-Mail', 'valid_email|required');
+        $this->set_messages();
+
+        $this->form_validation->set_rules('name', 'Kooli nime', 'is_unique[school.name]|required');
+        $this->form_validation->set_rules('phone', 'Telefoni', 'numeric|required');
+        $this->form_validation->set_rules('email', 'E-Maili', 'valid_email|required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
@@ -63,9 +74,11 @@ class Add extends CI_Controller {
         $data['active'] = 'Klassid';
         $data['title'] = 'Klassi lisamine';
 
-        $this->form_validation->set_message('class_name_check', 'The school already has a class named that.');
-        $this->form_validation->set_rules('name', 'Name', 'required|callback_class_name_check['.$this->input->post('school_id').']');
-        $this->form_validation->set_rules('school_id', 'Kooli nimi', 'numeric|required');
+        $this->set_messages();
+        $this->form_validation->set_message('class_name_check', 'Sellel koolil on juba sellise nimega klass.');
+
+        $this->form_validation->set_rules('name', 'Klassi nime', 'required|callback_class_name_check['.$this->input->post('school_id').']');
+        $this->form_validation->set_rules('school_id', 'Kooli nime', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
             $dropdown_rows = array();
@@ -90,9 +103,11 @@ class Add extends CI_Controller {
         $data['active'] = 'Raamatud';
         $data['title'] = 'Raamatu lisamine';
 
-        $this->form_validation->set_rules('title', 'title', 'is_unique[book.title]|required');
-        $this->form_validation->set_rules('lang', 'language', 'required');
-        $this->form_validation->set_rules('year', 'year', 'numeric|required');
+        $this->set_messages();
+
+        $this->form_validation->set_rules('title', 'Pealkirja', 'is_unique[book.title]|required');
+        $this->form_validation->set_rules('lang', 'Keele', 'required');
+        $this->form_validation->set_rules('year', 'Aasta', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
@@ -109,7 +124,9 @@ class Add extends CI_Controller {
         $data['active'] = 'Märksõnad';
         $data['title'] = 'Märksõna lisamine';
 
-        $this->form_validation->set_rules('name', 'Name', 'is_unique[keyword.name]|required');
+        $this->set_messages();
+
+        $this->form_validation->set_rules('name', 'Märksõna nime', 'is_unique[keyword.name]|required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
@@ -126,8 +143,10 @@ class Add extends CI_Controller {
         $data['active'] = 'Autor';
         $data['title'] = 'Autori lisamine';
 
-        $this->form_validation->set_rules('firstname', 'firstname', 'required');
-        $this->form_validation->set_rules('lastname', 'lastname', 'required');
+        $this->set_messages();
+
+        $this->form_validation->set_rules('firstname', 'Eesnime', 'required');
+        $this->form_validation->set_rules('lastname', 'Perenime', 'required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
@@ -144,7 +163,9 @@ class Add extends CI_Controller {
         $data['active'] = 'Žanrid';
         $data['title'] = 'Žanri lisamine';
 
-        $this->form_validation->set_rules('name', 'Name', 'is_unique[genre.name]|required');
+        $this->set_messages();
+
+        $this->form_validation->set_rules('name', 'Žanri nime', 'is_unique[genre.name]|required');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
@@ -161,10 +182,11 @@ class Add extends CI_Controller {
         $data['active'] = 'Nimekiri';
         $data['title'] = 'Raamatu lisamine';
 
-        $this->form_validation->set_message('check_book_in_list', 'The book is already on the list.');
+        $this->set_messages();
+        $this->form_validation->set_message('check_book_in_list', 'See raamat on juba selles lugemisnimekirjas.');
 
-        $this->form_validation->set_rules('class_id', 'Title', 'numeric|required');
-        $this->form_validation->set_rules('book_id', 'Title', 'numeric|required|callback_check_book_in_list['.$this->input->post('class_id').']');
+        $this->form_validation->set_rules('class_id', 'Klassi nime', 'numeric|required');
+        $this->form_validation->set_rules('book_id', 'Raamatu pealkirja', 'numeric|required|callback_check_book_in_list['.$this->input->post('class_id').']');
 
         if ($this->form_validation->run() === FALSE) {
             if ($class_id) {
@@ -221,9 +243,10 @@ class Add extends CI_Controller {
         $data['active'] = 'Raamatud';
         $data['title'] = 'Raamatule märksõna lisamine';
 
-        $this->form_validation->set_message('check_keyword_in_book', 'The book already has that keyword.');
+        $this->set_messages();
+        $this->form_validation->set_message('check_keyword_in_book', 'Sellel raamatul on juba selline märksõna.');
 
-        $this->form_validation->set_rules('keyword_id', 'Keyword', 'required|callback_check_keyword_in_book['.$book_id.']');
+        $this->form_validation->set_rules('keyword_id', 'Märksõna nime', 'required|callback_check_keyword_in_book['.$book_id.']');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Lisa/Märksõna/'.$book_id);
@@ -249,8 +272,10 @@ class Add extends CI_Controller {
         $data['active'] = 'Autorid';
         $data['title'] = 'Raamatule autori lisamine';
 
-        $this->form_validation->set_message('check_author_in_book', 'The book already has that author.');
-        $this->form_validation->set_rules('author_id', 'Keyword', 'required|callback_check_author_in_book['.$book_id.']');
+        $this->set_messages();
+        $this->form_validation->set_message('check_author_in_book', 'Sellel raamatul on juba selline autor.');
+
+        $this->form_validation->set_rules('author_id', 'Autori nime', 'required|callback_check_author_in_book['.$book_id.']');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Lisa/Autor/'.$book_id);
@@ -276,8 +301,10 @@ class Add extends CI_Controller {
         $data['active'] = 'Žanrid';
         $data['title'] = 'Raamatule žanri lisamine';
 
-        $this->form_validation->set_message('check_genre_in_book', 'The book already has that genre.');
-        $this->form_validation->set_rules('genre_id', 'genre', 'required|callback_check_genre_in_book['.$book_id.']');
+        $this->set_messages();
+        $this->form_validation->set_message('check_genre_in_book', 'Sellel raamatul on juba selline žanr.');
+
+        $this->form_validation->set_rules('genre_id', 'Žanri nime', 'required|callback_check_genre_in_book['.$book_id.']');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Lisa/Žanr/'.$book_id);
@@ -298,7 +325,6 @@ class Add extends CI_Controller {
             redirect(base_url('Muuda/Raamat/'.$book_id));
         }
     }
-
 
     public function class_name_check($class_name, $school_id) {
         $classes = $this->database_model->get_classes($school_id);

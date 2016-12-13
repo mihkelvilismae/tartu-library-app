@@ -16,15 +16,23 @@ class Edit extends CI_Controller {
         }
     }
 
+    public function set_messages() {
+        $this->form_validation->set_message('required', '%s väli on kohustuslik.');
+        $this->form_validation->set_message('is_unique', '%s väli peab olema unikaalne.');
+        $this->form_validation->set_message('valid_email', '%s väli peab olema emaili kujuga.');
+        $this->form_validation->set_message('numeric', '%s väli peab olema numbriline.');
+    }
+
     public function edit_school($school_id) {
         $data['active'] = 'Koolid';
         $data['title'] = 'Kooli muutmine';
 
-        $this->form_validation->set_message('unique_school_name', 'The school name must be unique.');
+        $this->set_messages();
+        $this->form_validation->set_message('unique_school_name', 'Sellise nimega kool on juba olemas.');
 
-        $this->form_validation->set_rules('name', 'Name', 'callback_unique_school_name['.$school_id.']|required');
-        $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
-        $this->form_validation->set_rules('email', 'E-Mail', 'valid_email|required');
+        $this->form_validation->set_rules('name', 'Kooli nime', 'callback_unique_school_name['.$school_id.']|required');
+        $this->form_validation->set_rules('phone', 'Telefoni', 'numeric|required');
+        $this->form_validation->set_rules('email', 'E-Maili', 'valid_email|required');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Kool/'.$school_id);
@@ -48,10 +56,11 @@ class Edit extends CI_Controller {
         $data['active'] = 'Klassid';
         $data['title'] = 'Klassi muutmine';
 
-        $this->form_validation->set_message('class_name_check', 'The school already has a class named that.');
+        $this->set_messages();
+        $this->form_validation->set_message('class_name_check', 'Sellel koolil on juba sellise nimega klass.');
 
-        $this->form_validation->set_rules('name', 'Name', 'required|callback_class_name_check['.$this->input->post('school_id').']');
-        $this->form_validation->set_rules('school_id', 'Kooli nimi', 'numeric|required');
+        $this->form_validation->set_rules('name', 'Klassi nime', 'required|callback_class_name_check['.$this->input->post('school_id').']');
+        $this->form_validation->set_rules('school_id', 'Kooli nime', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Klass/'.$class_id);
@@ -83,10 +92,12 @@ class Edit extends CI_Controller {
         $data['active'] = 'Raamatud';
         $data['title'] = 'Raamatu muutmine';
 
-        $this->form_validation->set_message('unique_book_title', 'The book title must be unique.');
-        $this->form_validation->set_rules('title', 'title', 'callback_unique_book_title['.$book_id.']|required');
-        $this->form_validation->set_rules('lang', 'language', 'required');
-        $this->form_validation->set_rules('year', 'year', 'numeric|required');
+        $this->set_messages();
+        $this->form_validation->set_message('unique_book_title', 'Sellise pealkirjaga raamat on juba olemas.');
+
+        $this->form_validation->set_rules('title', 'Pealkirja', 'callback_unique_book_title['.$book_id.']|required');
+        $this->form_validation->set_rules('lang', 'Keele', 'required');
+        $this->form_validation->set_rules('year', 'Aasta', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Raamat/'.$book_id);
@@ -134,8 +145,10 @@ class Edit extends CI_Controller {
         $data['active'] = 'Nimekiri';
         $data['title'] = 'Raamatunimekirja muutmine';
 
-        $this->form_validation->set_message('is_unique', 'The class already has a reading list.');
-        $this->form_validation->set_rules('class_id', 'Class', 'numeric|required|is_unique[reading_list.class_id]');
+        $this->set_messages();
+        $this->form_validation->set_message('is_unique', 'Sellel klassil on juba lugemisnimekiri.');
+
+        $this->form_validation->set_rules('class_id', 'Klassi nime', 'numeric|required|is_unique[reading_list.class_id]');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Nimekiri/'.$class_id);
@@ -181,8 +194,10 @@ class Edit extends CI_Controller {
         $data['active'] = 'Märksõnad';
         $data['title'] = 'Märksõna muutmine';
 
-        $this->form_validation->set_message('unique_keyword_name', 'The keyword name must be unique.');
-        $this->form_validation->set_rules('name', 'Name', 'callback_unique_keyword_name['.$keyword_id.']|required');
+        $this->set_messages();
+        $this->form_validation->set_message('unique_keyword_name', 'Sellise nimega märksõna on juba olemas.');
+
+        $this->form_validation->set_rules('name', 'Märksõna nime', 'callback_unique_keyword_name['.$keyword_id.']|required');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Märksõna/'.$keyword_id);
@@ -204,8 +219,10 @@ class Edit extends CI_Controller {
         $data['active'] = 'Autor';
         $data['title'] = 'Autori muutmine';
 
-        $this->form_validation->set_rules('firstname', 'firstname', 'required');
-        $this->form_validation->set_rules('lastname', 'lastname', 'required');
+        $this->set_messages();
+
+        $this->form_validation->set_rules('firstname', 'Eesnime', 'required');
+        $this->form_validation->set_rules('lastname', 'Perenime', 'required');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Autor/'.$author_id);
@@ -228,8 +245,10 @@ class Edit extends CI_Controller {
         $data['active'] = 'Žanrid';
         $data['title'] = 'Žanri muutmine';
 
-        $this->form_validation->set_message('unique_genre_name', 'The genre name must be unique.');
-        $this->form_validation->set_rules('name', 'Name', 'callback_unique_genre_name['.$genre_id.']|required');
+        $this->set_messages();
+        $this->form_validation->set_message('unique_genre_name', 'Sellise nimega žanr on juba olemas.');
+
+        $this->form_validation->set_rules('name', 'Žanri nime', 'callback_unique_genre_name['.$genre_id.']|required');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Žanr/'.$genre_id);
