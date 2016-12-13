@@ -9,20 +9,24 @@
         android:text="@string/startReadingList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="94dp"
         android:id="@+id/startMandatoryReading"
+        android:padding="40dip"
         android:onClick="onClick" />
 
     <Button
         android:text="@string/startRecommendation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="17dp"
         android:id="@+id/startRecommendation"
+        android:onClick="onClick"
+        android:paddingLeft="60dip"
+        android:paddingRight="60dip"
+        android:paddingTop="40dip"
+        android:paddingBottom="40dip"
         android:layout_below="@+id/startMandatoryReading"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClick"/>
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
