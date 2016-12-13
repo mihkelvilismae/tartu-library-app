@@ -493,6 +493,7 @@ class Database_model extends CI_Model {
 
     public function search($authors, $keywords, $languages, $year, $genres) {
         $this->db->select('book.*');
+        $this->db->group_by('book.title');
         $this->db->from('book');
         if (!empty($keywords)) {
             $this->db->join('book_keyword', 'book.id = book_keyword.book_id', 'inner');

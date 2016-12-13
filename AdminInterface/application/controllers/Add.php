@@ -12,6 +12,9 @@ class Add extends CI_Controller {
 
         if (!isset($_SESSION['logged_in'])) {
             $url = explode('/', $_SERVER['REQUEST_URI']);
+            if ($url[0] === '') {
+                array_shift($url);
+            }
             if ($url[0] === 'AdminInterface') {
                 array_shift($url);
             }
