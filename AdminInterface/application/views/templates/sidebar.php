@@ -39,7 +39,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <a href="<?=base_url("Žanrid")?>">Žanrid</a>
+                                <a href="<?=base_url("Zanrid")?>">Žanrid</a>
                             </td>
                         </tr>
                         <tr>

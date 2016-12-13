@@ -174,7 +174,7 @@ class Add extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             $this->database_model->add_genre();
-            redirect(base_url("Žanrid"));
+            redirect(base_url("Zanrid"));
         }
     }
 
@@ -328,7 +328,7 @@ class Add extends CI_Controller {
         $this->form_validation->set_rules('genre_id', 'Žanri nime', 'required|callback_check_genre_in_book['.$book_id.']');
 
         if ($this->form_validation->run() === FALSE) {
-            $data['form_action'] = base_url('Lisa/Žanr/'.$book_id);
+            $data['form_action'] = base_url('Lisa/Zanr/'.$book_id);
             $data['cancel_link'] = base_url('Muuda/Raamat/'.$book_id);
 
             $genres_in_book = array();

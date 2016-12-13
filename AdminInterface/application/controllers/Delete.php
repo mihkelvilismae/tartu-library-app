@@ -84,7 +84,7 @@ class Delete extends CI_Controller {
             $this->database_model->delete_genre_from_book($entry['id']);
         }
         $this->database_model->delete_genre($genre_id);
-        redirect(base_url("Žanrid"));
+        redirect(base_url("Zanrid"));
     }
 
     public function delete_genre_from_book($id) {

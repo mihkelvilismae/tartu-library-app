@@ -8,28 +8,20 @@ class JSON extends CI_Controller {
     }
 
     public function schools() {
-        $schools = $this->database_model->get_schools();
-
-        $arr = array();
-
-        for ($i = 0; $i < count($schools); $i++) {
-            $school = $schools[$i];
-            $arr[$school['id']] = $school['name'];
+        $schools = array();
+        foreach ($this->database_model->get_schools() as $school) {
+            $schools[$school['id']] = $school['name'];
         }
-
-        echo json_encode($arr);
+        asort($schools);
+        echo json_encode($schools);
     }
 
     public function classes($school_id) {
-        $classes = $this->database_model->get_classes($school_id);
-
         $arr = array();
-
-        for ($i = 0; $i < count($classes); $i++) {
-            $class = $classes[$i];
+        foreach ($this->database_model->get_classes($school_id) as $class) {
             $arr[$class['id']] = $class['name'];
         }
-
+        //asort($arr);
         echo json_encode($arr);
     }
 
@@ -144,7 +136,7 @@ class JSON extends CI_Controller {
         $author = $this->input->get('autor');
         $keyword = $this->input->get('märksõna');
         $language = $this->input->get('keel');
-        $genre = $this->input->get('žanr');
+        $genre = $this->input->get('zanr');
 
         $year = array();
         if (!($this->input->get('aasta') == '')) {

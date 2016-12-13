@@ -292,8 +292,8 @@ class View extends CI_Controller {
         $genres = $this->database_model->get_genres();
         foreach ($genres as $genre) {
             $change_delete = $this->getButtonGroup(array(
-                $this->getLink('Muuda', base_url("Muuda/Žanr/".$genre['id'])),
-                $this->getLink('Kustuta', base_url('Kustuta/Žanr/'.$genre["id"]), 'btn-warning btn-xs')
+                $this->getLink('Muuda', base_url("Muuda/Zanr/".$genre['id'])),
+                $this->getLink('Kustuta', base_url('Kustuta/Zanr/'.$genre["id"]), 'btn-warning btn-xs')
             ));
             array_push(
                 $table_rows,
@@ -304,7 +304,7 @@ class View extends CI_Controller {
             );
         }
 
-        $heading = array("Žanri nimi", $this->getLink('Lisa žanr', base_url('Lisa/Žanr')));
+        $heading = array("Žanri nimi", $this->getLink('Lisa žanr', base_url('Lisa/Zanr')));
         $data['table'] = $this->getTable($heading, $table_rows);
 
         $this->load->view('templates/header', $data);
