@@ -1,6 +1,6 @@
 # tartu-library-app
 
-## Release notes v0.1
+## Release notes v1.0
 
-* Android CI sisse seatud (hetkel jälgib branchi mihkel-test)
-* Administreerimiskeskkonna (algeline) töötav variant aadressil https://admin-mihkelvilismae.rhcloud.com/AdminInterface/
+* Administreerimiskeskkond http://admin-mihkelvilismae.rhcloud.com/AdminInterface/Koolid
+* Üldjoontes töötab,  mõningad väiksed bugid esinevad

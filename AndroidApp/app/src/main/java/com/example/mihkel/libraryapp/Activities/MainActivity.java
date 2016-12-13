@@ -1,8 +1,15 @@
 package com.example.mihkel.libraryapp.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mihkel.libraryapp.Interfaces.ParseStringCallBackListener;
@@ -16,33 +23,44 @@ import com.example.mihkel.libraryapp.Various.URLCreator;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ParseStringCallBackListener {
+public class MainActivity extends AppCompatActivity implements ParseStringCallBackListener, View.OnClickListener {
 
-    private static final Integer TYPE_AUTHORS = 0;
-    private static final Integer TYPE_KEYWORDS = 1;
-    private static final Integer TYPE_GENRES = 2;
+    public static final Integer TYPE_AUTHORS = 0;
+    public static final Integer TYPE_KEYWORDS = 1;
+    public static final Integer TYPE_GENRES = 2;
     boolean isAuthorsDownloaded;
     boolean isKeywordsDownloaded;
     boolean isGenresDownloaded;
+    private TextView launchScreenText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
 
-        startLoadingScreen();
-        startDownloadSequence();
+        if (isOnline())
+            startDownloadSequence();
+        else {
+            launchScreenText = (TextView) findViewById(R.id.launchScreenText);
+            launchScreenText.setText("Viga internetiühendusega, vajuta tekstile, et uuesti proovida");
+            launchScreenText.setOnClickListener(this);
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (isAuthorsDownloaded & isGenresDownloaded & isKeywordsDownloaded)
+            startNextActivity();
     }
 
     private void startDownloadSequence() {
-        downloadAuthors();
-    }
-
-    public void startLoadingScreen() {
         //show notification
         //download data (authors, keywords, genres)
         // set data
         //open next activity
+        downloadAuthors();
     }
 
     public void downloadAuthors() {
@@ -75,9 +93,9 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 //            toast(JSONString);
         }
         if (type == TYPE_GENRES) {
+//            toast(JSONString);
             isGenresDownloaded = true;
             saveGenresFromJSON(JSONString);
-//            toast(JSONString);
             startNextActivity();
         }
 
@@ -110,10 +128,19 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 //        DatabaseManagerSingleton.getInstance().setAuthorsData(authorsData);
     }
 
-    //ecamples
-    //ecamples
-    //ecamples
-    //ecamples
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
+
+    //examples
+    //examples
+    //examples
+    //examples
 
 //    public void fetchDataFromServer() {
 //        JsonTask jsonTask = new JsonTask(ClassesListActivity.this).setListener(this);
@@ -127,5 +154,15 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 
     public void toast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.launchScreenText:
+                if (isOnline())
+                    startDownloadSequence();
+                break;
+        }
     }
 }
