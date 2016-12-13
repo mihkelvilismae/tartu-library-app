@@ -51,7 +51,7 @@ class JSON extends CI_Controller {
 //            $genres = array();
 //            foreach ($this->database_model->get_genres($book['id']) as $g) {
 //                $genre = $this->database_model->get_genre($g['genre_id']);
-//                array_push($genres, $genre["name"]);
+//                array_push($genres, strtolower($genre["name"]));
 //            }
 //            $book["genres"] = implode(", ", $genres);
 //            $keywords = array();
@@ -105,7 +105,7 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_genres() as $genre) {
             if (substr(strtolower($genre['name']), 0, strlen($start)) === $start) {
                 if (!in_array($genre['name'], $genres)) {
-                    $genres[$genre['id']] = $genre['name'];
+                    $genres[$genre['id']] = strtolower($genre['name']);
                 }
             }
         }
@@ -126,7 +126,7 @@ class JSON extends CI_Controller {
         $genres = array();
         foreach ($this->database_model->get_genres($book['id']) as $g) {
             $genre = $this->database_model->get_genre($g['genre_id']);
-            array_push($genres, $genre["name"]);
+            array_push($genres, strtolower($genre["name"]));
         }
         $book["genres"] = implode(", ", $genres);
         $keywords = array();
@@ -214,7 +214,7 @@ class JSON extends CI_Controller {
 ////            $books[$i]["genres"] = array();
 ////            foreach ($this->database_model->get_genres($book['id']) as $g) {
 ////                $genre = $this->database_model->get_genre($g['genre_id']);
-////                array_push($books[$i]["genres"], $genre["name"]);
+////                array_push($books[$i]["genres"], strtolower($genre["name"]));
 ////            }
 ////            $books[$i]["keywords"] = array();
 ////            foreach ($this->database_model->get_keywords($book['id']) as $k) {
