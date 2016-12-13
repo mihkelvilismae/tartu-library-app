@@ -18,9 +18,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ParseStringCallBackListener {
 
-    private static final Integer TYPE_AUTHORS = 0;
-    private static final Integer TYPE_KEYWORDS = 1;
-    private static final Integer TYPE_GENRES = 2;
+    public static final Integer TYPE_AUTHORS = 0;
+    public static final Integer TYPE_KEYWORDS = 1;
+    public static final Integer TYPE_GENRES = 2;
     boolean isAuthorsDownloaded;
     boolean isKeywordsDownloaded;
     boolean isGenresDownloaded;
@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 //            toast(JSONString);
         }
         if (type == TYPE_GENRES) {
+            toast(JSONString);
             isGenresDownloaded = true;
             saveGenresFromJSON(JSONString);
-//            toast(JSONString);
             startNextActivity();
         }
 
@@ -110,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 //        DatabaseManagerSingleton.getInstance().setAuthorsData(authorsData);
     }
 
-    //ecamples
-    //ecamples
-    //ecamples
-    //ecamples
+    //examples
+    //examples
+    //examples
+    //examples
 
 //    public void fetchDataFromServer() {
 //        JsonTask jsonTask = new JsonTask(ClassesListActivity.this).setListener(this);

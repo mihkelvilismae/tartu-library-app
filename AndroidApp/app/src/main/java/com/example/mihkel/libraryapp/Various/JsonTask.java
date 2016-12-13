@@ -17,20 +17,29 @@ import java.net.URL;
 
 public class JsonTask extends AsyncTask<String, String, String> {
 
-    public static final Integer TASK_TYPE_AUTHOR_AUTOCOMPLETE = 0;
-    public static final Integer TASK_TYPE_GENRE_AUTOCOMPLETE = 1;
-    public static final Integer TASK_TYPE_KEYWORD_AUTOCOMPLETE = 2;
-    public static final Integer TASK_TYPE_RESULTS = 3;
+    public static final int TASK_TYPE_AUTHOR_AUTOCOMPLETE = 0;
+    public static final int TASK_TYPE_GENRE_AUTOCOMPLETE = 1;
+    public static final int TASK_TYPE_KEYWORD_AUTOCOMPLETE = 2;
+    public static final int TASK_TYPE_RESULTS = 3;
 
     ParseStringCallBackListener mListener;
     Context context;
     ProgressDialog pd;
     Integer mType;
+    String mText;
 
 
     public JsonTask(Context context, Integer type) {
         this.context = context;
         mType = type;
+        switch (type) {
+//            case TASK_TYPE_AUTHOR_AUTOCOMPLETE:
+//                mText = "Palun oota";
+//                break;
+            default:
+                mText = "Palun oota, andmeid laetakse";
+                break;
+        }
     }
 
     public JsonTask(Context context) {
@@ -46,7 +55,7 @@ public class JsonTask extends AsyncTask<String, String, String> {
         super.onPreExecute();
 
         pd = new ProgressDialog(context);
-        pd.setMessage("Please wait");
+        pd.setMessage(mText);
         pd.setCancelable(false);
         pd.show();
     }
