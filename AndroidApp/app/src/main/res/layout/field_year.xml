@@ -19,7 +19,7 @@
 
         <Button
             android:id="@+id/startYearButton"
-            android:layout_width="183dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:text="Alates" />
 
