@@ -55,7 +55,7 @@ public class URLCreator {
         }
 
         if (selection.getAuthors() != null & selection.getAuthors().size() > 0) {
-            resultUrl = resultUrl.concat("&autor=" + implodeItemAuthor(",", selection.getAuthors()));
+            resultUrl = resultUrl.concat("&autor=" + implodeItem(",", selection.getAuthors()));
 //            resultUrl = resultUrl + implodeItem(",", selection.getAuthors());
         }
 
@@ -76,13 +76,6 @@ public class URLCreator {
             resultUrl = resultUrl.concat("vene,");
 
 //        return createURLStart() + "Otsing";
-        Log.d("uuuuuuuuuuuuurl", resultUrl);
-        Log.d("uuuuuuuuuuuuurl", resultUrl);
-        Log.d("uuuuuuuuuuuuurl", resultUrl);
-        Log.d("uuuuuuuuuuuuurl", resultUrl);
-        Log.d("uuuuuuuuuuuuurl", resultUrl);
-        Log.d("uuuuuuuuuuuuurl", resultUrl);
-        Log.d("uuuuuuuuuuuuurl", resultUrl);
         Log.d("uuuuuuuuuuuuurl", resultUrl);
         return resultUrl;
     }
@@ -109,7 +102,8 @@ public class URLCreator {
         List<String> list = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : objectHashMap.entrySet()) {
 //            System.out.println(entry.getKey() + "/" + entry.getValue());
-            list.add(entry.getValue().getName());
+//            list.add(entry.getValue().getName());
+            list.add(String.valueOf(entry.getValue().getId()));
         }
         String joined = TextUtils.join(", ", list);
         return joined;
@@ -119,8 +113,9 @@ public class URLCreator {
         List<String> list = new ArrayList<>();
         for (Map.Entry<Integer, Item> entry : objectHashMap.entrySet()) {
 //            System.out.println(entry.getKey() + "/" + entry.getValue());
-            String[] exploded=entry.getValue().getName().split(" ");
-            list.add(exploded[1]);
+//            String[] exploded=entry.getValue().getName().split(" ");
+//            list.add(exploded[1]);
+            list.add(String.valueOf(entry.getValue().getId()));
         }
         String joined = TextUtils.join(", ", list);
         return joined;
