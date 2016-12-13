@@ -1,13 +1,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <NumberPicker
         android:id="@+id/numberPicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/minus100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-100" />
+
+        <Button
+            android:id="@+id/minus10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-10" />
+
+        <Button
+            android:id="@+id/plus10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+10" />
+
+        <Button
+            android:id="@+id/plus100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+100"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

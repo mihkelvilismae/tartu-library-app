@@ -441,11 +441,15 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
         d.setContentView(R.layout.dialog_year);
         Button set = (Button) d.findViewById(R.id.yearDialogSet);
         Button cancel = (Button) d.findViewById(R.id.yearDialogCancel);
+        Button plus100 = (Button) d.findViewById(R.id.plus100);
+        Button plus10 = (Button) d.findViewById(R.id.plus10);
+        Button minus10 = (Button) d.findViewById(R.id.minus10);
+        Button minus100 = (Button) d.findViewById(R.id.minus100);
         final NumberPicker nopicker = (NumberPicker) d.findViewById(R.id.numberPicker1);
 
         int year = 2016;
         nopicker.setMaxValue(year);
-        nopicker.setMinValue(year - 200);
+        nopicker.setMinValue(year - 500);
 
         if (isAge) {
             year = 15;
@@ -489,6 +493,36 @@ public class RecommendationActivity extends AppCompatActivity implements View.On
                 d.dismiss();
             }
         });
+
+        plus10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nopicker.setValue(nopicker.getValue() + 10);
+            }
+        });
+
+        plus100.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nopicker.setValue(nopicker.getValue() + 100);
+            }
+        });
+
+        minus10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nopicker.setValue(nopicker.getValue() - 10);
+            }
+        });
+
+        minus100.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nopicker.setValue(nopicker.getValue() - 100);
+            }
+        });
+
+
         d.show();
     }
 
