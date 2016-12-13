@@ -216,8 +216,15 @@ class Add extends CI_Controller {
 
             $dropdown_rows_books = array();
             $books = $this->database_model->get_books();
+            $books_in_list = array();
+            foreach ($this->database_model->get_books_in_list($class_id) as $entry) {
+                array_push($books_in_list, $entry['book_id']);
+            }
             for ($i = 0; $i < count($books); $i++) {
                 $book = $books[$i];
+                if (in_array($book['id'], $books_in_list)) {
+                    continue;
+                }
                 $dropdown_rows_books[$book['id']] = $book['title'];
                 array_push($dropdown_rows_books, '<option value="'.$book['id'].'">'.$book['title'].'</option>');
             }
@@ -252,8 +259,15 @@ class Add extends CI_Controller {
             $data['form_action'] = base_url('Lisa/Märksõna/'.$book_id);
             $data['cancel_link'] = base_url('Muuda/Raamat/'.$book_id);
 
+            $keywords_in_book = array();
+            foreach ($this->database_model->get_keywords($book_id) as $entry) {
+                array_push($keywords_in_book, $entry['keyword_id']);
+            }
             $keywords = array();
             foreach ($this->database_model->get_keywords() as $keyword) {
+                if (in_array($keyword['id'], $keywords_in_book)) {
+                    continue;
+                }
                 array_push($keywords, '<option value="'.$keyword['id'].'">'.$keyword['name'].'</option>');
             }
             $data['keywords'] = implode('', $keywords);
@@ -280,9 +294,16 @@ class Add extends CI_Controller {
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Lisa/Autor/'.$book_id);
             $data['cancel_link'] = base_url('Muuda/Raamat/'.$book_id);
-
+            
+            $authors_in_book = array();
+            foreach ($this->database_model->get_authors($book_id) as $entry) {
+                array_push($authors_in_book, $entry['author_id']);
+            }
             $authors = array();
             foreach ($this->database_model->get_authors() as $author) {
+                if (in_array($author['id'], $authors_in_book)) {
+                    continue;
+                }
                 array_push($authors, '<option value="'.$author['id'].'">'.$author['firstname'].' '.$author['lastname'].'</option>');
             }
             $data['keywords'] = implode('', $authors);
@@ -310,8 +331,15 @@ class Add extends CI_Controller {
             $data['form_action'] = base_url('Lisa/Žanr/'.$book_id);
             $data['cancel_link'] = base_url('Muuda/Raamat/'.$book_id);
 
+            $genres_in_book = array();
+            foreach ($this->database_model->get_genres($book_id) as $entry) {
+                array_push($genres_in_book, $entry['genre_id']);
+            }
             $genres = array();
             foreach ($this->database_model->get_genres() as $genre) {
+                if (in_array($genre['id'], $genres_in_book)) {
+                    continue;
+                }
                 array_push($genres, '<option value="'.$genre['id'].'">'.$genre['name'].'</option>');
             }
             $data['genres'] = implode('', $genres);

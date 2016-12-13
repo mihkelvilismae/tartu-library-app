@@ -81,6 +81,11 @@ class Database_model extends CI_Model {
         return $query->result_array();
     }
 
+    public function get_books_in_list($class_id) {
+        $query = $this->db->get_where('reading_list', array('class_id'=>$class_id));
+        return $query->result_array();
+    }
+
     public function get_keywords($book_id=NULL, $keyword_id=NULL) {
         if ($book_id||$keyword_id) {
             $where = array();
