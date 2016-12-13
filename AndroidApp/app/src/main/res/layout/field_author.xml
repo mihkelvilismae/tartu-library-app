@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:hint="Sisesta autor..."
         android:ems="10"
+        android:maxLines="1"
         android:id="@+id/editAuthor" />
         <!--android:inputType="textPersonName"-->
     <LinearLayout
