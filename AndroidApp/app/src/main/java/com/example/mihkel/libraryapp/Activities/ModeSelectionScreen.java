@@ -18,6 +18,7 @@ public class ModeSelectionScreen extends AppCompatActivity implements ParseStrin
 
     public void onClick(View v) {
 //        toast("start");
+
         switch (v.getId()) {
             case R.id.startMandatoryReading:
                 startMandatoryReading();
