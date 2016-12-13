@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements ParseStringCallBa
 //            toast(JSONString);
         }
         if (type == TYPE_GENRES) {
-            toast(JSONString);
+//            toast(JSONString);
             isGenresDownloaded = true;
             saveGenresFromJSON(JSONString);
             startNextActivity();

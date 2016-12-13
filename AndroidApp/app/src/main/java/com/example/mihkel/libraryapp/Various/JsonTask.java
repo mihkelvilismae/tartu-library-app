@@ -44,6 +44,7 @@ public class JsonTask extends AsyncTask<String, String, String> {
 
     public JsonTask(Context context) {
         this.context = context;
+        mText = "Palun oota, andmeid laetakse";
     }
 
     public JsonTask setListener(ParseStringCallBackListener listener) {
