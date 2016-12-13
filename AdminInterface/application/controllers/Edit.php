@@ -15,40 +15,36 @@ class Edit extends CI_Controller {
             redirect(base_url());
         }
     }
-    
-    
+
+    public function set_messages() {
+        $this->form_validation->set_message('required', '%s väli on kohustuslik.');
+        $this->form_validation->set_message('is_unique', '%s väli peab olema unikaalne.');
+        $this->form_validation->set_message('valid_email', '%s väli peab olema emaili kujuga.');
+        $this->form_validation->set_message('numeric', '%s väli peab olema numbriline.');
+    }
 
     public function edit_school($school_id) {
         $data['active'] = 'Koolid';
         $data['title'] = 'Kooli muutmine';
-        $data['form_action'] = 'Muuda/Kool/'.$school_id;
-        $school = $this->database_model->get_school($school_id);
 
-        $this->form_validation->set_message('unique_school_name', 'The school name must be unique.');
-        $this->form_validation->set_rules('name', 'Name', 'callback_unique_school_name['.$school_id.']|required');
-        $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
-        $this->form_validation->set_rules('email', 'E-Mail', 'valid_email|required');
+        $this->set_messages();
+        $this->form_validation->set_message('unique_school_name', 'Sellise nimega kool on juba olemas.');
 
-        $table_rows = array();
-
-        array_push($table_rows, array('', ''));
-        array_push($table_rows, array(form_label('Nimi', 'name'), form_input('name', $school['name'])));
-        array_push($table_rows, array(form_label('Telefon', 'phone'), form_input('phone', $school['phone'])));
-        array_push($table_rows, array(form_label('E-Mail', 'email'), form_input('email', $school['email'])));
-        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Koolid').'\';"')));
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        $this->form_validation->set_rules('name', 'Kooli nime', 'callback_unique_school_name['.$school_id.']|required');
+        $this->form_validation->set_rules('phone', 'Telefoni', 'numeric|required');
+        $this->form_validation->set_rules('email', 'E-Maili', 'valid_email|required');
 
         if ($this->form_validation->run() === FALSE) {
+            $data['form_action'] = base_url('Muuda/Kool/'.$school_id);
+
+            $school = $this->database_model->get_school($school_id);
+            $data['name'] = $this->input->post('name') ? $this->input->post('name') : $school['name'];
+            $data['phone'] = $this->input->post('phone') ? $this->input->post('phone') : $school['phone'];
+            $data['email'] = $this->input->post('email') ? $this->input->post('email') : $school['email'];
+
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('edit/school');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_school($school_id);
@@ -59,42 +55,32 @@ class Edit extends CI_Controller {
     public function edit_class($class_id) {
         $data['active'] = 'Klassid';
         $data['title'] = 'Klassi muutmine';
-        $data['form_action'] = base_url('Muuda/Klass/'.$class_id);
-        $class = $this->database_model->get_class_by_id($class_id);
 
-        $schools = $this->database_model->get_schools();
+        $this->set_messages();
+        $this->form_validation->set_message('class_name_check', 'Sellel koolil on juba sellise nimega klass.');
 
-        $dropdown_rows = array();
-
-        for ($i = 0; $i < count($schools); $i++) {
-            $school = $schools[$i];
-            $dropdown_rows[$school['id']] = $school['name'];
-        }
-
-        $this->form_validation->set_message('class_name_check', 'The school already has a class named that.');
-        $this->form_validation->set_rules('name', 'Name', 'required|callback_class_name_check['.$this->input->post('school_id').']');
-        $this->form_validation->set_rules('school_id', 'Kooli nimi', 'numeric|required');
-
-        $table_rows = array();
-
-        array_push($table_rows, array('', ''));
-        array_push($table_rows, array(form_label('Kool', 'school_id'), form_dropdown('school_id', $dropdown_rows, $class['school_id'])));
-        array_push($table_rows, array(form_label('Klassi nimi', 'name'), form_input('name', $class['name'])));
-
-        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Klassid').'\';"')));
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        $this->form_validation->set_rules('name', 'Klassi nime', 'required|callback_class_name_check['.$this->input->post('school_id').']');
+        $this->form_validation->set_rules('school_id', 'Kooli nime', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
+            $data['form_action'] = base_url('Muuda/Klass/'.$class_id);
+            $class = $this->database_model->get_class_by_id($class_id);
+
+            $schools = array();
+            foreach ($this->database_model->get_schools() as $school) {
+                if ($class['school_id'] == $school['id']) {
+                    array_push($schools, '<option value="'.$school['id'].'" selected="selected">'.$school['name'].'</option>');
+                } else {
+                    array_push($schools, '<option value="'.$school['id'].'">'.$school['name'].'</option>');
+                }
+            }
+
+            $data['school_options'] = implode('', $schools);
+            $data['class_name'] = $this->input->post('name') ? $this->input->post('name') : $class['name'];
+
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('edit/class');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_class($class_id);
@@ -105,63 +91,49 @@ class Edit extends CI_Controller {
     public function edit_book($book_id) {
         $data['active'] = 'Raamatud';
         $data['title'] = 'Raamatu muutmine';
-        $data['form_action'] = 'Muuda/Raamat/'.$book_id;
-        $school = $this->database_model->get_book($book_id);
 
+        $this->set_messages();
+        $this->form_validation->set_message('unique_book_title', 'Sellise pealkirjaga raamat on juba olemas.');
 
-        $book_authors = $this->database_model->get_authors($book_id);
-        $authors = '<ul>';
-        foreach ($book_authors as $author) {
-            $a = $this->database_model->get_author($author['author_id']);
-            $authors.='<li>'.$a['firstname'].' '.$a['lastname'].' <span class="remove-book"><a href="'.base_url('Kustuta/RaamatultAutor/'.$author['id']).'">Kustuta</a></span></li>';
-        }
-        $authors .= '</ul>';
-        $authors .= '<a href="'.base_url("Lisa/Autor/".$book_id).'">Lisa autor</a>';
-
-        $keywords = '<ul>';
-        foreach ($this->database_model->get_keywords($book_id) as $keyword) {
-            $g = $this->database_model->get_keyword($keyword['keyword_id']);
-            $keywords.='<li>'.$g['name'].' <span class="remove-book"><a href="'.base_url('Kustuta/RaamatultMärksõna/'.$keyword['id']).'">Kustuta</a></span></li>';
-        }
-        $keywords .= '</ul>';
-        $keywords .= '<a href="'.base_url("Lisa/Märksõna/".$book_id).'">Lisa märksõna</a>';
-        
-        $genres = '<ul>';
-        foreach ($this->database_model->get_genres($book_id) as $genre) {
-            $g = $this->database_model->get_genre($genre['genre_id']);
-            $genres.='<li>'.$g['name'].' <span class="remove-book"><a href="'.base_url('Kustuta/RaamatultZanr/'.$genre['id']).'">Kustuta</a></span></li>';
-        }
-        $genres .= '</ul>';
-        $genres .= '<a href="'.base_url("Lisa/Zanr/".$book_id).'">Lisa zanr</a>';
-
-        $this->form_validation->set_message('unique_book_title', 'The book title must be unique.');
-        $this->form_validation->set_rules('title', 'title', 'callback_unique_book_title['.$book_id.']|required');
-        $this->form_validation->set_rules('lang', 'language', 'required');
-        $this->form_validation->set_rules('year', 'year', 'numeric|required');
-
-        $table_rows = array();
-
-        array_push($table_rows, array('', ''));
-        array_push($table_rows, array(form_label('Raamatu nimi', 'title'), form_input('title', $school['title'])));
-        array_push($table_rows, array(form_label('Autorid'), $authors));
-        array_push($table_rows, array(form_label('Keel', 'lang'), form_input('lang', $school['lang'])));
-        array_push($table_rows, array(form_label('Aasta', 'year'), form_input('year', $school['year'])));
-        array_push($table_rows, array(form_label('Märksõnad'), $keywords));
-        array_push($table_rows, array(form_label('Zanrid'), $genres));
-        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        $this->form_validation->set_rules('title', 'Pealkirja', 'callback_unique_book_title['.$book_id.']|required');
+        $this->form_validation->set_rules('lang', 'Keele', 'required');
+        $this->form_validation->set_rules('year', 'Aasta', 'numeric|required');
 
         if ($this->form_validation->run() === FALSE) {
+            $data['form_action'] = base_url('Muuda/Raamat/'.$book_id);
+            $book = $this->database_model->get_book($book_id);
+
+            $authors = array();
+            foreach ($this->database_model->get_authors($book_id) as $author) {
+                $e = $this->database_model->get_author($author['author_id']);
+                array_push($authors, '<li class="list-group-item">'.$e['firstname'].' '.$e['lastname'].' <a href="'.base_url('Kustuta/RaamatultAutor/'.$author['id']).'">Kustuta</a>'.'</li>');
+            }
+            array_push($authors, '<li class="list-group-item"><a href="'.base_url("Lisa/Autor/".$book_id).'">Lisa autor</a></li>');
+
+            $keywords = array();
+            foreach ($this->database_model->get_keywords($book_id) as $keyword) {
+                $e = $this->database_model->get_keyword($keyword['keyword_id']);
+                array_push($keywords, '<li class="list-group-item">'.$e['name'].' <a href="'.base_url('Kustuta/RaamatultMärksõna/'.$keyword['id']).'">Kustuta</a>'.'</li>');
+            }
+            array_push($keywords, '<li class="list-group-item"><a href="'.base_url("Lisa/Märksõna/".$book_id).'">Lisa märksõna</a></li>');
+
+            $genres = array();
+            foreach ($this->database_model->get_genres($book_id) as $genre) {
+                $e = $this->database_model->get_genre($genre['genre_id']);
+                array_push($genres, '<li class="list-group-item">'.$e['name'].' <a href="'.base_url('Kustuta/RaamatultZanr/'.$genre['id']).'">Kustuta</a>'.'</li>');
+            }
+            array_push($genres, '<li class="list-group-item"><a href="'.base_url("Lisa/Zanr/".$book_id).'">Lisa žanr</a></li>');
+
+            $data['authors'] = implode('', $authors);
+            $data['keywords'] = implode('', $keywords);
+            $data['genres'] = implode('', $genres);
+            $data['book_title'] = $this->input->post('title') ? $this->input->post('title') : $book['title'];
+            $data['lang'] = $this->input->post('lang') ? $this->input->post('lang') : $book['lang'];
+            $data['year'] = $this->input->post('year') ? $this->input->post('year') : $book['year'];
+
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('edit/book');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_book($book_id);
@@ -172,55 +144,45 @@ class Edit extends CI_Controller {
     public function edit_reading_list($class_id) {
         $data['active'] = 'Nimekiri';
         $data['title'] = 'Raamatunimekirja muutmine';
-        $data['form_action'] = 'Muuda/Nimekiri/'.$class_id;
 
-        $schools = $this->database_model->get_schools();
+        $this->set_messages();
+        $this->form_validation->set_message('unique_list', 'Sellel klassil on juba lugemisnimekiri.');
 
-        $dropdown_rows_classes = array();
-
-        for ($i = 0; $i < count($schools); $i++) {
-            $school = $schools[$i];
-            $classes_rows = $this->database_model->get_classes($school['id']);
-            $classes = array();
-            for ($j = 0; $j < count($classes_rows); $j++) {
-                $class = $classes_rows[$j];
-                $classes[$class['id']] = $class['name'];
-            }
-            $dropdown_rows_classes[$school['name']] = $classes;
-        }
-
-        $list_rows = $this->database_model->get_list();
-
-        $books = '<ul>';
-        for ($i = 0; $i < count($list_rows); $i++) {
-            $row = $list_rows[$i];
-            if ($row['class_id'] == $class_id) {
-                $books .= '<li>'.$this->database_model->get_book($row['book_id'])['title'].' <span class="remove-book"><a href="'.base_url('Kustuta/Nimekirjast/'.$row['id']).'">Kustuta</a></span></li>';
-            }
-        }
-        $books .= '</ul>';
-
-        $this->form_validation->set_message('is_unique', 'The class already has a reading list.');
-        $this->form_validation->set_rules('class_id', 'Class', 'numeric|required|is_unique[reading_list.class_id]');
-
-        $table_rows = array();
-        array_push($table_rows, array('', '<a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a>'));
-        array_push($table_rows, array(form_label('Klass', 'class_id'), form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
-        array_push($table_rows, array(form_label('Raamatud', 'book_id'), $books));
-        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Nimekiri').'\';"')));
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        $this->form_validation->set_rules('class_id', 'Klassi nime', 'numeric|required|callback_unique_list['.$class_id.']');
 
         if ($this->form_validation->run() === FALSE) {
+            $data['form_action'] = base_url('Muuda/Nimekiri/'.$class_id);
+
+            $dropdown_rows_classes = array();
+            $schools = $this->database_model->get_schools();
+            for ($i = 0; $i < count($schools); $i++) {
+                $school = $schools[$i];
+                $classes_rows = $this->database_model->get_classes($school['id']);
+                $classes = array();
+                for ($j = 0; $j < count($classes_rows); $j++) {
+                    $class = $classes_rows[$j];
+                    if ($class_id == $class['id']) {
+                        array_push($classes, '<option value="'.$class['id'].'" selected="selected">'.$class['name'].'</option>');
+                    } else {
+                        array_push($classes, '<option value="'.$class['id'].'">'.$class['name'].'</option>');
+                    }
+                }
+                array_push($dropdown_rows_classes, '<optgroup label="'.$school['name'].'">'.implode('', $classes).'</optgroup>');
+            }
+
+            $books = array();
+            foreach ($this->database_model->get_reading_list_from_class($class_id) as $e) {
+                $book = $this->database_model->get_book($e['book_id']);
+                array_push($books, '<li class="list-group-item">'.$book['title'].' <a href="'.base_url('Kustuta/Nimekirjast/'.$e['id']).'">Kustuta</a>'.'</li>');
+            }
+            array_push($books, '<li class="list-group-item"><a href="'.base_url("Lisa/Nimekiri/".$class_id).'">Lisa raamat</a></li>');
+
+            $data['class_options'] = implode('', $dropdown_rows_classes);
+            $data['books'] = implode('', $books);
+
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('edit/reading_list');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_reading_list($class_id);
@@ -231,29 +193,21 @@ class Edit extends CI_Controller {
     public function edit_keyword($keyword_id) {
         $data['active'] = 'Märksõnad';
         $data['title'] = 'Märksõna muutmine';
-        $data['form_action'] = 'Muuda/Märksõna/'.$keyword_id;
-        $school = $this->database_model->get_keyword($keyword_id);
 
-        $this->form_validation->set_message('unique_keyword_name', 'The keyword name must be unique.');
-        $this->form_validation->set_rules('name', 'Name', 'callback_unique_keyword_name['.$keyword_id.']|required');
-        $table_rows = array();
+        $this->set_messages();
+        $this->form_validation->set_message('unique_keyword_name', 'Sellise nimega märksõna on juba olemas.');
 
-        array_push($table_rows, array('', ''));
-        array_push($table_rows, array(form_label('Märksõna', 'name'), form_input('name', $school['name'])));
-        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Märksõnad').'\';"')));
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        $this->form_validation->set_rules('name', 'Märksõna nime', 'callback_unique_keyword_name['.$keyword_id.']|required');
 
         if ($this->form_validation->run() === FALSE) {
+            $data['form_action'] = base_url('Muuda/Märksõna/'.$keyword_id);
+            $keyword = $this->database_model->get_keyword($keyword_id);
+
+            $data['name'] = $this->input->post('name') ? $this->input->post('name') : $keyword['name'];
+
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('edit/keyword');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_keyword($keyword_id);
@@ -264,30 +218,22 @@ class Edit extends CI_Controller {
     public function edit_author($author_id) {
         $data['active'] = 'Autor';
         $data['title'] = 'Autori muutmine';
-        $data['form_action'] = 'Muuda/Autor/'.$author_id;
-        $author = $this->database_model->get_author($author_id);
 
-        $this->form_validation->set_rules('firstname', 'firstname', 'required');
-        $this->form_validation->set_rules('lastname', 'lastname', 'required');
+        $this->set_messages();
 
-        $table_rows = array();
-        array_push($table_rows, array('', ''));
-        array_push($table_rows, array(form_label('Eesnimi', 'firstname'), form_input('firstname', $author['firstname'])));
-        array_push($table_rows, array(form_label('Perenimi', 'lastname'), form_input('lastname', $author['lastname'])));
-        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Autorid').'\';"')));
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        $this->form_validation->set_rules('firstname', 'Eesnime', 'required');
+        $this->form_validation->set_rules('lastname', 'Perenime', 'required');
 
         if ($this->form_validation->run() === FALSE) {
+            $data['form_action'] = base_url('Muuda/Autor/'.$author_id);
+            $author = $this->database_model->get_author($author_id);
+
+            $data['firstname'] = $this->input->post('firstname') ? $this->input->post('firstname') : $author['firstname'];
+            $data['lastname'] = $this->input->post('lastname') ? $this->input->post('lastname') : $author['lastname'];
+
             $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('view/view_form', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('edit/author');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_author($author_id);
@@ -296,31 +242,23 @@ class Edit extends CI_Controller {
     }
 
     public function edit_genre($genre_id) {
-        $data['active'] = 'Zanrid';
-        $data['title'] = 'Zanri muutmine';
-        $data['form_action'] = 'Muuda/Zanr/'.$genre_id;
-        $school = $this->database_model->get_genre($genre_id);
+        $data['active'] = 'Žanrid';
+        $data['title'] = 'Žanri muutmine';
 
-        $this->form_validation->set_message('unique_genre_name', 'The genre name must be unique.');
-        $this->form_validation->set_rules('name', 'Name', 'callback_unique_genre_name['.$genre_id.']|required');
-        $table_rows = array();
+        $this->set_messages();
+        $this->form_validation->set_message('unique_genre_name', 'Sellise nimega žanr on juba olemas.');
 
-        array_push($table_rows, array('', ''));
-        array_push($table_rows, array(form_label('Märksõna', 'name'), form_input('name', $school['name'])));
-        array_push($table_rows, array('', form_submit('submit', 'Salvesta').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Zanrid').'\';"')));
-
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        $this->form_validation->set_rules('name', 'Žanri nime', 'callback_unique_genre_name['.$genre_id.']|required');
 
         if ($this->form_validation->run() === FALSE) {
+            $data['form_action'] = base_url('Muuda/Zanr/'.$genre_id);
+            $genre = $this->database_model->get_genre($genre_id);
+
+            $data['name'] = $this->input->post('name') ? $this->input->post('name') : $genre['name'];
+
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
-            $this->load->view('view/view_form', $data);
+            $this->load->view('edit/genre', $data);
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_genre($genre_id);
@@ -342,8 +280,24 @@ class Edit extends CI_Controller {
         return TRUE;
     }
 
+    public function unique_list($new_id, $old_id) {
+        if ($new_id == $old_id) {
+            return TRUE;
+        }
+        $entries = $this->database_model->get_list();
+        foreach ($entries as $entry) {
+            if ($entry['class_id'] == $old_id) {
+                continue;
+            }
+            if ($entry['class_id'] == $new_id) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
     public function unique_book_title($book_title, $book_id) {
-        $books = $this->database_model->get_schools();
+        $books = $this->database_model->get_books();
         foreach ($books as $book) {
             if ($book['id'] == $book_id) {
                 continue;

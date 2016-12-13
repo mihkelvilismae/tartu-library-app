@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="<?=base_url('/public/css/style.css')?>" />
         <title><?=$title?></title>
+        <link rel="stylesheet" href="<?=base_url("/public/css/bootstrap.min.css")?>">
+        <link rel="stylesheet" href="<?=base_url("/public/css/style.css")?>">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="<?=base_url("/public/js/bootstrap.min.js")?>"></script>
     </head>
     <body>
-        <h1><?= $title?></h1>
-        <div class="container outer">
-            <div class="container inner">
+        <div class="container-fluid">
+            <h1 class="text-center"><?= $title?></h1>

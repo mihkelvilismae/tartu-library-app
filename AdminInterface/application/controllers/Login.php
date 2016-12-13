@@ -12,35 +12,31 @@ class Login extends CI_Controller {
 
     }
 
-    public function login()
-    {
+    public function login() {
         if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == TRUE) {
             redirect(base_url("Koolid"));
         }
         $data['title'] = 'Logi sisse';
         $data['form_action'] = base_url();
 
-        $this->form_validation->set_rules('email', 'Email', 'required');
-        $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_message('required', '%s väli on kohustuslik.');
 
-        $table_rows = array();
+        $this->form_validation->set_rules('email', 'E-maili', 'required');
+        $this->form_validation->set_rules('password', 'Parooli', 'required');
 
-        array_push($table_rows, array('', ''));
-        array_push($table_rows, array('<label for="email">Email</label>', '<input type="input" name="email" />'));
-        array_push($table_rows, array('<label for="password">Parool</label>', '<input type="password" name="password" />'));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Logi sisse" />'));
+        if (!isset($_SESSION['REFERER'])) {
+            $_SESSION['REFERER'] = '-';
+        }
 
-        $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
-        );
-
-        $this->table->set_template($template);
-
-        $data['table'] = $this->table->generate($table_rows);
+        echo '--'.$_SESSION['REFERER'].'--<br>';
+        echo '--'.base_url().'--<br>';
+        echo '--'.base_url("Muuda/Raamat/2").'--<br>';
 
         if ($this->form_validation->run() === FALSE) {
+            $data['email_error'] = form_error('email');
+            $data['password_error'] = form_error('password');
             $this->load->view('templates/header', $data);
-            $this->load->view('view/view_form');
+            $this->load->view('templates/login');
             $this->load->view('templates/footer');
         } else {
             if ($this->input->post("password") == "admin") {

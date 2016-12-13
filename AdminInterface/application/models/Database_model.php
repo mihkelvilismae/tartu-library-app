@@ -52,11 +52,15 @@ class Database_model extends CI_Model {
     }
 
     public function get_schools() {
+        $this->db->order_by('name');
         $query = $this->db->get('school');
         return $query->result_array();
     }
 
     public function get_classes($id=NULL) {
+        $this->db->select("class.*");
+        $this->db->join('school', 'school.id = class.school_id', 'inner');
+        $this->db->order_by('school.name, class.name');
         if ($id) {
             $query = $this->db->get_where('class', array('school_id'=>$id));
         } else {
@@ -77,7 +81,13 @@ class Database_model extends CI_Model {
     }
 
     public function get_books() {
+        $this->db->order_by('title');
         $query = $this->db->get('book');
+        return $query->result_array();
+    }
+
+    public function get_books_in_list($class_id) {
+        $query = $this->db->get_where('reading_list', array('class_id'=>$class_id));
         return $query->result_array();
     }
 
@@ -92,6 +102,7 @@ class Database_model extends CI_Model {
             }
             $query = $this->db->get_where('book_keyword', $where);
         } else {
+            $this->db->order_by('name');
             $query = $this->db->get('keyword');
         }
         return $query->result_array();
@@ -118,6 +129,7 @@ class Database_model extends CI_Model {
             }
             $query = $this->db->get_where('book_author', $where);
         } else {
+            $this->db->order_by('lastname, firstname');
             $query = $this->db->get('author');
         }
         return $query->result_array();
@@ -144,6 +156,7 @@ class Database_model extends CI_Model {
             }
             $query = $this->db->get_where('book_genre', $where);
         } else {
+            $this->db->order_by('name');
             $query = $this->db->get('genre');
         }
         return $query->result_array();
@@ -272,7 +285,7 @@ class Database_model extends CI_Model {
         $this->load->helper('url');
 
         $data = array(
-            'name' => $this->input->post('name')
+            'name' => strtolower($this->input->post('name'))
         );
 
         return $this->db->insert('genre', $data);
