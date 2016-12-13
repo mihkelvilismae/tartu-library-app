@@ -29,7 +29,7 @@ public class JsonTask extends AsyncTask<String, String, String> {
     String mText;
 
 
-    public JsonTask(Context context, Integer type) {
+    public JsonTask(Context context, int type) {
         this.context = context;
         mType = type;
         switch (type) {
@@ -121,7 +121,6 @@ public class JsonTask extends AsyncTask<String, String, String> {
                 mListener.callback(result, null);
             else
                 mListener.callback(result, mType);
-
 
 
 //            /txtJson.setText(result);

@@ -79,7 +79,7 @@ public class BooksListActivity extends Activity implements ParseStringCallBackLi
     }
 
     public void fetchDataFromServer(int bookId) {
-        JsonTask jsonTask = new JsonTask(BooksListActivity.this, null).setListener(this);
+        JsonTask jsonTask = new JsonTask(BooksListActivity.this).setListener(this);
         jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Raamat?id=" + bookId);
     }
 
