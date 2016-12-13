@@ -91,7 +91,7 @@ public class RecommendationResultList extends Activity implements ParseStringCal
 //    }
 
     public void fetchDataFromServer(int bookId) {
-        JsonTask jsonTask = new JsonTask(RecommendationResultList.this, null).setListener(this);
+        JsonTask jsonTask = new JsonTask(RecommendationResultList.this).setListener(this);
         jsonTask.execute("http://admin-mihkelvilismae.rhcloud.com/AdminInterface/json/Raamat?id=" + bookId);
     }
 
