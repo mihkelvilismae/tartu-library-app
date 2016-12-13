@@ -507,15 +507,15 @@ class Database_model extends CI_Model {
             $this->db->join('genre', 'book_genre.genre_id = genre.id', 'inner');
         }
         if (!empty($keywords)) {
-            $this->db->where_in("keyword.name", $keywords);
+            $this->db->where_in("keyword.id", $keywords);
             //$this->db->group_by("book.id, book.title");
             //$this->db->having('COUNT(DISTINCT keyword.id) = ', count($keywords));
         }
         if (!empty($authors)) {
-            $this->db->where_in('author.lastname', $authors, 'after');
+            $this->db->where_in('author.id', $authors, 'after');
         }
         if (!empty($genres)) {
-            $this->db->where_in('genre.name', $genres);
+            $this->db->where_in('genre.id', $genres);
         }
         if (!empty($languages)) {
             $this->db->where_in('book.lang', $languages);
