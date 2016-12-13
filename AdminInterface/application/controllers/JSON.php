@@ -12,7 +12,7 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_schools() as $school) {
             $schools[$school['id']] = $school['name'];
         }
-        asort($schools);
+        //asort($schools);
         echo json_encode($schools);
     }
 
