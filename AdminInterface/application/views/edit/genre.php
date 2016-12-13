@@ -1,7 +1,7 @@
     <div class="col-md-10">
         <form action="<?=$form_action; ?>" class="form-horizontal" method="post" accept-charset="utf-8">
             <div class="form-group">
-                <label for="name" class="control-label col-sm-offset-1 col-sm-2">Zanr</label>
+                <label for="name" class="control-label col-sm-offset-1 col-sm-2">Žanr</label>
                 <div class="col-sm-3">
                     <input type="text" name="name" value="<?=$name; ?>"  class="form-control" />
                 </div>
@@ -9,8 +9,8 @@
             </div>
             <div class="form-group">
                 <div class="btn-group col-sm-offset-3 col-sm-10">
-                    <input type="submit" name="submit" value="Muuda zanri"  class="btn btn-primary btn-sm" />
-                    <a href="http://localhost/Zanrid" class="btn btn-warning btn-sm" role="button">Katkesta</a>
+                    <input type="submit" name="submit" value="Muuda žanri"  class="btn btn-primary btn-sm" />
+                    <a href="<?=base_url("Žanrid"); ?>" class="btn btn-warning btn-sm" role="button">Katkesta</a>
                 </div>
             </div>
         </form>

@@ -1,5 +1,5 @@
     <div class="col-md-10">
-        <form action="http://localhost/Lisa/Klass" class="form-horizontal" method="post" accept-charset="utf-8">
+        <form action="<?=base_url("Lisa/Klass"); ?>" class="form-horizontal" method="post" accept-charset="utf-8">
             <div class="form-group">
                 <label for="school_id" class="control-label col-sm-offset-1 col-sm-2">Kool</label>
                 <div class="col-sm-3">
@@ -19,7 +19,7 @@
             <div class="form-group">
                 <div class="btn-group col-sm-offset-3 col-sm-10">
                     <input type="submit" name="submit" value="Lisa klass"  class="btn btn-primary btn-sm" />
-                    <a href="http://localhost/Klassid" class="btn btn-warning btn-sm" role="button">Katkesta</a>
+                    <a href="<?=base_url("Klassid"); ?>" class="btn btn-warning btn-sm" role="button">Katkesta</a>
                 </div>
             </div>
         </form>

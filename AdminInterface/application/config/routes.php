@@ -61,8 +61,8 @@ $route['Kustuta/M%C3%A4rks%C3%B5na/(:num)'] = 'Delete/delete_keyword/$1';
 $route['Kustuta/RaamatultM%C3%A4rks%C3%B5na/(:num)'] = 'Delete/delete_keyword_from_book/$1';
 $route['Kustuta/Autor/(:num)'] = 'Delete/delete_author/$1';
 $route['Kustuta/RaamatultAutor/(:num)'] = 'Delete/delete_author_from_book/$1';
-$route['Kustuta/Zanr/(:num)'] = 'Delete/delete_genre/$1';
-$route['Kustuta/RaamatultZanr/(:num)'] = 'Delete/delete_genre_from_book/$1';
+$route['Kustuta/%C5%BDanr/(:num)'] = 'Delete/delete_genre/$1';
+$route['Kustuta/Raamatult%C5%BDanr/(:num)'] = 'Delete/delete_genre_from_book/$1';
 
 $route['Koolid'] = 'View/view_schools';
 $route['Raamatud'] = 'View/view_books';
@@ -74,7 +74,7 @@ $route['Klassid'] = 'View/view_classes';
 $route['Kasutajad'] = 'View/view_users';
 $route['M%C3%A4rks%C3%B5nad'] = 'View/view_keywords';
 $route['Autorid'] = 'View/view_authors';
-$route['Zanrid'] = 'View/view_genres';
+$route['%C5%BDanrid'] = 'View/view_genres';
 
 $route['Muuda/Kool/(:num)'] = 'Edit/edit_school/$1';
 $route['Muuda/Klass/(:num)'] = 'Edit/edit_class/$1';
@@ -82,7 +82,7 @@ $route['Muuda/Nimekiri/(:num)'] = 'Edit/edit_reading_list/$1';
 $route['Muuda/Raamat/(:num)'] = 'Edit/edit_book/$1';
 $route['Muuda/M%C3%A4rks%C3%B5na/(:num)'] = 'Edit/edit_keyword/$1';
 $route['Muuda/Autor/(:num)'] = 'Edit/edit_author/$1';
-$route['Muuda/Zanr/(:num)'] = 'Edit/edit_genre/$1';
+$route['Muuda/%C5%BDanr/(:num)'] = 'Edit/edit_genre/$1';
 
 $route['Lisa/Kool'] = 'Add/add_school';
 $route['Lisa/Raamat'] = 'Add/add_book';
@@ -95,8 +95,8 @@ $route['Lisa/M%C3%A4rks%C3%B5na'] = 'Add/add_keyword';
 $route['Lisa/M%C3%A4rks%C3%B5na/(:num)'] = 'Add/add_keyword_to_book/$1';
 $route['Lisa/Autor'] = 'Add/add_author';
 $route['Lisa/Autor/(:num)'] = 'Add/add_author_to_book/$1';
-$route['Lisa/Zanr'] = 'Add/add_genre';
-$route['Lisa/Zanr/(:num)'] = 'Add/add_genre_to_book/$1';
+$route['Lisa/%C5%BDanr'] = 'Add/add_genre';
+$route['Lisa/%C5%BDanr/(:num)'] = 'Add/add_genre_to_book/$1';
 
 $route['json/Koolid'] = 'JSON/schools';
 $route['json/Klassid/(:num)'] = 'JSON/classes/$1';
@@ -104,7 +104,7 @@ $route['json/Nimekiri/(:num)'] = 'JSON/lists/$1';
 $route['json/Otsing'] = 'JSON/search';
 $route['json/M%C3%A4rks%C3%B5nad'] = 'JSON/keywords';
 $route['json/Autorid'] = 'JSON/authors';
-$route['json/Zanrid'] = 'JSON/genres';
+$route['json/%C5%BDanrid'] = 'JSON/genres';
 $route['json/Raamat'] = 'JSON/book';
 
 $route['default_controller'] = 'Login/login';

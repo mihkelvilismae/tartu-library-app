@@ -41,7 +41,7 @@
             <div class="col-sm-5"></div>
         </div>
         <div class="form-group">
-            <label for="year" class="control-label col-sm-offset-1 col-sm-2">Zanrid</label>
+            <label for="year" class="control-label col-sm-offset-1 col-sm-2">Žanrid</label>
             <div class="col-sm-4">
                 <ul class="list-group no-padding">
                     <?=$genres; ?>
@@ -52,7 +52,7 @@
         <div class="form-group">
             <div class="btn-group col-sm-offset-3 col-sm-10">
                 <input type="submit" name="submit" value="Muuda raamatut" class="btn btn-primary btn-sm" />
-                <a href="http://localhost/Raamatud" class="btn btn-warning btn-sm" role="button">Katkesta</a>
+                <a href="<?=base_url("Raamatud"); ?>" class="btn btn-warning btn-sm" role="button">Katkesta</a>
             </div>
         </div>
     </form>

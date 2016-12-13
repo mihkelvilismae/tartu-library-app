@@ -109,9 +109,9 @@ class Edit extends CI_Controller {
             $genres = array();
             foreach ($this->database_model->get_genres($book_id) as $genre) {
                 $e = $this->database_model->get_genre($genre['genre_id']);
-                array_push($genres, '<li class="list-group-item">'.$e['name'].' <a href="'.base_url('Kustuta/RaamatultZanr/'.$genre['id']).'">Kustuta</a>'.'</li>');
+                array_push($genres, '<li class="list-group-item">'.$e['name'].' <a href="'.base_url('Kustuta/RaamatultŽanr/'.$genre['id']).'">Kustuta</a>'.'</li>');
             }
-            array_push($genres, '<li class="list-group-item"><a href="'.base_url("Lisa/Zanr/".$book_id).'">Lisa zanr</a></li>');
+            array_push($genres, '<li class="list-group-item"><a href="'.base_url("Lisa/Žanr/".$book_id).'">Lisa žanr</a></li>');
 
             $data['authors'] = implode('', $authors);
             $data['keywords'] = implode('', $keywords);
@@ -225,14 +225,14 @@ class Edit extends CI_Controller {
     }
 
     public function edit_genre($genre_id) {
-        $data['active'] = 'Zanrid';
-        $data['title'] = 'Zanri muutmine';
+        $data['active'] = 'Žanrid';
+        $data['title'] = 'Žanri muutmine';
 
         $this->form_validation->set_message('unique_genre_name', 'The genre name must be unique.');
         $this->form_validation->set_rules('name', 'Name', 'callback_unique_genre_name['.$genre_id.']|required');
 
         if ($this->form_validation->run() === FALSE) {
-            $data['form_action'] = base_url('Muuda/Zanr/'.$genre_id);
+            $data['form_action'] = base_url('Muuda/Žanr/'.$genre_id);
             $genre = $this->database_model->get_genre($genre_id);
 
             $data['name'] = $this->input->post('name') ? $this->input->post('name') : $genre['name'];
@@ -243,7 +243,7 @@ class Edit extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             $this->database_model->edit_genre($genre_id);
-            redirect(base_url('Zanrid'));
+            redirect(base_url('Žanrid'));
         }
     }
 
