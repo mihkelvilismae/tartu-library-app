@@ -11,7 +11,11 @@ class Edit extends CI_Controller {
         $this->load->library('table');
 
         if (!isset($_SESSION['logged_in'])) {
-            $_SESSION['REFERER'] = base_url($_SERVER['REQUEST_URI']);
+            $url = explode('/', $_SERVER['REQUEST_URI']);
+            if ($url[0] === 'AdminInterface') {
+                array_shift($url);
+            }
+            $_SESSION['REFERER'] = base_url(implode('/', $url));
             redirect(base_url());
         }
     }
