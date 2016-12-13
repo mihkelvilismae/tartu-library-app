@@ -233,18 +233,18 @@ class View extends CI_Controller {
         $data['title'] = 'Märksõnad';
 
         $table_rows = array();
-        $schools = $this->database_model->get_keywords();
-        for ($i = 0; $i < count($schools); $i++) {
-            $school = $schools[$i];
+        $keywords = $this->database_model->get_keywords();
+        for ($i = 0; $i < count($keywords); $i++) {
+            $keyword = $keywords[$i];
 
             $change_delete = $this->getButtonGroup(array(
-                $this->getLink('Muuda', base_url("Muuda/Märksõna/".$school['id'])),
-                $this->getLink('Kustuta', base_url('Kustuta/Märksõna/'.$school["id"]), 'btn-warning btn-xs')
+                $this->getLink('Muuda', base_url("Muuda/Märksõna/".$keyword['id'])),
+                $this->getLink('Kustuta', base_url('Kustuta/Märksõna/'.$keyword["id"]), 'btn-warning btn-xs')
             ));
             array_push(
                 $table_rows,
                 array(
-                    $school['name'],
+                    strtolower($keyword['name']),
                     $change_delete
                 )
             );
@@ -302,7 +302,7 @@ class View extends CI_Controller {
             array_push(
                 $table_rows,
                 array(
-                    $genre['name'],
+                    strtolower($genre['name']),
                     $change_delete
                 )
             );

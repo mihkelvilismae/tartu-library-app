@@ -65,7 +65,7 @@ class JSON extends CI_Controller {
         foreach ($this->database_model->get_keywords() as $keyword) {
             if (substr(strtolower($keyword['name']), 0, strlen($start)) === $start) {
                 if (!in_array($keyword['name'], $keywords)) {
-                    $keywords[$keyword['id']] = $keyword['name'];
+                    $keywords[$keyword['id']] = strtolower($keyword['name']);
                 }
             }
         }
@@ -109,6 +109,11 @@ class JSON extends CI_Controller {
         $id = strtolower($this->input->get('id'));
         $book = $this->database_model->get_book($id);
 
+        if (!$book) {
+            echo json_encode(array());
+            return;
+        }
+
         $authors = array();
         foreach ($this->database_model->get_authors($book['id']) as $a) {
             $author = $this->database_model->get_author($a['author_id']);
@@ -124,7 +129,7 @@ class JSON extends CI_Controller {
         $keywords = array();
         foreach ($this->database_model->get_keywords($book['id']) as $k) {
             $keyword = $this->database_model->get_keyword($k['keyword_id']);
-            array_push($keywords, $keyword["name"]);
+            array_push($keywords, strtolower($keyword["name"]));
         }
         $book["keywords"] = implode(", ", $keywords);
 

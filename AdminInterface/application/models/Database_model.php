@@ -242,7 +242,7 @@ class Database_model extends CI_Model {
         $this->load->helper('url');
 
         $data = array(
-            'name' => $this->input->post('name')
+            'name' => strtolower($this->input->post('name'))
         );
 
         return $this->db->insert('keyword', $data);
