@@ -9,6 +9,11 @@ class Add extends CI_Controller {
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->library('table');
+
+        if (!isset($_SESSION['logged_in'])) {
+            $_SESSION['REFERER'] = base_url($_SERVER['REQUEST_URI']);
+            redirect(base_url());
+        }
     }
 
     public function add_school()
@@ -17,17 +22,17 @@ class Add extends CI_Controller {
         $data['title'] = 'Kooli lisamine';
         $data['form_action'] = base_url('Lisa/Kool');
 
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('phone', 'Phone', 'required');
-        $this->form_validation->set_rules('email', 'E-Mail', 'required');
+        $this->form_validation->set_rules('name', 'Name', 'is_unique[school.name]|required');
+        $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
+        $this->form_validation->set_rules('email', 'E-Mail', 'valid_email|required');
 
         $table_rows = array();
 
         array_push($table_rows, array('', ''));
-        array_push($table_rows, array('<label for="name">Nimi</label>', '<input type="input" name="name" />'));
-        array_push($table_rows, array('<label for="phone">Telefon</label>', '<input type="input" name="phone" />'));
-        array_push($table_rows, array('<label for="email">E-Mail</label>', '<input type="input" name="email" />'));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" /> <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Koolid").'\';">'));
+        array_push($table_rows, array(form_label('Nimi', 'name'), form_input('name', $this->input->post('name'))));
+        array_push($table_rows, array(form_label('Telefon', 'phone'), form_input('phone', $this->input->post('phone'))));
+        array_push($table_rows, array(form_label('E-Mail', 'email'), form_input('email', $this->input->post('email'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Koolid').'\';"')));
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4" class="responstable">'
@@ -45,12 +50,6 @@ class Add extends CI_Controller {
         } else {
             $this->database_model->add_school();
             redirect(base_url("Koolid"));
-            /*
-            $data['title'] = 'Kooli lisamine õnnestus';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('success');
-            $this->load->view('templates/footer');*/
         }
     }
 
@@ -69,16 +68,16 @@ class Add extends CI_Controller {
             $dropdown_rows[$school['id']] = $school['name'];
         }
 
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('school_id', 'Kooli nimi', 'required');
+        $this->form_validation->set_message('class_name_check', 'The school already has a class named that.');
+        $this->form_validation->set_rules('name', 'Name', 'required|callback_class_name_check['.$this->input->post('school_id').']');
+        $this->form_validation->set_rules('school_id', 'Kooli nimi', 'numeric|required');
 
         $table_rows = array();
 
         array_push($table_rows, array('', ''));
-        array_push($table_rows, array('<label for="school_id">Kool</label>', form_dropdown('school_id', $dropdown_rows)));
-        array_push($table_rows, array('<label for="name">Klassi nimi</label>', '<input type="input" name="name" />'));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
-            <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Klassid").'\';">'));
+        array_push($table_rows, array(form_label('Kool', 'school_id'), form_dropdown('school_id', $dropdown_rows)));
+        array_push($table_rows, array(form_label('Klassi nimi', 'name'), form_input('name', $this->input->post('name'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Klassid').'\';"')));
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4" class="responstable">'
@@ -96,36 +95,44 @@ class Add extends CI_Controller {
         } else {
             $this->database_model->add_class();
             redirect(base_url("Klassid"));
-            /*
-            $data['title'] = 'Klassi lisamine õnnestus';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('success');
-            $this->load->view('templates/footer');*/
         }
     }
 
     public function add_book()
     {
 
+        $data['active'] = 'Raamatud';
         $data['title'] = 'Raamatu lisamine';
+        $data['form_action'] = base_url('Lisa/Raamat');
 
-        $this->form_validation->set_rules('title', 'Title', 'required');
-        $this->form_validation->set_rules('author', 'Author', 'required');
-        $this->form_validation->set_rules('year', 'Year', 'required');
+        $this->form_validation->set_rules('title', 'title', 'is_unique[book.title]|required');
+        $this->form_validation->set_rules('lang', 'language', 'required');
+        $this->form_validation->set_rules('year', 'year', 'numeric|required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Raamatu nimi', 'title'), form_input('title', $this->input->post('title'))));
+        array_push($table_rows, array(form_label('Keel', 'lang'), form_input('lang', $this->input->post('lang'))));
+        array_push($table_rows, array(form_label('Aasta', 'year'), form_input('year', $this->input->post('year'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Raamatud').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
-            $this->load->view('add/add_book', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
             $this->load->view('templates/footer');
         } else {
             $this->database_model->add_book();
-
-            $data['message'] = 'Raamatu lisamine õnnestus';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('success', $data);
-            $this->load->view('templates/footer');
+            redirect(base_url("Raamatud"));
         }
     }
 
@@ -156,17 +163,25 @@ class Add extends CI_Controller {
             $book = $books[$i];
             $dropdown_rows_books[$book['id']] = $book['title'];
         }
-
-        $this->form_validation->set_rules('class_id', 'Title', 'required');
-        $this->form_validation->set_rules('book_id', 'Title', 'required');
+        $this->form_validation->set_message('check_book_in_list', 'The book is already on the list.');
+        $this->form_validation->set_rules('class_id', 'Title', 'numeric|required');
+        $this->form_validation->set_rules('book_id', 'Title', 'numeric|required|callback_check_book_in_list['.$this->input->post('class_id').']');
 
         $table_rows = array();
 
+        if ($class_id == NULL) {
+            $class_id = $this->input->post('class_id');
+        }
+
         array_push($table_rows, array('', ''));
-        array_push($table_rows, array('<label for="class_id">Klass</label>', form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
-        array_push($table_rows, array('<label for="book_id">Raamat</label>', form_dropdown('book_id', $dropdown_rows_books)));
-        array_push($table_rows, array('', '<input type="submit" name="submit" value="Lisa" />
-            <input type="button" value="Katkesta" onclick="javascript:location.href = \''.base_url("Nimekiri").'\';">'));
+        array_push($table_rows, array(form_label('Klass', 'class_id'), form_dropdown('class_id', $dropdown_rows_classes, $class_id)));
+        array_push($table_rows, array(form_label('Raamat', 'book_id'), form_dropdown('book_id', $dropdown_rows_books, $this->input->post('book_id'))));
+        if ($class_id) {
+            array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url("Muuda/Nimekiri/".$class_id).'\';"')));
+        } else {
+            array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Nimekiri').'\';"')));
+        }
+
 
         $template = array(
             'table_open' => '<table border="1" cellpadding="4" class="responstable">'
@@ -188,12 +203,324 @@ class Add extends CI_Controller {
             } else {
                 redirect(base_url('Nimekiri'));
             }
-            /*
-            $data['message'] = 'Raamatu lisamine nimekirja õnnestus';
-
-            $this->load->view('templates/header', $data);
-            $this->load->view('success', $data);
-            $this->load->view('templates/footer');*/
         }
+    }
+
+    public function add_user()
+    {
+        if ($_SESSION['is_admin'] != 1) {
+            redirect(base_url('Koolid'));
+        }
+        $data['active'] = 'Kasutajad';
+        $data['title'] = 'Kasutaja lisamine';
+        $data['form_action'] = base_url('Lisa/Kasutaja');
+
+        $this->form_validation->set_rules('firstname', 'Firstname', 'required');
+        $this->form_validation->set_rules('lastname', 'Lastname', 'required');
+        $this->form_validation->set_rules('email', 'E-Mail', 'is_unique[account.email]|valid_email|required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_rules('phone', 'Phone', 'numeric|required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+
+        array_push($table_rows, array(form_label('Eesnimi', 'firstname'), form_input('firstname', $this->input->post('firstname'))));
+        array_push($table_rows, array(form_label('Perenimi', 'lastname'), form_input('lastname', $this->input->post('lastname'))));
+        array_push($table_rows, array(form_label('E-Mail', 'email'), form_input('email', $this->input->post('email'))));
+        array_push($table_rows, array(form_label('Parool', 'password'), form_password('password', $this->input->post('password'))));
+        array_push($table_rows, array(form_label('Telefon', 'phone'), form_input('phone', $this->input->post('phone'))));
+        array_push($table_rows, array(form_label('Admin', 'is_admin'), form_checkbox('is_admin', 1, $this->input->post('is_admin'))));
+
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Kasutajad').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_user();
+            redirect(base_url("Kasutajad"));
+        }
+    }
+
+    public function add_keyword()
+    {
+        $data['active'] = 'Märksõnad';
+        $data['title'] = 'Märksõna lisamine';
+        $data['form_action'] = base_url('Lisa/Märksõna');
+
+        $this->form_validation->set_rules('name', 'Name', 'is_unique[keyword.name]|required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Märksõna', 'name'), form_input('name', $this->input->post('name'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Märksõnad').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_keyword();
+            redirect(base_url("Märksõnad"));
+        }
+    }
+
+    public function add_keyword_to_book($book_id)
+    {
+        $data['active'] = 'Raamatud';
+        $data['title'] = 'Raamatule märksõna lisamine';
+        $data['form_action'] = base_url('Lisa/Märksõna/'.$book_id);
+
+        $this->form_validation->set_message('check_keyword_in_book', 'The book already has that keyword.');
+        $this->form_validation->set_rules('keyword_id', 'Keyword', 'required|callback_check_keyword_in_book['.$book_id.']');
+
+
+        $keywords = array();
+        foreach ($this->database_model->get_keywords() as $keyword) {
+            $keywords[$keyword['id']] = $keyword['name'];
+        }
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Märksõna', 'keyword_id'), form_dropdown('keyword_id', $keywords)));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Muuda/Raamat/'.$book_id).'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_keyword_to_book($book_id);
+            redirect(base_url('Muuda/Raamat/'.$book_id));
+        }
+    }
+
+    public function add_author() {
+        $data['active'] = 'Autor';
+        $data['title'] = 'Autori lisamine';
+        $data['form_action'] = base_url('Lisa/Autor');
+
+        $this->form_validation->set_rules('firstname', 'firstname', 'required');
+        $this->form_validation->set_rules('lastname', 'lastname', 'required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Eesnimi', 'firstname'), form_input('firstname', $this->input->post('firstname'))));
+        array_push($table_rows, array(form_label('Perenimi', 'lastname'), form_input('lastname', $this->input->post('lastname'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Autorid').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar');
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_author();
+            redirect(base_url("Autorid"));
+        }
+    }
+
+    public function add_author_to_book($book_id)
+    {
+        $data['active'] = 'Autorid';
+        $data['title'] = 'Raamatule autori lisamine';
+        $data['form_action'] = base_url('Lisa/Autor/'.$book_id);
+
+        $this->form_validation->set_message('check_author_in_book', 'The book already has that author.');
+        $this->form_validation->set_rules('author_id', 'Keyword', 'required|callback_check_author_in_book['.$book_id.']');
+
+
+        $authors = array();
+        foreach ($this->database_model->get_authors() as $author) {
+            $authors[$author['id']] = $author['firstname'].' '.$author['lastname'];
+        }
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Autor', 'author_id'), form_dropdown('author_id', $authors)));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Muuda/Raamat/'.$book_id).'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_author_to_book($book_id);
+            redirect(base_url('Muuda/Raamat/'.$book_id));
+        }
+    }
+
+    public function add_genre()
+    {
+        $data['active'] = 'Zanrid';
+        $data['title'] = 'Zanri lisamine';
+        $data['form_action'] = base_url('Lisa/Zanr');
+
+        $this->form_validation->set_rules('name', 'Name', 'is_unique[genre.name]|required');
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Zanr', 'name'), form_input('name', $this->input->post('name'))));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Zanrid').'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_genre();
+            redirect(base_url("Zanrid"));
+        }
+    }
+
+    public function add_genre_to_book($book_id)
+    {
+        $data['active'] = 'Zanrid';
+        $data['title'] = 'Raamatule zanri lisamine';
+        $data['form_action'] = base_url('Lisa/Zanr/'.$book_id);
+
+        $this->form_validation->set_message('check_genre_in_book', 'The book already has that genre.');
+        $this->form_validation->set_rules('genre_id', 'genre', 'required|callback_check_genre_in_book['.$book_id.']');
+
+
+        $genres = array();
+        foreach ($this->database_model->get_genres() as $genre) {
+            $genres[$genre['id']] = $genre['name'];
+        }
+
+        $table_rows = array();
+
+        array_push($table_rows, array('', ''));
+        array_push($table_rows, array(form_label('Zanr', 'genre_id'), form_dropdown('genre_id', $genres)));
+        array_push($table_rows, array('', form_submit('submit', 'Lisa').' '.form_button('katkesta', 'Katkesta', 'onclick="javascript:location.href = \''.base_url('Muuda/Raamat/'.$book_id).'\';"')));
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('view/view_form');
+            $this->load->view('templates/footer');
+        } else {
+            $this->database_model->add_genre_to_book($book_id);
+            redirect(base_url('Muuda/Raamat/'.$book_id));
+        }
+    }
+
+
+    public function class_name_check($class_name, $school_id) {
+        $classes = $this->database_model->get_classes($school_id);
+        foreach ($classes as $class) {
+            if ($class['name'] === $class_name) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+    public function check_book_in_list($book_id, $class_id) {
+        $books_in_list = $this->database_model->get_reading_list_from_class($class_id);
+        foreach ($books_in_list as $book) {
+            if ($book['book_id'] === $book_id) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+    public function check_keyword_in_book($keyword_id, $book_id) {
+        $keywords = $this->database_model->get_keywords($book_id);
+        foreach ($keywords as $keyword) {
+            if ($keyword['keyword_id'] === $keyword_id) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+    public function check_author_in_book($author_id, $book_id) {
+        $authors = $this->database_model->get_authors($book_id);
+        foreach ($authors as $author) {
+            if ($author['author_id'] === $author_id) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+    public function check_genre_in_book($genre_id, $book_id) {
+        $genres = $this->database_model->get_genres($book_id);
+        foreach ($genres as $genre) {
+            if ($genre['genre_id'] === $genre_id) {
+                return FALSE;
+            }
+        }
+        return TRUE;
     }
 }

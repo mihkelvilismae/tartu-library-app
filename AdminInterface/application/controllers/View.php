@@ -7,14 +7,16 @@ class View extends CI_Controller {
         $this->load->model('database_model');
         $this->load->library('table');
         $this->load->helper('url_helper');
+
+        if (!isset($_SESSION['logged_in'])) {
+            $_SESSION['REFERER'] = base_url($_SERVER['REQUEST_URI']);
+            redirect(base_url());
+        }
     }
 
     public function view_schools()
     {
         $data['active'] = 'Koolid';
-        $data['class1'] = 'class="active-tab"';
-        $data['class2'] = '';
-        $data['class3'] = '';
         $schools = $this->database_model->get_schools();
         $data['title'] = 'Koolid';
         $table_rows = array();
@@ -60,7 +62,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Klassi nimi", "Kooli nimi",'<a href="'.base_url('Lisa/Klass').'\">Lisa</a>');
+        $this->table->set_heading("Klassi nimi", "Kooli nimi",'<a href="'.base_url('Lisa/Klass').'">Lisa</a>');
 
         $classes = $this->database_model->get_classes();
         for ($i = 0; $i < count($classes); $i++) {
@@ -87,28 +89,55 @@ class View extends CI_Controller {
 
     public function view_books()
     {
-        $data['books'] = $this->database_model->get_books();
+        $data['active'] = 'Raamatud';
+        $books = $this->database_model->get_books();
         $data['title'] = 'Raamatud';
-        $i = 0;
-        foreach ($data['books'] as $book) {
-            $data['books'][$i]['edit'] = '<a href="'.base_url("Muuda/Raamat/".$book['id']).'">Muuda</a>';
-            $i++;
+        $table_rows = array();
+
+        for ($i = 0; $i < count($books); $i++) {
+            $book = $books[$i];
+            $change_delete = '<a href="'.base_url("Muuda/Raamat/".$book['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Raamat/'.$book["id"]).'">Kustuta</a>';
+
+            $book_authors = $this->database_model->get_authors($book['id']);
+            $authors = '<ul>';
+            foreach ($book_authors as $author) {
+                $a = $this->database_model->get_author($author['author_id']);
+                $authors.='<li>'.$a['firstname'].' '.$a['lastname'].'</li>';
+            }
+            $authors .= '</ul>';
+            
+            $book_genres = $this->database_model->get_genres($book['id']);
+            $genres = '<ul>';
+            foreach ($book_genres as $genre) {
+                $a = $this->database_model->get_genre($genre['genre_id']);
+                $genres.='<li>'.$a['name'].'</li>';
+            }
+            $genres .= '</ul>';
+            array_push(
+                $table_rows,
+                array(
+                    $book['title'],
+                    $authors,
+                    $book['lang'],
+                    $book['year'],
+                    $genres,
+                    $change_delete
+                )
+            );
         }
 
         $template = array(
-            'table_open' => '<table border="1" cellpadding="4" class="responstable">',
-            'table_close' => '<tr><td colspan="5"><a href="'.base_url('Lisa/Raamat').'">Lisa uus raamat</a> </td></tr>
-                <tr><td colspan="5"><a href="'.base_url('Kustuta/Raamat').'">Kustuta raamat</a></td></tr>
-                </table>'
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Id", "Raamatu nimi", "Autor", "Aasta", "Muuda");
+        $this->table->set_heading("Raamatu pealkiri","Autorid", "Keel", "Aasta", "Zanrid",'<a href="'.base_url('Lisa/Raamat').'">Lisa</a>');
 
-        $data['table'] = $this->table->generate($data['books']);
+        $data['table'] = $this->table->generate($table_rows);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('view/view_books', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
         $this->load->view('templates/footer');
     }
 
@@ -125,7 +154,7 @@ class View extends CI_Controller {
         );
 
         $this->table->set_template($template);
-        $this->table->set_heading("Klassi nimi", "Kooli nimi", "Raamatud", '<a href="'.base_url('Lisa/Nimekiri').'\">Lisa</a>');
+        $this->table->set_heading("Klassi nimi", "Kooli nimi", "Raamatud", '<a href="'.base_url('Lisa/Nimekiri').'">Lisa</a>');
 
         $list_rows = $this->database_model->get_list();
         for ($i = 0; $i < count($classes); $i++) {
@@ -137,7 +166,7 @@ class View extends CI_Controller {
             for ($j = 0; $j < count($list_rows); $j++) {
                 $row = $list_rows[$j];
                 if ($row['class_id'] == $class['id']) {
-                    $books[$row['book_id']] = $this->database_model->get_book_by_id($row['book_id'])['title'];
+                    $books[$row['book_id']] = $this->database_model->get_book($row['book_id'])['title'];
                 }
             }
             if (count($books) > 0) {
@@ -171,6 +200,146 @@ class View extends CI_Controller {
                 )
             );
         }*/
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_users() {
+        if ($_SESSION['is_admin'] != 1) {
+            redirect(base_url('Koolid'));
+        }
+        $data['active'] = 'Kasutajad';
+        $users = $this->database_model->get_users();
+        $data['title'] = 'Kasutajad';
+        $table_rows = array();
+
+        for ($i = 0; $i < count($users); $i++) {
+            $user = $users[$i];
+            $delete = '<a href="'.base_url('Kustuta/Kasutaja/'.$user["id"]).'">Kustuta</a>';
+
+            array_push(
+                $table_rows,
+                array(
+                    $user['firstname'],
+                    $user['lastname'],
+                    $user['email'],
+                    $user['phone'],
+                    $user['is_admin'],
+                    $delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Eesnimi","Perenimi","E-Mail","Telefon", "Admin",'<a href="'.base_url('Lisa/Kasutaja').'">Lisa</a>');
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_keywords() {
+        $data['active'] = 'Märksõnad';
+        $schools = $this->database_model->get_keywords();
+        $data['title'] = 'Märksõnad';
+        $table_rows = array();
+
+        for ($i = 0; $i < count($schools); $i++) {
+            $school = $schools[$i];
+            $change_delete = '<a href="'.base_url("Muuda/Märksõna/".$school['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Märksõna/'.$school["id"]).'">Kustuta</a>';
+
+            array_push(
+                $table_rows,
+                array(
+                    $school['name'],
+                    $change_delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Märksõna",'<a href="'.base_url('Lisa/Märksõna').'">Lisa</a>');
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_authors() {
+        $data['active'] = 'Autorid';
+        $authors = $this->database_model->get_authors();
+        $data['title'] = 'Autorid';
+        $table_rows = array();
+
+        foreach ($authors as $author) {
+            $change_delete = '<a href="'.base_url("Muuda/Autor/".$author['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Autor/'.$author["id"]).'">Kustuta</a>';
+            array_push(
+                $table_rows,
+                array(
+                    $author['firstname'],
+                    $author['lastname'],
+                    $change_delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Eesnimi", "Perenimi",'<a href="'.base_url('Lisa/Autor').'">Lisa</a>');
+
+        $data['table'] = $this->table->generate($table_rows);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('view/view_table');
+        $this->load->view('templates/footer');
+    }
+
+    public function view_genres() {
+        $data['active'] = 'Zanrid';
+        $genres = $this->database_model->get_genres();
+        $data['title'] = 'Zanrid';
+        $table_rows = array();
+
+        foreach ($genres as $genre) {
+            $change_delete = '<a href="'.base_url("Muuda/Zanr/".$genre['id']).'">Muuda</a> / <a href="'.base_url('Kustuta/Zanr/'.$genre["id"]).'">Kustuta</a>';
+            array_push(
+                $table_rows,
+                array(
+                    $genre['name'],
+                    $change_delete
+                )
+            );
+        }
+
+        $template = array(
+            'table_open' => '<table border="1" cellpadding="4" class="responstable">'
+        );
+
+        $this->table->set_template($template);
+        $this->table->set_heading("Nimi",'<a href="'.base_url('Lisa/Zanr').'">Lisa</a>');
 
         $data['table'] = $this->table->generate($table_rows);
 
