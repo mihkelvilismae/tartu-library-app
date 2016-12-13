@@ -146,9 +146,9 @@ class Edit extends CI_Controller {
         $data['title'] = 'Raamatunimekirja muutmine';
 
         $this->set_messages();
-        $this->form_validation->set_message('is_unique', 'Sellel klassil on juba lugemisnimekiri.');
+        $this->form_validation->set_message('unique_list', 'Sellel klassil on juba lugemisnimekiri.');
 
-        $this->form_validation->set_rules('class_id', 'Klassi nime', 'numeric|required|is_unique[reading_list.class_id]');
+        $this->form_validation->set_rules('class_id', 'Klassi nime', 'numeric|required|callback_unique_list['.$class_id.']');
 
         if ($this->form_validation->run() === FALSE) {
             $data['form_action'] = base_url('Muuda/Nimekiri/'.$class_id);
@@ -274,6 +274,22 @@ class Edit extends CI_Controller {
                 continue;
             }
             if ($school['name'] === $school_name) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+    public function unique_list($new_id, $old_id) {
+        if ($new_id == $old_id) {
+            return TRUE;
+        }
+        $entries = $this->database_model->get_list();
+        foreach ($entries as $entry) {
+            if ($entry['class_id'] == $old_id) {
+                continue;
+            }
+            if ($entry['class_id'] == $new_id) {
                 return FALSE;
             }
         }

@@ -10,7 +10,7 @@
             <div class="col-sm-6 text-danger"><?=form_error('class_id'); ?></div>
         </div>
         <div class="form-group">
-            <label for="book_id" class="control-label col-sm-offset-1 col-sm-2">Klass</label>
+            <label for="book_id" class="control-label col-sm-offset-1 col-sm-2">Raamat</label>
             <div class="col-sm-3">
                 <select name="book_id" id="book_id" class="btn btn-default">
                     <?=$books; ?>

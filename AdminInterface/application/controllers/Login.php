@@ -24,6 +24,14 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('email', 'E-maili', 'required');
         $this->form_validation->set_rules('password', 'Parooli', 'required');
 
+        if (!isset($_SESSION['REFERER'])) {
+            $_SESSION['REFERER'] = '-';
+        }
+
+        echo '--'.$_SESSION['REFERER'].'--<br>';
+        echo '--'.base_url().'--<br>';
+        echo '--'.base_url("Muuda/Raamat/2").'--<br>';
+
         if ($this->form_validation->run() === FALSE) {
             $data['email_error'] = form_error('email');
             $data['password_error'] = form_error('password');
