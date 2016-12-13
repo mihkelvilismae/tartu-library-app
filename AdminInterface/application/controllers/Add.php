@@ -218,20 +218,19 @@ class Add extends CI_Controller {
                 array_push($dropdown_rows_classes, '<optgroup label="'.$school['name'].'">'.implode('', $classes).'</optgroup>');
             }
 
-            $dropdown_rows_books = array();
-            $books = $this->database_model->get_books();
             $books_in_list = array();
             if ($class_id) {
                 foreach ($this->database_model->get_books_in_list($class_id) as $entry) {
                     array_push($books_in_list, $entry['book_id']);
                 }
             }
+            $dropdown_rows_books = array();
+            $books = $this->database_model->get_books();
             for ($i = 0; $i < count($books); $i++) {
                 $book = $books[$i];
                 if (in_array($book['id'], $books_in_list)) {
                     continue;
                 }
-                $dropdown_rows_books[$book['id']] = $book['title'];
                 array_push($dropdown_rows_books, '<option value="'.$book['id'].'">'.$book['title'].'</option>');
             }
 
