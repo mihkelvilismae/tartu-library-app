@@ -144,7 +144,7 @@ class JSON extends CI_Controller {
         $author = $this->input->get('autor');
         $keyword = $this->input->get('märksõna');
         $language = $this->input->get('keel');
-        $genre = $this->input->get('zanr');
+        $genre = $this->input->get('žanr');
 
         $year = array();
         if (!($this->input->get('aasta') == '')) {

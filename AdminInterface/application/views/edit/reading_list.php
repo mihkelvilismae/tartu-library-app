@@ -9,7 +9,6 @@
             </div>
             <div class="col-sm-6 text-danger"><?=form_error('class_id'); ?></div>
         </div>
-
         <div class="form-group">
             <label for="year" class="control-label col-sm-offset-1 col-sm-2">Raamatud</label>
             <div class="col-sm-4">
@@ -20,10 +19,9 @@
             <div class="col-sm-5"></div>
         </div>
         <div class="form-group">
-
             <div class="btn-group col-sm-offset-3 col-sm-10">
                 <input type="submit" name="submit" value="Muuda nimekirja" class="btn btn-primary btn-sm" />
-                <a href="http://localhost/Nimekiri" class="btn btn-warning btn-sm" role="button">Katkesta</a>
+                <a href="<?=base_url("Nimekiri"); ?>" class="btn btn-warning btn-sm" role="button">Katkesta</a>
             </div>
         </div>
     </form>

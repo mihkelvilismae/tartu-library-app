@@ -141,8 +141,8 @@ class Add extends CI_Controller {
     }
 
     public function add_genre() {
-        $data['active'] = 'Zanrid';
-        $data['title'] = 'Zanri lisamine';
+        $data['active'] = 'Žanrid';
+        $data['title'] = 'Žanri lisamine';
 
         $this->form_validation->set_rules('name', 'Name', 'is_unique[genre.name]|required');
 
@@ -153,7 +153,7 @@ class Add extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             $this->database_model->add_genre();
-            redirect(base_url("Zanrid"));
+            redirect(base_url("Žanrid"));
         }
     }
 
@@ -273,14 +273,14 @@ class Add extends CI_Controller {
     }
 
     public function add_genre_to_book($book_id) {
-        $data['active'] = 'Zanrid';
-        $data['title'] = 'Raamatule zanri lisamine';
+        $data['active'] = 'Žanrid';
+        $data['title'] = 'Raamatule žanri lisamine';
 
         $this->form_validation->set_message('check_genre_in_book', 'The book already has that genre.');
         $this->form_validation->set_rules('genre_id', 'genre', 'required|callback_check_genre_in_book['.$book_id.']');
 
         if ($this->form_validation->run() === FALSE) {
-            $data['form_action'] = base_url('Lisa/Zanr/'.$book_id);
+            $data['form_action'] = base_url('Lisa/Žanr/'.$book_id);
             $data['cancel_link'] = base_url('Muuda/Raamat/'.$book_id);
 
             $genres = array();

@@ -19,7 +19,7 @@
             <div class="form-group">
                 <div class="btn-group col-sm-offset-3 col-sm-10">
                     <input type="submit" name="submit" value="Muuda klassi"  class="btn btn-primary btn-sm" />
-                    <a href="http://localhost/Klassid" class="btn btn-warning btn-sm" role="button">Katkesta</a>
+                    <a href="<?=base_url("Klassid"); ?>" class="btn btn-warning btn-sm" role="button">Katkesta</a>
                 </div>
             </div>
         </form>
