@@ -1,3 +1,5 @@
-<span>
+<div class="col-md-10">
     <?=$table ?>
-</span>
+</div>
+
+</div>
