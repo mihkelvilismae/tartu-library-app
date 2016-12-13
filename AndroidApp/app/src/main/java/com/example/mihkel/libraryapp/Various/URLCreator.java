@@ -105,7 +105,7 @@ public class URLCreator {
 //            list.add(entry.getValue().getName());
             list.add(String.valueOf(entry.getValue().getId()));
         }
-        String joined = TextUtils.join(", ", list);
+        String joined = TextUtils.join(",", list);
         return joined;
     }
 
@@ -117,7 +117,7 @@ public class URLCreator {
 //            list.add(exploded[1]);
             list.add(String.valueOf(entry.getValue().getId()));
         }
-        String joined = TextUtils.join(", ", list);
+        String joined = TextUtils.join(",", list);
         return joined;
     }
 
@@ -127,7 +127,7 @@ public class URLCreator {
 //            System.out.println(entry.getKey() + "/" + entry.getValue());
             list.add(entry.getValue().getName());
         }
-        String joined = TextUtils.join(", ", list);
+        String joined = TextUtils.join(",", list);
         return joined;
     }
 
